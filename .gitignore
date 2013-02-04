@@ -18,3 +18,16 @@ nb-configuration.xml
 *.jar
 *.war
 *.ear
+!/lib/woden-1.0M9-dom/javadoc/woden-impl-commons-1.0M9-javadoc.jar
+!/lib/woden-1.0M9-dom/javadoc/woden-tool-1.0M9-javadoc.jar
+!/lib/woden-1.0M9-dom/javadoc/woden-api-1.0M9-javadoc.jar
+!/lib/woden-1.0M9-dom/javadoc/woden-impl-dom-1.0M9-javadoc.jar
+!/lib/woden-1.0M9-dom/classpath/woden-impl-dom-1.0M9.jar
+!/lib/woden-1.0M9-dom/classpath/woden-impl-commons-1.0M9.jar
+!/lib/woden-1.0M9-dom/classpath/woden-api-1.0M9.jar
+!/lib/woden-1.0M9-dom/classpath/woden-ant-1.0M9.jar
+!/lib/woden-1.0M9-dom/classpath/woden-qname-1.0M9.jar
+!/lib/woden-1.0M9-dom/classpath/XmlSchema-1.4.7.jar
+!/lib/woden-1.0M9-dom/classpath/woden-tool-1.0M9.jar
+!/lib/woden-1.0M9-dom/sources/woden-api-1.0M9-sources.jar
+!/lib/woden-1.0M9-dom/sources/woden-impl-dom-1.0M9-sources.jar
