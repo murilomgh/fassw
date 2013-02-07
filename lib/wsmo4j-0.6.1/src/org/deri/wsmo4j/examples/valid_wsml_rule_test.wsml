@@ -1,0 +1,37 @@
+wsmlVariant _"http://www.wsmo.org/wsml/wsml-syntax/wsml-rule"
+
+namespace { _"http://www.example.org/ontologies/example8#",
+      dc       _"http://purl.org/dc/elements/1.1#"}
+
+ontology _"http://www.example.org/ontologies/example8"
+
+importsOntology b 
+
+      concept Human
+            hasChild impliesType Human
+            hasObit ofType _date
+            hasWeight ofType _decimal
+             
+      concept Child subConceptOf Human
+      
+      relation ageOfHuman (impliesType Human, ofType _integer)      
+             
+      instance Mary memberOf {Human}
+            hasName hasValue "Maria Smith"
+            hasBirthdate hasValue _date(1976,08,16)
+
+      relationInstance ageOfHuman(Mary, 31)
+
+      axiom IsAlive
+            definedBy
+                  ?x[isAlive hasValue _boolean("true")] :-
+                  		forall ?x (
+                        ?x memberOf Human and ageOfHuman(?x,?age)
+                        and ?age =< 14 implies ?x memberOf Child).
+                  ?x[isAlive hasValue _boolean("false")]
+                  		impliedBy ?x[hasObit hasValue ?obit] memberOf Human.   
+                  isAlive(?x, _boolean("false"))  
+                  		impliedBy ?x[hasObit hasValue ?obit] memberOf Human. 
+                  
+
+     

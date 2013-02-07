@@ -1,0 +1,45 @@
+wsmlVariant _"http://www.wsmo.org/wsml/wsml-syntax/wsml-flight"
+
+namespace { _"http://www.example.org/ontologies/example#",
+      dc       _"http://purl.org/dc/elements/1.1#"}
+
+ontology _"http://www.example.org/ontologies/example3"
+      concept Human
+            hasChild impliesType Human
+            hasObit ofType _"http://www.wsmo.org/wsml/wsml-syntax#date"
+            hasWeight ofType _"http://www.wsmo.org/wsml/wsml-syntax#decimal"
+            hasWeight ofType _decimal
+      
+      relation ageOfHuman (ofType Human, ofType _integer)      
+             
+      instance Mary memberOf {Human}
+            hasName hasValue "Maria Smith"
+            hasBirthdate hasValue _date(1976,08,16)
+
+      relationInstance ageOfHuman(Mary, 31)
+
+	  axiom IsAlive
+            definedBy
+                  // error: the variable ?x must occur in the body of the LP rule
+                  p(?x) :- q(?y).
+                  // error: the variable ?x mustn't occur in a body literal that 
+                  //        corresponds a built-in predicate.
+                  a[b hasValue ?x] :- ?x > 25.
+                  // error: the variable ?x mustn't occur in a negative body literal
+                  ?x[gender hasValue male] :- naf ?x[gender hasValue female].
+                  // error: atomic expressions mustn't contain variables
+                  ageOfHuman(Mary, ?x).
+                                 
+      axiom ax definedBy
+      	p(f(a)).
+      	p(f(a)) :- a != b.
+	    p(?y) :- s(t(u)) and y(?y).	    
+        c[b hasValue p(f(a))].     
+
+	  axiom definedBy
+	    ?x memberOf Human or ?x memberOf Animal implies ?x memberOf Mammal.  		
+                  	
+                  	
+                 
+                  		
+                  		

@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" size="1642,1455" id="org.wsmo.service.ad" metadata="uml2-1.0" initialized="true" scrolledX="10" scrolledY="633" tag="1000" key="3230303530393237206578742F76617373696C">
+  <children xsi:type="editmodel:InterfaceEditModel" name="ActivityDiagram" location="794,1099" size="206,135" stereotype="interface" id="org.wsmo.service.ad/ActivityDiagram" runTimeClassModel="setActivityGroup(Lorg.wsmo.service.ad.ActivityGroup;),getStartNode(),setStartNode(Lorg.wsmo.service.ad.ActivityNode;),getActivityGroup()">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="183,72">
+      <children xsi:type="editmodel:MethodEditModel" name="getActivityGroup" id="org.wsmo.service.ad/ActivityDiagram#getActivityGroup()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setActivityGroup" id="org.wsmo.service.ad/ActivityDiagram#setActivityGroup(Lorg.wsmo.service.ad.ActivityGroup;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStartNode" id="org.wsmo.service.ad/ActivityDiagram#getStartNode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setStartNode" id="org.wsmo.service.ad/ActivityDiagram#setStartNode(Lorg.wsmo.service.ad.ActivityNode;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.29/@sourceConnections.0" name="EventActionNode" location="188,785" size="189,171" stereotype="interface" id="org.wsmo.service.ad/EventActionNode" runTimeClassModel="setPartnerLink(Lorg.wsmo.common.Identifier;),getCarriesConcept(),setCarriesConcept(Lorg.omwg.ontology.Concept;),setMode(Lorg.wsmo.service.signature.Mode;),getPartnerLink(),getMode()">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="166,108">
+      <children xsi:type="editmodel:MethodEditModel" name="getCarriesConcept" id="org.wsmo.service.ad/EventActionNode#getCarriesConcept()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getMode" id="org.wsmo.service.ad/EventActionNode#getMode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setCarriesConcept" id="org.wsmo.service.ad/EventActionNode#setCarriesConcept(Lorg.omwg.ontology.Concept;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMode" id="org.wsmo.service.ad/EventActionNode#setMode(Lorg.wsmo.service.signature.Mode;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPartnerLink" id="org.wsmo.service.ad/EventActionNode#getPartnerLink()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setPartnerLink" id="org.wsmo.service.ad/EventActionNode#setPartnerLink(Lorg.wsmo.common.Identifier;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service.ad/ActionNode&lt;-org.wsmo.service.ad/EventActionNode" source="//@children.1" target="//@children.22/@sourceConnections.0" targetEnd="//@children.1/@sourceConnections.0/@children.1" sourceEnd="//@children.1/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="94,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="94,0"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.14/@sourceConnections.0" name="Orchestration" location="1163,307" size="242,43" stereotype="interface" id="org.wsmo.service/Orchestration" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.common/Entity&lt;-org.wsmo.service/Orchestration" source="//@children.2" target="//@children.11/@sourceConnections.0" targetEnd="//@children.2/@sourceConnections.0/@children.1" sourceEnd="//@children.2/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="121,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.10/@sourceConnections.1 //@children.11/@sourceConnections.0 //@children.14/@sourceConnections.1" name="Entity" location="647,50" size="202,207" stereotype="interface" id="org.wsmo.common/Entity" runTimeClassModel="addNFPValue(Lorg.wsmo.common.IRI;Lorg.omwg.ontology.Value;),removeNFPValue(Lorg.wsmo.common.IRI;Lorg.wsmo.common.Identifier;),removeNFPValue(Lorg.wsmo.common.IRI;Lorg.omwg.ontology.Value;),listNFPValues(),listNFPValues(Lorg.wsmo.common.IRI;),addNFPValue(Lorg.wsmo.common.IRI;Lorg.wsmo.common.Identifier;),removeNFP(Lorg.wsmo.common.IRI;),getIdentifier()">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="171,144">
+      <children xsi:type="editmodel:MethodEditModel" name="addNFPValue" id="org.wsmo.common/Entity#addNFPValue(Lorg.wsmo.common.IRI;Lorg.omwg.ontology.Value;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addNFPValue" id="org.wsmo.common/Entity#addNFPValue(Lorg.wsmo.common.IRI;Lorg.wsmo.common.Identifier;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getIdentifier" id="org.wsmo.common/Entity#getIdentifier()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="listNFPValues" id="org.wsmo.common/Entity#listNFPValues()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="listNFPValues" id="org.wsmo.common/Entity#listNFPValues(Lorg.wsmo.common.IRI;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeNFP" id="org.wsmo.common/Entity#removeNFP(Lorg.wsmo.common.IRI;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeNFPValue" id="org.wsmo.common/Entity#removeNFPValue(Lorg.wsmo.common.IRI;Lorg.omwg.ontology.Value;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeNFPValue" id="org.wsmo.common/Entity#removeNFPValue(Lorg.wsmo.common.IRI;Lorg.wsmo.common.Identifier;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="Mediation" location="879,1006" size="105,43" stereotype="interface" id="org.wsmo.service.ad/Mediation" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="165,36"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.18/@sourceConnections.0 //@children.26/@sourceConnections.0 //@children.28/@sourceConnections.0" autoLocated="true" id="org.wsmo.service.ad/DefinedByActionNode&lt;-org.wsmo.service.ad/Mediation" source="//@children.4" target="//@children.12" targetEnd="//@children.4/@sourceConnections.0/@children.1" sourceEnd="//@children.4/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="52,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="90,99" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="DataFlow" location="326,564" size="102,43" stereotype="interface" id="org.wsmo.service.ad/DataFlow" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service.ad/ActivityEdge&lt;-org.wsmo.service.ad/DataFlow" source="//@children.5" target="//@children.13/@sourceConnections.0" targetEnd="//@children.5/@sourceConnections.0/@children.1" sourceEnd="//@children.5/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="51,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="169,135"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="Join" location="1544,785" size="78,43" stereotype="interface" id="org.wsmo.service.ad/Join" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.19/@sourceConnections.0 //@children.7/@sourceConnections.0 //@children.17/@sourceConnections.0 //@children.16/@sourceConnections.0 //@children.21/@sourceConnections.0 //@children.25/@sourceConnections.0" autoLocated="true" id="org.wsmo.service.ad/ControlNode&lt;-org.wsmo.service.ad/Join" source="//@children.6" target="//@children.27" targetEnd="//@children.6/@sourceConnections.0/@children.1" sourceEnd="//@children.6/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="39,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="60,43" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="ActivityFinal" location="1286,785" size="120,43" stereotype="interface" id="org.wsmo.service.ad/ActivityFinal" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service.ad/ControlNode&lt;-org.wsmo.service.ad/ActivityFinal" source="//@children.7" target="//@children.6/@sourceConnections.0" targetEnd="//@children.7/@sourceConnections.0/@children.1" sourceEnd="//@children.7/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="60,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="78,0"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="Pin" location="80,785" size="78,43" stereotype="interface" id="org.wsmo.service.ad/Pin" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service.ad/ObjectNode&lt;-org.wsmo.service.ad/Pin" source="//@children.8" target="//@children.24" targetEnd="//@children.8/@sourceConnections.0/@children.1" sourceEnd="//@children.8/@sourceConnections.0/@children.0" connectionRouterKind="Manhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="68,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,125"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="SendEventAction" location="80,1006" size="150,43" stereotype="interface" id="org.wsmo.service.ad/SendEventAction" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="202,108"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" source="//@children.9" target="//@children.29/@sourceConnections.0" targetEnd="//@children.9/@sourceConnections.0/@children.1" sourceEnd="//@children.9/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="75,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="ADChoreography" location="80,564" size="224,135" stereotype="interface" id="org.wsmo.service.ad/ADChoreography" runTimeClassModel="setActivityDiagram(Lorg.wsmo.service.ad.ActivityDiagram;),getStateSignature(),getActivityDiagram(),setStateSignature(Lorg.wsmo.service.signature.StateSignature;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="201,108">
+      <children xsi:type="editmodel:MethodEditModel" name="getActivityDiagram" id="org.wsmo.service.ad/ADChoreography#getActivityDiagram()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setActivityDiagram" id="org.wsmo.service.ad/ADChoreography#setActivityDiagram(Lorg.wsmo.service.ad.ActivityDiagram;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStateSignature" id="org.wsmo.service.ad/ADChoreography#getStateSignature()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setStateSignature" id="org.wsmo.service.ad/ADChoreography#setStateSignature(Lorg.wsmo.service.signature.StateSignature;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service/Choreography&lt;-org.wsmo.service.ad/ADChoreography" source="//@children.10" target="//@children.23" targetEnd="//@children.10/@sourceConnections.0/@children.1" sourceEnd="//@children.10/@sourceConnections.0/@children.0" connectionRouterKind="Manhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="108,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="138,43"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.common/Entity&lt;-org.wsmo.service.ad/ADChoreography" source="//@children.10" target="//@children.3" targetEnd="//@children.10/@sourceConnections.1/@children.1" sourceEnd="//@children.10/@sourceConnections.1/@children.0" connectionRouterKind="Manhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="214,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,197"/>
+      <bendpoints location="296,539" secondRelativeDimension="-350,299" firstRelativeDimension="24,-24"/>
+      <bendpoints location="342,539" secondRelativeDimension="-303,289" firstRelativeDimension="46,-32"/>
+      <bendpoints location="342,282" secondRelativeDimension="-302,97" firstRelativeDimension="119,-279"/>
+      <bendpoints location="617,282" secondRelativeDimension="-26,26" firstRelativeDimension="328,-278"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.15/@sourceConnections.0" name="ActivityNode" location="669,307" size="121,43" stereotype="interface" id="org.wsmo.service.ad/ActivityNode" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.23/@sourceConnections.0 //@children.2/@sourceConnections.0 //@children.20/@sourceConnections.0" autoLocated="true" id="org.wsmo.common/Entity&lt;-org.wsmo.service.ad/ActivityNode" source="//@children.11" target="//@children.3" targetEnd="//@children.11/@sourceConnections.0/@children.1" sourceEnd="//@children.11/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="60,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="101,207" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.4/@sourceConnections.0" name="DefinedByActionNode" location="570,785" size="180,99" stereotype="interface" id="org.wsmo.service.ad/DefinedByActionNode" runTimeClassModel="setDefinedBy(Lorg.wsmo.common.Identifier;),getDefinedBy()">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="142,36">
+      <children xsi:type="editmodel:MethodEditModel" name="getDefinedBy" id="org.wsmo.service.ad/DefinedByActionNode#getDefinedBy()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setDefinedBy" id="org.wsmo.service.ad/DefinedByActionNode#setDefinedBy(Lorg.wsmo.common.Identifier;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service.ad/ActionNode&lt;-org.wsmo.service.ad/DefinedByActionNode" source="//@children.12" target="//@children.22/@sourceConnections.0" targetEnd="//@children.12/@sourceConnections.0/@children.1" sourceEnd="//@children.12/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="90,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,157"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="ControlFlow" location="458,564" size="119,43" stereotype="interface" id="org.wsmo.service.ad/ControlFlow" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.5/@sourceConnections.0" autoLocated="true" id="org.wsmo.service.ad/ActivityEdge&lt;-org.wsmo.service.ad/ControlFlow" source="//@children.13" target="//@children.20" targetEnd="//@children.13/@sourceConnections.0/@children.1" sourceEnd="//@children.13/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="59,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="126,207" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="ADOrchestration" location="1176,564" size="224,135" stereotype="interface" id="org.wsmo.service.ad/ADOrchestration" runTimeClassModel="setActivityDiagram(Lorg.wsmo.service.ad.ActivityDiagram;),getStateSignature(),getActivityDiagram(),setStateSignature(Lorg.wsmo.service.signature.StateSignature;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="201,72">
+      <children xsi:type="editmodel:MethodEditModel" name="setActivityDiagram" id="org.wsmo.service.ad/ADOrchestration#setActivityDiagram(Lorg.wsmo.service.ad.ActivityDiagram;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getStateSignature" id="org.wsmo.service.ad/ADOrchestration#getStateSignature()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getActivityDiagram" id="org.wsmo.service.ad/ADOrchestration#getActivityDiagram()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setStateSignature" id="org.wsmo.service.ad/ADOrchestration#setStateSignature(Lorg.wsmo.service.signature.StateSignature;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service/Orchestration&lt;-org.wsmo.service.ad/ADOrchestration" source="//@children.14" target="//@children.2" targetEnd="//@children.14/@sourceConnections.0/@children.1" sourceEnd="//@children.14/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="111,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="124,43"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.common/Entity&lt;-org.wsmo.service.ad/ADOrchestration" source="//@children.14" target="//@children.3" targetEnd="//@children.14/@sourceConnections.1/@children.1" sourceEnd="//@children.14/@sourceConnections.1/@children.0" connectionRouterKind="Manhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="10,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="202,197"/>
+      <bendpoints location="1392,539" secondRelativeDimension="543,325" firstRelativeDimension="28,-24"/>
+      <bendpoints location="1450,539" secondRelativeDimension="601,330" firstRelativeDimension="58,-32"/>
+      <bendpoints location="1450,282" secondRelativeDimension="601,111" firstRelativeDimension="134,-279"/>
+      <bendpoints location="849,282" secondRelativeDimension="20,25" firstRelativeDimension="-346,-278"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.22/@sourceConnections.0" name="ActionNode" location="826,564" size="169,171" stereotype="interface" id="org.wsmo.service.ad/ActionNode" runTimeClassModel="listOutputPins(),addInputPin(Lorg.wsmo.service.ad.Pin;),listInputPins(),removeOutputPin(Lorg.wsmo.service.ad.Pin;),removeInputPin(Lorg.wsmo.service.ad.Pin;),addOutputPin(Lorg.wsmo.service.ad.Pin;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="146,108">
+      <children xsi:type="editmodel:MethodEditModel" name="addInputPin" id="org.wsmo.service.ad/ActionNode#addInputPin(Lorg.wsmo.service.ad.Pin;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addOutputPin" id="org.wsmo.service.ad/ActionNode#addOutputPin(Lorg.wsmo.service.ad.Pin;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="listInputPins" id="org.wsmo.service.ad/ActionNode#listInputPins()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="listOutputPins" id="org.wsmo.service.ad/ActionNode#listOutputPins()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeInputPin" id="org.wsmo.service.ad/ActionNode#removeInputPin(Lorg.wsmo.service.ad.Pin;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeOutputPin" id="org.wsmo.service.ad/ActionNode#removeOutputPin(Lorg.wsmo.service.ad.Pin;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.27/@sourceConnections.0 //@children.24/@sourceConnections.0" autoLocated="true" id="org.wsmo.service.ad/ActivityNode&lt;-org.wsmo.service.ad/ActionNode" source="//@children.15" target="//@children.11" targetEnd="//@children.15/@sourceConnections.0/@children.1" sourceEnd="//@children.15/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="84,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="60,43" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="FlowStart" location="1018,785" size="103,43" stereotype="interface" id="org.wsmo.service.ad/FlowStart" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service.ad/ControlNode&lt;-org.wsmo.service.ad/FlowStart" source="//@children.16" target="//@children.6/@sourceConnections.0" targetEnd="//@children.16/@sourceConnections.0/@children.1" sourceEnd="//@children.16/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="51,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="96,0"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="FlowFinal" location="1151,785" size="105,43" stereotype="interface" id="org.wsmo.service.ad/FlowFinal" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service.ad/ControlNode&lt;-org.wsmo.service.ad/FlowFinal" source="//@children.17" target="//@children.6/@sourceConnections.0" targetEnd="//@children.17/@sourceConnections.0/@children.1" sourceEnd="//@children.17/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="52,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="84,0"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="Extraction" location="743,1006" size="106,43" stereotype="interface" id="org.wsmo.service.ad/Extraction" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="102,36"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service.ad/DefinedByActionNode&lt;-org.wsmo.service.ad/Extraction" source="//@children.18" target="//@children.4/@sourceConnections.0" targetEnd="//@children.18/@sourceConnections.0/@children.1" sourceEnd="//@children.18/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="53,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="72,99"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="Fork" location="1436,785" size="78,43" stereotype="interface" id="org.wsmo.service.ad/Fork" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service.ad/ControlNode&lt;-org.wsmo.service.ad/Fork" source="//@children.19" target="//@children.6/@sourceConnections.0" targetEnd="//@children.19/@sourceConnections.0/@children.1" sourceEnd="//@children.19/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="39,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="71,0"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.13/@sourceConnections.0" name="ActivityEdge" location="387,307" size="252,207" stereotype="interface" id="org.wsmo.service.ad/ActivityEdge" runTimeClassModel="setInterruptibleRegion(Lorg.wsmo.service.ad.InterruptibleRegion;),getTarget(),setGuard(Lorg.wsmo.service.ad.Guard;),getSource(),setTarget(Lorg.wsmo.service.ad.ActivityNode;),getGuard(),setSource(Lorg.wsmo.service.ad.ActivityNode;),getInterruptibleRegion()">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="339,180">
+      <children xsi:type="editmodel:MethodEditModel" name="getSource" id="org.wsmo.service.ad/ActivityEdge#getSource()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTarget" id="org.wsmo.service.ad/ActivityEdge#getTarget()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setSource" id="org.wsmo.service.ad/ActivityEdge#setSource(Lorg.wsmo.service.ad.ActivityNode;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setTarget" id="org.wsmo.service.ad/ActivityEdge#setTarget(Lorg.wsmo.service.ad.ActivityNode;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setInterruptibleRegion" id="org.wsmo.service.ad/ActivityEdge#setInterruptibleRegion(Lorg.wsmo.service.ad.InterruptibleRegion;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getGuard" id="org.wsmo.service.ad/ActivityEdge#getGuard()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setGuard" id="org.wsmo.service.ad/ActivityEdge#setGuard(Lorg.wsmo.service.ad.Guard;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getInterruptibleRegion" id="org.wsmo.service.ad/ActivityEdge#getInterruptibleRegion()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.common/Entity&lt;-org.wsmo.service.ad/ActivityEdge" source="//@children.20" target="//@children.11/@sourceConnections.0" targetEnd="//@children.20/@sourceConnections.0/@children.1" sourceEnd="//@children.20/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="126,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="Merge" location="906,785" size="82,43" stereotype="interface" id="org.wsmo.service.ad/Merge" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service.ad/ControlNode&lt;-org.wsmo.service.ad/Merge" source="//@children.21" target="//@children.6/@sourceConnections.0" targetEnd="//@children.21/@sourceConnections.0/@children.1" sourceEnd="//@children.21/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="41,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="119,0"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="GeneralAction" location="407,785" size="133,43" stereotype="interface" id="org.wsmo.service.ad/GeneralAction" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.1/@sourceConnections.0 //@children.12/@sourceConnections.0" autoLocated="true" id="org.wsmo.service.ad/ActionNode&lt;-org.wsmo.service.ad/GeneralAction" source="//@children.22" target="//@children.15" targetEnd="//@children.22/@sourceConnections.0/@children.1" sourceEnd="//@children.22/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="66,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="84,171" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.10/@sourceConnections.0" name="Choreography" location="50,307" size="247,43" stereotype="interface" id="org.wsmo.service/Choreography" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.common/Entity&lt;-org.wsmo.service/Choreography" source="//@children.23" target="//@children.11/@sourceConnections.0" targetEnd="//@children.23/@sourceConnections.0/@children.1" sourceEnd="//@children.23/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="123,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.8/@sourceConnections.0" name="ObjectNode" location="607,564" size="189,135" stereotype="interface" id="org.wsmo.service.ad/ObjectNode" runTimeClassModel="getCarriesConcept(),setCarriesConcept(Lorg.omwg.ontology.Concept;),setMode(Lorg.wsmo.service.signature.Mode;),getMode()">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="166,72">
+      <children xsi:type="editmodel:MethodEditModel" name="getMode" id="org.wsmo.service.ad/ObjectNode#getMode()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setMode" id="org.wsmo.service.ad/ObjectNode#setMode(Lorg.wsmo.service.signature.Mode;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getCarriesConcept" id="org.wsmo.service.ad/ObjectNode#getCarriesConcept()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setCarriesConcept" id="org.wsmo.service.ad/ObjectNode#setCarriesConcept(Lorg.omwg.ontology.Concept;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service.ad/ActivityNode&lt;-org.wsmo.service.ad/ObjectNode" source="//@children.24" target="//@children.15/@sourceConnections.0" targetEnd="//@children.24/@sourceConnections.0/@children.1" sourceEnd="//@children.24/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="94,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="119,43"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="Decision" location="780,785" size="96,43" stereotype="interface" id="org.wsmo.service.ad/Decision" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service.ad/ControlNode&lt;-org.wsmo.service.ad/Decision" source="//@children.25" target="//@children.6/@sourceConnections.0" targetEnd="//@children.25/@sourceConnections.0/@children.1" sourceEnd="//@children.25/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="48,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="69,0"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="Operation" location="608,1006" size="105,43" stereotype="interface" id="org.wsmo.service.ad/Operation" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service.ad/DefinedByActionNode&lt;-org.wsmo.service.ad/Operation" source="//@children.26" target="//@children.4/@sourceConnections.0" targetEnd="//@children.26/@sourceConnections.0/@children.1" sourceEnd="//@children.26/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="52,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="23,99"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.6/@sourceConnections.0" name="ControlNode" location="1025,564" size="121,43" stereotype="interface" id="org.wsmo.service.ad/ControlNode" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service.ad/ActivityNode&lt;-org.wsmo.service.ad/ControlNode" source="//@children.27" target="//@children.15/@sourceConnections.0" targetEnd="//@children.27/@sourceConnections.0/@children.1" sourceEnd="//@children.27/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="60,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="74,0"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="Aggregation" location="458,1006" size="120,43" stereotype="interface" id="org.wsmo.service.ad/Aggregation" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="111,36"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service.ad/DefinedByActionNode&lt;-org.wsmo.service.ad/Aggregation" source="//@children.28" target="//@children.4/@sourceConnections.0" targetEnd="//@children.28/@sourceConnections.0/@children.1" sourceEnd="//@children.28/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="60,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="16,99"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="ReceiveEventAction" location="260,1006" size="168,43" stereotype="interface" id="org.wsmo.service.ad/ReceiveEventAction" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="188,108"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.9/@sourceConnections.0" autoLocated="true" source="//@children.29" target="//@children.1" targetEnd="//@children.29/@sourceConnections.0/@children.1" sourceEnd="//@children.29/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="84,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="94,171" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="GuardElse" location="637,1192" size="107,43" stereotype="interface" id="org.wsmo.service.ad/GuardElse" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service.ad/Guard&lt;-org.wsmo.service.ad/GuardElse" source="//@children.30" target="//@children.31/@sourceConnections.0" targetEnd="//@children.30/@sourceConnections.0/@children.1" sourceEnd="//@children.30/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="53,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="13,43"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="GuardExpression" location="357,1192" size="250,99" stereotype="interface" id="org.wsmo.service.ad/GuardExpression" runTimeClassModel="setLogicalExpression(Lorg.omwg.logicalexpression.LogicalExpression;),getLogicalExpression()">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="227,36">
+      <children xsi:type="editmodel:MethodEditModel" name="getLogicalExpression" id="org.wsmo.service.ad/GuardExpression#getLogicalExpression()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setLogicalExpression" id="org.wsmo.service.ad/GuardExpression#setLogicalExpression(Lorg.omwg.logicalexpression.LogicalExpression;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.30/@sourceConnections.0" autoLocated="true" id="org.wsmo.service.ad/Guard&lt;-org.wsmo.service.ad/GuardExpression" source="//@children.31" target="//@children.32" targetEnd="//@children.31/@sourceConnections.0/@children.1" sourceEnd="//@children.31/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="125,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="40,43" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.31/@sourceConnections.0" name="Guard" location="545,1099" size="81,43" stereotype="interface" id="org.wsmo.service.ad/Guard" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="InterruptibleRegion" location="96,1392" size="165,43" stereotype="interface" id="org.wsmo.service.ad/InterruptibleRegion" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="org.wsmo.service.ad/ActivityGroup&lt;-org.wsmo.service.ad/InterruptibleRegion" source="//@children.33" target="//@children.34" targetEnd="//@children.33/@sourceConnections.0/@children.1" sourceEnd="//@children.33/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="82,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="128,243"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.33/@sourceConnections.0" name="ActivityGroup" location="50,1099" size="257,243" stereotype="interface" id="org.wsmo.service.ad/ActivityGroup" runTimeClassModel="removeGroup(Lorg.wsmo.service.ad.ActivityGroup;),addEdge(Lorg.wsmo.service.ad.ActivityEdge;),addNode(Lorg.wsmo.service.ad.ActivityNode;),addGroup(Lorg.wsmo.service.ad.ActivityGroup;),listNodes(),removeNode(Lorg.wsmo.service.ad.ActivityNode;),listGroups(),listEdges(),getIdentifier(),removeEdge(Lorg.wsmo.service.ad.ActivityEdge;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="234,180">
+      <children xsi:type="editmodel:MethodEditModel" name="addEdge" id="org.wsmo.service.ad/ActivityGroup#addEdge(Lorg.wsmo.service.ad.ActivityEdge;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addGroup" id="org.wsmo.service.ad/ActivityGroup#addGroup(Lorg.wsmo.service.ad.ActivityGroup;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addNode" id="org.wsmo.service.ad/ActivityGroup#addNode(Lorg.wsmo.service.ad.ActivityNode;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getIdentifier" id="org.wsmo.service.ad/ActivityGroup#getIdentifier()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="listEdges" id="org.wsmo.service.ad/ActivityGroup#listEdges()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="listGroups" id="org.wsmo.service.ad/ActivityGroup#listGroups()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="listNodes" id="org.wsmo.service.ad/ActivityGroup#listNodes()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeEdge" id="org.wsmo.service.ad/ActivityGroup#removeEdge(Lorg.wsmo.service.ad.ActivityEdge;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeGroup" id="org.wsmo.service.ad/ActivityGroup#removeGroup(Lorg.wsmo.service.ad.ActivityGroup;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="removeNode" id="org.wsmo.service.ad/ActivityGroup#removeNode(Lorg.wsmo.service.ad.ActivityNode;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showAttributeProperty="true" showAssociationMember="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" properties="wireOptions=1" autoName="false"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="10,10" gridOrigin="0,0" rulerUnit="pixel">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showMethodsParameterTypes="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" showInterfaceStereotype="true" showAttributeProperty="true" showAssociationMember="true"/>
+</editmodel:ClassDiagramEditModel>
