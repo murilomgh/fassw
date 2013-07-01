@@ -1,0 +1,22 @@
+<description xmlns="http://www.w3.org/ns/wsdl"
+             targetNamespace="urn:myLastFmSoapServer"
+             xmlns:typens="urn:myLastFmSoapServer"
+             xmlns:wsoap="http://www.w3.org/ns/wsdl/soap"
+             xmlns:tns="urn:myLastFmSoapServer">
+  <interface name="myLastFmSoapServerPort">
+    <operation name="findEvents"
+               pattern="http://www.w3.org/ns/wsdl/in-out">
+      <input messageLabel="In" element="#none"/>
+      <output messageLabel="Out" element="#none"/>
+    </operation>
+    <operation name="findEventsByVenue"
+               pattern="http://www.w3.org/ns/wsdl/in-out">
+      <input messageLabel="In" element="#none"/>
+      <output messageLabel="Out" element="#none"/>
+    </operation>
+  </interface>
+  <binding name="myLastFmSoapServerBinding"
+           interface="typens:myLastFmSoapServerPort"
+           wsoap:version="1.1">
+  </binding>
+</description>

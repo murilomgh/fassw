@@ -1,0 +1,40 @@
+wsmlVariant _"http://www.wsmo.org/wsml/wsml-syntax/wsml-rule"
+namespace { _"http://example.org/myLastFmSoapServer/myLastFmSoapServer#"
+, 
+     dc _"http://purl.org/dc/elements/1.1#", 
+     oasm _"http://www.wsmo.org/ontologies/choreography/oasm#", 
+     onto1 _"http://example.org/myLastFmSoapServer#" }
+
+
+webService _"http://example.org/myLastFmSoapServer/myLastFmSoapServer"
+     nonFunctionalProperties
+          _"http://response" hasValue {onto1#findEventsResponse, onto1#findEventsByVenueResponse}
+          dc#title hasValue "myLastFmSoapServer"
+          dc#creator hasValue "FASSW"
+     endNonFunctionalProperties
+
+capability myLastFmSoapServerCapability
+
+     importsOntology
+            _"http://example.org/myLastFmSoapServer"
+
+sharedVariables {?request1, ?request2}
+
+precondition 
+     definedBy 
+          ?request1 memberOf onto1#findEvents
+  or
+?request2 memberOf onto1#findEventsByVenue. 
+
+postcondition 
+     definedBy 
+          ?request1 memberOf onto1#findEvents
+  and ?response1 memberOf onto1#findEventsResponse
+  or
+?request2 memberOf onto1#findEventsByVenue
+  and ?response2 memberOf onto1#findEventsByVenueResponse. 
+
+interface myLastFmSoapServerInterface
+
+     importsOntology
+            _"http://example.org/myLastFmSoapServer"

@@ -1,6 +1,7 @@
 package fassw.util;
 
 import java.io.IOException;
+import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.woden.tool.converter.Convert;
 import org.xml.sax.SAXException;
@@ -23,23 +24,23 @@ public class Conversor
      * Caso o arquivo seja da versão 2.0 mostra mensagem na tela.
      * Caso o arquivo .wsdl2 já exista no diretorio de destino, emite mensagem na tela.
      * 
-     * @param args 
      * @see org.apache.woden.tool.converter.Convert#convertFile
      */
-    public static void main( String[] args ) throws ParserConfigurationException, SAXException, IOException
-    {
-        String documentoWSDL = "Z:\\Dev\\warehouse.wsdl";
+    public static boolean converter(String entrada, boolean linhaDeComando) {
         String novoNamespaceAlvo = null;
-        String diretorioDestino = "Z:\\";
-        boolean mensagensDetalhas = true;
+        String diretorioDestino = "temp"; //cria pasta temp como subpasta da entrada
+        boolean mensagensDetalhadas = true;
         boolean sobrescreverArquivo = true;
-
         
         Convert conversor = new Convert();
-        
         try {
-            String convertFile = conversor.convertFile(novoNamespaceAlvo, documentoWSDL, diretorioDestino, mensagensDetalhas, sobrescreverArquivo);
-            System.out.println(convertFile);
+            String convertFile = conversor.convertFile(novoNamespaceAlvo, entrada, diretorioDestino, mensagensDetalhadas, sobrescreverArquivo);
+            if (linhaDeComando) {
+                System.out.println(convertFile);
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Modulo Conversor efetuou tarefa com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
         catch (javax.wsdl.WSDLException e) {
             if (e.getLocation().contains("description")) {
@@ -54,5 +55,6 @@ public class Conversor
                 e.printStackTrace();
             }
         }
+        return true;
     }
 }

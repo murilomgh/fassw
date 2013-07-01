@@ -1,0 +1,115 @@
+<description xmlns="http://www.w3.org/ns/wsdl"
+             targetNamespace="http://www.brics.dk/ixwt/warehouse"
+             xmlns:x="http://www.brics.dk/ixwt/warehouse">
+  <types> 
+    <xs:schema 
+         xmlns:xs="http://www.w3.org/2001/XMLSchema"
+         targetNamespace="http://www.brics.dk/ixwt/warehouse/types"
+         xmlns:t="http://www.brics.dk/ixwt/warehouse/types"
+         elementFormDefault="qualified">
+
+      <xs:element name="addOneProduct">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="t:productName"/>
+            <xs:element ref="t:shelf"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="removeOneProduct">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="t:productName"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="productName" type="xs:string"/>
+
+      <xs:element name="inventory">
+        <xs:complexType><xs:sequence/></xs:complexType>
+      </xs:element>
+
+      <xs:element name="product">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="t:productName"/>
+            <xs:element name="quantity" type="xs:nonNegativeInteger"/>
+          </xs:sequence>
+          <xs:attribute name="shelfID"/>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="shelf">
+        <xs:complexType>
+          <xs:attribute name="shelfID"/>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="shelves">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="t:shelf" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+	  
+	  <xs:simpleType name="money">
+		<xs:restriction base="xs:decimal">
+             <xs:totalDigits value="19">
+             </xs:totalDigits>
+             <xs:fractionDigits value="4">
+             </xs:fractionDigits>
+             <xs:maxInclusive value="922337203685477.5807">
+             </xs:maxInclusive>
+             <xs:minInclusive value="-922337203685477.5808">
+			</xs:minInclusive>
+		</xs:restriction>
+	  </xs:simpleType>
+
+    </xs:schema>
+  </types>
+  
+  <interface name="warehouseInterface"
+             xmlns:t="http://www.brics.dk/ixwt/warehouse/types"
+             styleDefault="http://www.w3.org/ns/wsdl/style/rpc"> 
+
+    <operation name="addOneProduct" 
+               pattern="http://www.w3.org/ns/wsdl/in-only">
+      <input messageLabel="In" element="t:addOneProduct"/>
+    </operation>
+
+    <operation name="removeOneProduct" 
+               pattern="http://www.w3.org/ns/wsdl/in-only">
+      <input messageLabel="In" element="t:removeOneProduct"/>
+    </operation>
+
+    <operation name="inventory" 
+               pattern="http://www.w3.org/ns/wsdl/in-out">
+      <input messageLabel="In" element="t:inventory"/>
+      <input messageLabel="Out" element="t:shelves"/>
+    </operation>
+
+  </interface>
+
+  <binding name="warehouseSOAPBinding" 
+           interface="x:warehouseInterface"
+           type="http://www.w3.org/ns/wsdl/soap12"
+           xmlns:ws="http://www.w3.org/ns/wsdl/soap12"
+           ws:protocol="http://www.w3.org/2003/05/soap/bindings/HTTP"
+           xmlns:soap="http://www.w3.org/2003/05/soap-envelope"> 
+    <operation ref="x:addOneProduct" 
+               ws:mep="http://www.w3.org/2003/05/soap/mep/request-response"/>
+    <operation ref="x:removeOneProduct" 
+               ws:mep="http://www.w3.org/2003/05/soap/mep/request-response"/>
+    <operation ref="x:inventory" 
+               ws:mep="http://www.w3.org/2003/05/soap/mep/request-response"/>
+  </binding>
+
+  <service name="warehouse" interface="x:warehouseInterface"> 
+    <endpoint name="warehouseEndpoint" 
+           binding="x:warehouseSOAPBinding"
+           address="http://warehouse.example.org/"/>
+  </service>
+</description>

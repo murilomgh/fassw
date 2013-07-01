@@ -14,13 +14,46 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fassw.util;
+package fassw;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
- * Conjunto de métodos para anotar as partes de um serviço Web
+ *
  * @author Murilo Honorio
  */
-public interface IAnotador {
+public class GroundingDadosest {
     
-    boolean anotarService(SAWSDL tipoExtensao, String valores);
+    GroundingDados gdd;
+    
+    public GroundingDadosest() {
+    }
+    
+    @BeforeClass
+    public static void setUpClass() {
+    }
+    
+    @AfterClass
+    public static void tearDownClass() {
+    }
+    
+    @Before
+    public void setUp() {
+        gdd = new GroundingDados("types.xsd");
+    }
+    
+    @After
+    public void tearDown() {
+        gdd = null;
+    }
+
+    @Test
+    public void testSomeMethod() {
+        gdd.inicializar();
+    }
 }
