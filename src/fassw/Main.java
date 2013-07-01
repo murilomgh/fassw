@@ -36,10 +36,10 @@ public class Main {
             Mapeador mapeador = new Mapeador();
             sucesso = mapeador.executar();
             if (sucesso) {
-                JOptionPane.showMessageDialog(null, "Módulo mapeador efetuou a tarefa com sucesso.");
+                JOptionPane.showMessageDialog(null, "Módulo mapeador efetuou a tarefa com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             }
             else {
-                JOptionPane.showMessageDialog(null, "Módulo mapeador não conseguiu concluir a tarefa.");
+                JOptionPane.showMessageDialog(null, "Módulo mapeador não conseguiu concluir a tarefa.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
