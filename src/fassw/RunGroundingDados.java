@@ -47,7 +47,9 @@ public class RunGroundingDados {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             dbf.setNamespaceAware(true);
             DocumentBuilder db = dbf.newDocumentBuilder();
-            documento = db.parse(new File(entrada));
+            File arquivo = new File(entrada);
+            
+            documento = db.parse(arquivo.getAbsolutePath());
 
             Node types = documento.getElementsByTagName("types").item(0);
             percorrerSchemas(types);

@@ -34,10 +34,9 @@ public class MapeadorTest {
     @Test
     public void testExecutar() throws Exception {
         System.out.println("executar");
-        Mapeador mapeador = new Mapeador("Z:\\exemploTypes.wsdl", "Z:\\svc20.wsml", true);
-        boolean expResult = true;
+        Mapeador mapeador = new Mapeador("Z:\\git-repo\\fassw\\testes\\exemplo\\servicoExemplo20.wsdl", ".\\testes\\exemplo\\servicoExemplo20.wsml", true);
+        boolean resultadoEsperado = true;
         boolean result = mapeador.executar();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        assertEquals(resultadoEsperado, result);
     }
 }

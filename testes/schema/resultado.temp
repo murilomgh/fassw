@@ -1,0 +1,147 @@
+concept note
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.1"
+	endAnnotations
+	complexTypeAttribute ofType id.2
+
+concept complexType.id.2
+	annotations
+		xmlType hasValue "complexType"
+		id hasValue "id.2"
+	endAnnotations
+	sequenceAttribute ofType id.3
+
+concept sequence.id.3
+	annotations
+		xmlType hasValue "sequence"
+		id hasValue "id.3"
+	endAnnotations
+	element.id.4 ofType id.4
+	element.id.5 ofType id.5
+	element.id.6 ofType id.6
+
+concept element.id.4
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.4"
+	endAnnotations
+	to ofType id.7
+
+concept element.id.5
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.5"
+	endAnnotations
+	from ofType id.8
+
+concept element.id.6
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.6"
+	endAnnotations
+	heading ofType id.9
+
+concept to
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.7"
+	endAnnotations
+	refAttribute ofType _string
+
+concept from
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.8"
+		block hasValue { restricao1, restricao2 }
+	endAnnotations
+	refAttribute ofType _string
+
+concept heading
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.9"
+		final hasValue "#all"
+	endAnnotations
+	refAttribute ofType _string
+
+concept age
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.10"
+	endAnnotations
+	simpleTypeAttribute ofType id.11
+
+concept simpleType.id.11 subConceptOf _integer
+	annotations
+		xmlType hasValue "simpleType"
+		id hasValue "id.11"
+	endAnnotations
+
+axiom id.12
+	annotations
+		xmlType hasValue "restriction"
+		id hasValue "id.12"
+		baseType hasValue "xs:integer"
+	endAnnotations
+	definedBy
+		!- naf (
+		?X memberOf _integer
+		and ?X memberOf simpleType.id.11 ?
+		and X >= 0 ?
+		and X <= 100 ?
+		).
+
+concept shoeSize
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.13"
+	endAnnotations
+	complexTypeAttribute ofType id.14
+
+concept complexType.id.14
+	annotations
+		xmlType hasValue "complexType"
+		id hasValue "id.14"
+	endAnnotations
+	simpleContentAttribute ofType id.15
+
+concept extension.id.15
+	annotations
+		xmlType hasValue "extension"
+		id hasValue "id.15"
+		baseType hasValue "xs:decimal"
+	endAnnotations
+	sizing ofType id.16
+
+concept sizing
+	annotations
+		xmlType hasValue "attribute"
+		id hasValue "id.16"
+	endAnnotations
+	attributeSimpleType ofType id.17
+
+concept simpleType.id.17 subConceptOf _string
+	annotations
+		xmlType hasValue "simpleType"
+		id hasValue "id.17"
+	endAnnotations
+
+axiom id.18
+	annotations
+		xmlType hasValue "restriction"
+		id hasValue "id.18"
+		baseType hasValue "xs:string"
+	endAnnotations
+	definedBy
+		!- naf (
+		?X memberOf _string
+		and ?X memberOf simpleType.id.17 ?
+		and ( X hasValue 'US'
+		or X hasValue 'European' 
+		or X hasValue 'UK' 
+		or X hasValue 'Japan' )
+		).
+
+
+

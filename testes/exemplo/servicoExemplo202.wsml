@@ -1,0 +1,36 @@
+wsmlVariant _"http://www.wsmo.org/wsml/wsml-syntax/wsml-flight"
+namespace { _"http://www.example.com/exemplosvc/exemplo#"
+, 
+     dc _"http://purl.org/dc/elements/1.1#", 
+     oasm _"http://www.wsmo.org/ontologies/choreography/oasm#", 
+     onto1 _"http://www.example.com/exemplosvc/types#", 
+     wsml _"http://www.wsmo.org/wsml/wsml-syntax#" }
+
+
+webService _"http://www.example.com/exemplosvc/exemplo"
+     nonFunctionalProperties
+          wsml#endpointDescription hasValue "http://www.example.com/exemplosvc#wsdl.service(exemplo)"
+          dc#title hasValue "exemplo"
+          dc#creator hasValue "FASSW"
+     endNonFunctionalProperties
+
+capability exemploCapability
+
+     importsOntology
+            _"http://www.example.com/exemplosvc"
+
+sharedVariables {?request, ?response}
+
+interface exemploInterface
+
+     importsOntology
+            _"http://www.example.com/exemplosvc"
+
+	precondition
+		definedBy
+		?request memberOf ex#operacaoExemplo.
+
+
+	postcondition
+		definedBy
+		?request memberOf ex#operacaoExemploor

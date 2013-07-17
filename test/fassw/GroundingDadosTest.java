@@ -65,7 +65,7 @@ public class GroundingDadosTest {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
         db = dbf.newDocumentBuilder();
-        resultado = new File(".\\testes\\resultado.temp");
+        resultado = new File(".\\testes\\schema\\resultado.temp");
     }
     
     @After
@@ -83,8 +83,8 @@ public class GroundingDadosTest {
         System.out.println("mapearAnnotation");
         System.out.println("================");
         //carregar arquivo de origem
-        documento = db.parse(new File(".\\testes\\annotation.xsd"));
-        esperado = new File(".\\testes\\annotation.wsml");        
+        documento = db.parse(new File(".\\testes\\schema\\annotation.xsd"));
+        esperado = new File(".\\testes\\schema\\annotation.wsml");        
         pw = new PrintWriter(resultado);
         
         GroundingDados gd = new GroundingDados(xmlns);
@@ -124,8 +124,8 @@ public class GroundingDadosTest {
         System.out.println("mapearAttributeGroup");
         System.out.println("====================");
         //carregar arquivo de origem
-        documento = db.parse(new File(".\\testes\\attributeGroup.xsd"));
-        esperado = new File(".\\testes\\attributeGroup.wsml");        
+        documento = db.parse(new File(".\\testes\\schema\\attributeGroup.xsd"));
+        esperado = new File(".\\testes\\schema\\attributeGroup.wsml");        
         pw = new PrintWriter(resultado);
         
         GroundingDados gd = new GroundingDados(xmlns);
@@ -164,8 +164,8 @@ public class GroundingDadosTest {
         System.out.println("mapearAttribute");
         System.out.println("===============");
         //carregar arquivo de origem
-        documento = db.parse(new File(".\\testes\\attribute.xsd"));
-        esperado = new File(".\\testes\\attribute.wsml");        
+        documento = db.parse(new File(".\\testes\\schema\\attribute.xsd"));
+        esperado = new File(".\\testes\\schema\\attribute.wsml");        
         //pw = new PrintWriter(resultado);
         
         GroundingDados gd = new GroundingDados(xmlns);
@@ -204,8 +204,8 @@ public class GroundingDadosTest {
         System.out.println("MapearSimpleType");
         System.out.println("================");
         //carregar arquivo de origem
-        documento = db.parse(new File(".\\testes\\simpleType.xsd"));
-        esperado = new File(".\\testes\\simpleType.wsml");        
+        documento = db.parse(new File(".\\testes\\schema\\simpleType.xsd"));
+        esperado = new File(".\\testes\\schema\\simpleType.wsml");        
         
         GroundingDados gd = new GroundingDados(xmlns);
         gd.resetContador();
@@ -242,8 +242,8 @@ public class GroundingDadosTest {
         System.out.println("MapearComplexType");
         System.out.println("================");
         //carregar arquivo de origem
-        documento = db.parse(new File(".\\testes\\complexType.xsd"));
-        esperado = new File(".\\testes\\complexType.wsml");        
+        documento = db.parse(new File(".\\testes\\schema\\complexType.xsd"));
+        esperado = new File(".\\testes\\schema\\complexType.wsml");        
         
         GroundingDados gd = new GroundingDados(xmlns);
         gd.resetContador();
@@ -280,8 +280,8 @@ public class GroundingDadosTest {
         System.out.println("MapearElement");
         System.out.println("================");
         //carregar arquivo de origem
-        documento = db.parse(new File(".\\testes\\element.xsd"));
-        esperado = new File(".\\testes\\element.wsml");        
+        documento = db.parse(new File(".\\testes\\schema\\element.xsd"));
+        esperado = new File(".\\testes\\schema\\element.wsml");        
         
         GroundingDados gd = new GroundingDados(xmlns);
         gd.resetContador();
@@ -298,10 +298,8 @@ public class GroundingDadosTest {
         System.out.println("Numero de element testados: " + elementos.size());
         System.out.println("--------------------");
         String saida = "";
-        int i = 1;
         for (Node elemento : elementos) {
             saida = saida + gd.mapearElement(elemento);
-            i++;
         }
         System.out.println(saida);
         FileUtils.write(resultado, saida);

@@ -1,0 +1,53 @@
+wsmlVariant _"http://www.wsmo.org/wsml/wsml-syntax/wsml-flight"
+namespace { _"http://www.example.com/exemplosvc/exemplo
+,
+	dc _"http://purl.org/dc/elements/1.1#",
+	oasm _"http://www.wsmo.org/ontologies/choreography/oasm#",
+	wsml _"http://www.wsmo.org/wsml/wsml-syntax#",
+	onto1_"http://www.example.com/exemplosvc/types# }
+
+
+webService _"http://www.example.com/exemplosvc"
+	nonFunctionalProperties
+		dc#title hasValue "exemplo"
+		dc#creator hasValue "FASSW"
+		wsml#endpointDescription hasValue "http://www.example.com/exemplosvc#wsdl.service(exemplo)"
+	endNonFunctionalProperties
+
+capability exemploCapability
+
+	importsOntology
+		_"http://www.example.com/exemplosvc/types"
+
+sharedVariables {?request, ?response}
+
+interface exemploInterface
+
+	importsOntology
+		_"http://www.example.com/exemplosvc/types"
+
+	precondition
+		definedBy
+			?request memberOf ex#operacaoExemplo.
+
+	postcondition
+		definedBy
+( IN-ONLY ).
+
+	choreography exemploChoreography
+	stateSignature
+		importsOntology
+			_"http://www.example.com/exemplosvc/types"
+
+		in
+			concept --FOR CONCEITOS-- withGrounding
+				--GERAR FRAGMENTO--,
+
+		out
+			concept --FOR CONCEITOS-- withGrounding
+				--GERAR FRAGMENTO--,
+
+	transitionRules 
+		forall {?request} with (?request memberOf --IN-OP--) do
+			add (?response memberOf --OUT-OP--)
+		endForall
