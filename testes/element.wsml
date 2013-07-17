@@ -1,0 +1,65 @@
+concept note
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.1"
+	endAnnotations
+	complexTypeAttribute subConceptOf id.2
+--> mapearComplexType
+concept to
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.3"
+	endAnnotations
+	refAttribute ofType _string
+concept from
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.4"
+		block hasValue { restricao1, restricao2 }
+	endAnnotations
+	refAttribute ofType _string
+concept heading
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.5"
+		final hasValue "#all"
+	endAnnotations
+	refAttribute ofType _string
+concept element.id.6
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.6"
+	endAnnotations
+	to ofType id.3
+concept age
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.7"
+	endAnnotations
+	simpleTypeAttribute subConceptOf id.8
+concept simpleType.id.8 subConceptOf _integer
+	annotations
+		xmlType hasValue "simpleType"
+		id hasValue "id.8"
+	endAnnotations
+
+axiom id.9
+	annotations
+		xmlType hasValue "restriction"
+		id hasValue "id.9"
+		baseType hasValue "xs:integer"
+	endAnnotations
+	definedBy
+		!- naf (
+		?X memberOf _integer
+		and ?X memberOf simpleType.id.8 ?
+		and X >= 0 ?
+		and X <= 100 ?
+		).
+concept shoeSize
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.11"
+	endAnnotations
+	complexTypeAttribute subConceptOf id.12
+--> mapearComplexType

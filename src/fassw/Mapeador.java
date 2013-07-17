@@ -1,5 +1,6 @@
 package fassw;
 
+import old.GroundingDados;
 import fassw.gui.InterfaceGrafica;
 import fassw.util.Analisador;
 import fassw.util.Conversor;
@@ -39,8 +40,11 @@ class Mapeador {
         
         try {
             sucesso = Analisador.identificarVersao(entrada, linhaDeComando);
-            if (sucesso == false) {
-                int resposta = JOptionPane.showConfirmDialog(null, "Arquivo WSDL versao 1.1. Gostaria de converter?", "Versao diferente", JOptionPane.YES_NO_OPTION);
+            if (!sucesso) {
+                int resposta = JOptionPane.showConfirmDialog(null, 
+                        "Arquivo WSDL versao 1.1. Gostaria de converter?", 
+                        "Versao diferente", 
+                        JOptionPane.YES_NO_OPTION);
 
                 if (resposta == JOptionPane.YES_OPTION) {
                     sucesso = Conversor.converter(entrada, linhaDeComando);
@@ -52,10 +56,17 @@ class Mapeador {
                 }
             }
 
-            if (sucesso == true) {
+            if (sucesso) {
                 sucesso = Analisador.analisarArquivo(entrada, linhaDeComando);
             }
-
+            if (sucesso) {
+                GroundingDados gd = new GroundingDados(entrada, saida);
+                sucesso = gd.processar();
+            }
+            if (sucesso) {
+                GroundingCoreografia gc = new GroundingCoreografia(entrada, saida);
+                sucesso = gc.processar();
+            }
             return sucesso;
         } catch (RuntimeException re) {
             System.exit(0);

@@ -1,0 +1,45 @@
+concept attributeGroupA
+	annotations
+		xmlType hasValue "attributeGroup"
+		id hasValue "id.1"
+	endAnnotations
+	exemplo1 ofType id.2
+	exemplo2 ofType id.3
+
+concept exemplo1
+	annotations
+		xmlType hasValue "attribute"
+		id hasValue "id.2"
+	endAnnotations
+	value ofType _integer
+
+concept exemplo2
+	annotations
+		xmlType hasValue "attribute"
+		id hasValue "id.3"
+	endAnnotations
+	value ofType _string
+
+concept attributeGroupB
+	annotations
+		xmlType hasValue "attributeGroup"
+		id hasValue "id.4"
+	endAnnotations
+	someattribute20 ofType id.5
+	id.6 ofType myAttributeGroupA
+
+concept someattribute20
+	annotations
+		xmlType hasValue "attribute"
+		id hasValue "id.5"
+	endAnnotations
+	value ofType _date
+
+concept attributeGroupC
+	annotations
+		xmlType hasValue "attributeGroup"
+		id hasValue "id.7"
+	endAnnotations
+	attribute.id.8 ofType id.8
+	id.9 ofType attributeGroupB
+

@@ -147,7 +147,7 @@
 		</xs:complexType>
 		
 		<xs:group name="nomeGrupo" minOccurs="1">
-		<xs:annotation>
+			<xs:annotation>
 				<xs:documentation xml:lang="en">
 					Currently, currency is limited to
 					U S Dollars. Note that this type defined

@@ -1,0 +1,11 @@
+		annotationId hasValue "id.1"
+		appinfo hasValue "W3Schools Note"
+		dc#language hasValue "en"
+		documentation hasValue "This Schema defines a W3Schools note!"
+
+		annotationId hasValue "tipo.Anotacao"
+		appinfoSource hasValue _"http://example.com/note.htm"
+		appinfo hasValue "Um appinfo"
+		documentation hasValue "Um documentation escrito
+				em duas linhas."
+

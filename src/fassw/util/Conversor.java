@@ -1,10 +1,7 @@
 package fassw.util;
 
-import java.io.IOException;
 import javax.swing.JOptionPane;
-import javax.xml.parsers.ParserConfigurationException;
 import org.apache.woden.tool.converter.Convert;
-import org.xml.sax.SAXException;
 
 /**
  * Prototipo do conversor de serviços de WSDL 1.1 para 2.0.
@@ -47,7 +44,6 @@ public class Conversor
                 System.out.println("O arquivo fornecido como entrada já está na versão WSDL 2.0");
                 e.printStackTrace();
             }
-            e.printStackTrace();
         }
         catch (java.io.IOException e) {
             if (e.getMessage().contains("already exists")) {

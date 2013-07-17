@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<description 
+	xmlns=				"http://www.w3.org/ns/wsdl"
+	targetNamespace=	"http://example.org/myLastFmSoapServer"
+	xmlns:wsdl=			"http://www.w3.org/ns/wsdl"
+	xmlns:typens=		"http://example.org/myLastFmSoapServer"
+	xmlns:wsoap=		"http://www.w3.org/ns/wsdl/soap"
+    xmlns:soap=			"http://www.w3.org/2003/05/soap-envelope" >
+	
+	<types><!-- XML Schema type definitions [...] --></types>
+
+	<interface name="myLastFmSoapServerPort">
+		<operation name="findEvents">
+			<input element="typens:findEventsRequest"/>
+			<output element="typens:findEventsResponse"/>
+		</operation>
+		<operation name="findEventsByVenue">
+			<input element="typens:findEventsByVenueRequest"/>
+			<output element="typens:findEventsByVenueResponse"/>
+		</operation>
+	</interface>
+
+	<binding 
+		name="myLastFmSoapServerBinding" 
+		interface="typens:myLastFmSoapServerPort"
+		type="http://www.w3.org/ns/wsdl/soap"
+		wsoap:protocol="http://www.w3.org/2003/05/soap/bindings/HTTP/">
+		<operation 
+			ref="typens:findEventsRequest" 
+			wsoap:mep="http://www.w3.org/2003/05/soap/mep/soap-response"/>
+	</binding>
+
+	<service name="myLastFmSoapServer" interface="typens:myLastFmSoapServerPort">
+		<endpoint name="myLastFmSoapServer"
+			binding="myLastFmSoapServerBinding"
+			address="http://localhost:9080/myLastFmSoapServer">
+		</endpoint>
+	</service>
+</description>

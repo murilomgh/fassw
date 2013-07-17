@@ -1,0 +1,73 @@
+﻿<types>
+	<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://example.com/types"
+        xmlns:t="http://example.com/types"
+		elementFormDefault="qualified">
+		
+		<!-- exemplo de simpleType sem name definido por restriction cujo facet eh pattern-->
+		<!-- AINDA NAO ESTA DEFINIDA -->
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[A-Z][A-Z]"/>
+			</xs:restriction>
+		</xs:simpleType>
+		<!-- exemplo de simpleType com name definido por list com simpleType embutida,
+			 que por sua vez eh definida por restriction -->
+		<xs:simpleType name="valuelist">
+			<xs:list name="x">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxExclusive value='5'/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:list>
+		</xs:simpleType>
+		<!-- exemplo de simpleType com name que eh uma lista de inteiros -->
+		<xs:simpleType name="listOfIntegers">
+			<xs:list itemType="xs:integer"/>
+		</xs:simpleType>
+		<!-- exemplo de simpleType sem name definido por union de simpleTypes definidos
+			 em outro lugar do schema -->
+		<xs:simpleType>
+			<xs:union memberTypes="simpleTypeA simpleTypeB" />
+		</xs:simpleType>
+		<!-- exemplo de simpleType com name definido por restriction cujo facet eh maxInclusive -->
+		<xs:simpleType name="simpleTypeA">
+			<xs:restriction base="xs:positiveInteger">
+				<xs:maxInclusive value="42"/>
+			</xs:restriction>
+		</xs:simpleType>
+		<!-- exemplo de simpleType com name definido por restriction cujo facet eh enumeration -->
+		<xs:simpleType name="simpleTypeB">
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="small"/>
+				<xs:enumeration value="medium"/>
+				<xs:enumeration value="large"/>
+			</xs:restriction>
+		</xs:simpleType>
+		<!-- exemplo de simpleType para testar os annotations --> 
+		<xs:simpleType name="estadosDoSul">
+			<xs:annotation>
+				<xs:documentation>Estados do sul do Brasil</xs:documentation>
+				<xs:appinfo>Informação da aplicação</xs:appinfo>
+			</xs:annotation>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value='PR'>
+					<xs:annotation>
+						<xs:documentation>Paraná</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value='SC'>
+					<xs:annotation>
+						<xs:documentation>Santa Catarina</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value='RS'>
+					<xs:annotation>
+						<xs:documentation>Rio Grande do Sul</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:schema>
+ </types>

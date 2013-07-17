@@ -1,0 +1,128 @@
+concept simpleType.id.1 subConceptOf _string
+	annotations
+		xmlType hasValue "simpleType"
+		id hasValue "id.1"
+	endAnnotations
+
+axiom id.2
+	annotations
+		xmlType hasValue "restriction"
+		id hasValue "id.2"
+		baseType hasValue "xs:string"
+	endAnnotations
+	definedBy
+		!- naf (
+		?X memberOf _string
+		and ?X memberOf simpleType.id.1 ?
+		).
+
+concept valuelist
+	annotations
+		xmlType hasValue "simpleType"
+		id hasValue "id.3"
+	endAnnotations
+	hasValues (1 *) ofType list_simple_type_id.4
+
+concept list_simple_type_id.4 subConceptOf _string
+	annotations
+		xmlType hasValue "simpleType"
+		id hasValue "id.4"
+	endAnnotations
+
+axiom id.5
+	annotations
+		xmlType hasValue "restriction"
+		id hasValue "id.5"
+		baseType hasValue "xs:string"
+	endAnnotations
+	definedBy
+		!- naf (
+		?X memberOf _string
+		and ?X memberOf list_simple_type_id.4 ?
+		and X < 5 ?
+		).
+
+
+concept listOfIntegers
+	annotations
+		xmlType hasValue "simpleType"
+		id hasValue "id.6"
+	endAnnotations
+	hasValues (1 *) ofType _integer
+
+concept simpleType.id.7 subConceptOf union.id.8
+	annotations
+		xmlType hasValue "simpleType"
+		id hasValue "id.7"
+	endAnnotations
+
+concept id.8 subConceptOf { simpleTypeA, simpleTypeB }
+	annotations
+		xmlType hasValue "union"
+		id hasValue "id.8"
+	endAnnotations
+
+concept simpleTypeA subConceptOf xs#positiveInteger
+	annotations
+		xmlType hasValue "simpleType"
+		id hasValue "id.9"
+	endAnnotations
+
+axiom id.10
+	annotations
+		xmlType hasValue "restriction"
+		id hasValue "id.10"
+		baseType hasValue "xs:positiveInteger"
+	endAnnotations
+	definedBy
+		!- naf (
+		?X memberOf xs#positiveInteger
+		and ?X memberOf simpleTypeA ?
+		and X <= 42 ?
+		).
+
+concept simpleTypeB subConceptOf _string
+	annotations
+		xmlType hasValue "simpleType"
+		id hasValue "id.11"
+	endAnnotations
+
+axiom id.12
+	annotations
+		xmlType hasValue "restriction"
+		id hasValue "id.12"
+		baseType hasValue "xs:string"
+	endAnnotations
+	definedBy
+		!- naf (
+		?X memberOf _string
+		and ?X memberOf simpleTypeB ?
+		and ( X hasValue 'small'
+		or X hasValue 'medium' 
+		or X hasValue 'large' )
+		).
+
+concept estadosDoSul subConceptOf _string
+	annotations
+		xmlType hasValue "simpleType"
+		id hasValue "id.13"
+		annotationId hasValue "id.14"
+		documentation hasValue "Estados do sul do Brasil"
+		appinfo hasValue "Informação da aplicação"
+	endAnnotations
+
+axiom id.15
+	annotations
+		xmlType hasValue "restriction"
+		id hasValue "id.15"
+		baseType hasValue "xs:string"
+	endAnnotations
+	definedBy
+		!- naf (
+		?X memberOf _string
+		and ?X memberOf estadosDoSul ?
+		and ( X hasValue 'PR'
+		or X hasValue 'SC' 
+		or X hasValue 'RS' )
+		).
+

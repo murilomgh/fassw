@@ -1,0 +1,103 @@
+<types>
+	<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://example.com/types"
+        xmlns:t="http://example.com/types"
+        elementFormDefault="qualified">
+		
+		<!-- exemplo de complexType contendo um elemento all com dois elementos-->
+		<xs:complexType name="myComplexType">
+			<xs:all>
+				<xs:element name="thing1" type="xs:string"/>
+				<xs:element name="thing2" type="xs:string"/>
+			</xs:all>
+			<xs:attribute name="myAttribute" type="xs:decimal"/>
+		</xs:complexType>
+		<!-- exemplo de complexType que define um elemento com um e somente um elemento de tres em choice  -->
+		<xs:complexType name="chadState">
+			<xs:choice minOccurs="1" maxOccurs="1">
+				<xs:element name="selected" type="xs:string"/>
+				<xs:element name="unselected" type="xs:string"/>
+				<xs:element name="dimpled" type="xs:string"/>
+			</xs:choice>
+			<xs:attribute ref="myAttribute"/>
+		</xs:complexType>
+		<!-- exemplo de complexType definido por um group e um atributo -->
+		<xs:complexType name="ordertype">
+			<xs:group name="grupoExemplo">
+				<xs:sequence>
+					<xs:element name="customer" type="xs:string"/>
+					<xs:element name="orderdetails" type="xs:string"/>
+					<xs:element name="billto" type="xs:string"/>
+					<xs:element name="shipto" type="xs:string"/>
+				</xs:sequence>
+			</xs:group>
+			<xs:attribute name="status" type="xs:string"/>
+		</xs:complexType>
+		
+		<xs:simpleType name="mountainbikesize">
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="small"/>
+				<xs:enumeration value="medium"/>
+				<xs:enumeration value="large"/>
+			</xs:restriction>
+		</xs:simpleType>
+		<!-- exemplo de complexType que estende um simpleType com um atributo -->
+		<xs:complexType name="FamilyMountainBikeSizes">
+			<xs:simpleContent>
+				<xs:extension base="mountainbikesize">
+					<xs:attribute name="familyMember" type="xs:string" />
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+		<!-- exemplo de complexType contendo simpleContent que restringe (com restriction) outro simpleContent -->
+		<xs:complexType name="ChildMountainBikeSizes">
+			<xs:simpleContent>
+				<xs:restriction base="FamilyMountainBikeSizes">
+					<xs:enumeration value="small"/>
+					<xs:enumeration value="medium"/>
+				</xs:restriction>
+			</xs:simpleContent>
+		</xs:complexType>
+		
+		<xs:complexType name="personinfo">
+			<xs:sequence>
+				<xs:element name="firstname" type="xs:string"/>
+				<xs:element name="lastname" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+		<!-- exemplo de complexType que define uma sequencia de elementos  -->
+		<xs:complexType name="animais">
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="elefante" type="xs:string"/>
+				<xs:element name="urso" type="xs:string"/>
+				<xs:element name="girafa" type="xs:string"/>
+			</xs:sequence>
+			<xs:attribute name="tamanho" type="xs:decimal"/>
+			<xs:attribute name="pelo" type="xs:string"/>
+		</xs:complexType>
+		<!-- exemplo de complexType que deriva de outro complexType por extensao -->
+		<xs:complexType name="maisAnimais">
+			<xs:complexContent>
+				<xs:extension base="personinfo">
+					<xs:sequence>
+						<xs:element name="macaco" type="xs:string"/>
+						<xs:element name="camelo" type="xs:string"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+		<!-- exemplo de complexType que deriva de outro complexType usando restriction -->
+		<xs:complexType name="animaisRestriction">
+			<xs:complexContent>
+				<xs:restriction base="animais">
+					<xs:sequence>
+						<xs:element name="elefante" type="xs:string" fixed="dumbo"/>
+						<xs:element name="urso" type="xs:string" fixed="catatau"/>
+						<xs:element name="girafa" type="xs:string"/>
+					</xs:sequence>
+				</xs:restriction>
+			</xs:complexContent>
+		</xs:complexType>
+		
+	</xs:schema>
+ </types>

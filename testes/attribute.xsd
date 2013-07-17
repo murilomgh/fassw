@@ -1,0 +1,27 @@
+<types>
+	<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://example.org/ord"
+            xmlns:ord="http://example.org/ord"
+            xmlns:prod="http://example.org/prod"
+            elementFormDefault="qualified">
+		
+		<!-- exemplo de attribute com built-in datatype -->
+		<xs:attribute type="xs:string" use="required"/>
+		<!-- exemplo de attribute que referencia simpleType no proprio schema -->
+		<xs:attribute type="atributoExemplo" use="required"/>
+		<!-- exemplo de attribute que referencia simpleType em outro schema -->
+		<xs:attribute type="prod:exemplo" use="required"/>
+		<!-- exemplo de attribute possui simpleType embutido -->
+		<xs:attribute name="atributoST" form="qualified">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:pattern value="[A-Z][A-Z]"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<!-- exemplo de attribute que referencia outro -->
+		<xs:attribute ref="outroAtributo"/>
+		<!-- exemplo de attribute com name e type -->
+		<xs:attribute name="outroAtributo" type="xs:integer"/>
+	</xs:schema>
+ </types>

@@ -1,0 +1,94 @@
+﻿<description 
+	xmlns="http://www.w3.org/ns/wsdl" 
+	targetNamespace="http://www.example.com/exemplosvc" 
+	xmlns:ex="http://www.example.com/exemplosvc">
+	
+	<documentation>
+		Esse documento consiste em uma colecao de exemplos de elementos XML Schema.
+		(REMOVER?) Possui todas as combinações possíveis permitidas de elementos.
+		Serve para verificar se as transformações estão corretas.
+		Os exemplos foram tirados dos XML Schema References em
+		(http://www.w3schools.com/schema/schema_elements_ref.asp)
+		e (http://www.xmlschemareference.com/)
+	</documentation>
+	
+	<types>
+		<xs:schema 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="http://www.example.com/exemplosvc/types"
+			xmlns:e="http://www.example.com/exemplosvc/types"
+			elementFormDefault="qualified">
+			
+			<!-- element -->
+			
+			<xs:element name="exemploElementoComplexTypeInterno">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="e:productName"/>
+						<xs:element ref="e:shelf"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+			<!-- attribute -->
+			
+			<!-- group -->
+			
+			<!-- simpleType -->
+			
+			<!-- complexType -->
+			
+			<xs:element name="employee" type="fullpersoninfo"/>
+		
+			<xs:complexType name="personinfo" mixed="true" final="#all">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						Texto de exemplo de documentação.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="firstname" type="xs:string"/>
+					<xs:element name="lastname" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+		
+			<xs:complexType name="fullpersoninfo">
+				<xs:complexContent>
+					<xs:extension base="personinfo">
+						<xs:sequence>
+							<xs:element name="address" type="xs:string"/>
+							<xs:element name="city" type="xs:string"/>
+							<xs:element name="country" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			
+		</xs:schema>
+	</types>
+	
+	<interface name="interfaceExemplo"
+		xmlns:e="http://www.example.com/exemplosvc/types"
+		styleDefault="http://www.w3.org/ns/wsdl/style/rpc"> 
+
+		<operation name="operacaoExemplo" pattern="http://www.w3.org/ns/wsdl/in-only">
+			<input messageLabel="In" element="e:exemploElementoComplexTypeInterno"/>
+		</operation>
+	</interface>
+	
+	<binding name="bindingSOAPExemplo" 
+		interface="ex:interfaceExemplo"
+		type="http://www.w3.org/ns/wsdl/soap12"
+		xmlns:ws="http://www.w3.org/ns/wsdl/soap12"
+		ws:protocol="http://www.w3.org/2003/05/soap/bindings/HTTP"
+		xmlns:soap="http://www.w3.org/2003/05/soap-envelope"> 
+		   
+		<operation ref="ex:exemploElementoComplexTypeInterno" ws:mep="http://www.w3.org/2003/05/soap/mep/request-response"/>
+	</binding>
+	
+	<service name="exemplo" interface="ex:interfaceExemplo"> 
+		<endpoint name="endpointExemplo" 
+			binding="ex:bindingSOAPExemplo"
+			address="http://servico.example.com/"/>
+	</service>
+</description>

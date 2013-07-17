@@ -19,13 +19,13 @@ import org.xml.sax.SAXException;
  * @author murilo.honorio@usp.br
  * @version 0.1
  */
-public class WSDL {
+public class SerializadorDOM {
 
     /**
-     * Dado o arquivo WSDL converte para uma representação em memória
+     * Dado o arquivo SerializadorDOM converte para uma representação em memória
      * 
      * @param entrada nome completo do arquivo incluindo o caminho
-     * @return a representacao DOM do servico WSDL
+     * @return a representacao DOM do servico SerializadorDOM
      */
     public static Document obterDOM(String entrada) {
         Document documento = null;
@@ -48,7 +48,7 @@ public class WSDL {
     /**
      * Dado o documento DOM e um caminho, grava o arquivo em disco.
      * 
-     * @param documento a representacao DOM do WSDL
+     * @param documento a representacao DOM do SerializadorDOM
      * @param nomeArquivo nome completo do arquivo incluindo o caminho
      */
     public static void DOMparaWSDL(Document documento, String nomeArquivo) {

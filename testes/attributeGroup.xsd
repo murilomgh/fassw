@@ -1,0 +1,24 @@
+<types>
+    <xs:schema 
+		xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://example.com/types"
+        xmlns:t="http://example.com/types"
+        elementFormDefault="qualified">
+		
+		<!-- exemplo de attributeGroup com attributes built-in datatype -->
+		<xs:attributeGroup name="attributeGroupA">
+			<xs:attribute name="exemplo1" type="xs:integer"/>
+			<xs:attribute name="exemplo2" type="xs:string"/>
+		</xs:attributeGroup>
+		<!-- exemplo de attributeGroup referenciando um attribute definido localmente e um attributeGroup -->
+		<xs:attributeGroup name="attributeGroupB">
+			<xs:attribute name="someattribute20" type="xs:date"/>
+			<xs:attributeGroup ref="myAttributeGroupA"/>
+		</xs:attributeGroup>
+		<!-- exemplo de attributeGroup referenciando um attribute definido em outro lugar e um attributeGroup -->
+		<xs:attributeGroup name="attributeGroupC">
+			<xs:attribute ref="atributo"/>
+			<xs:attributeGroup ref="attributeGroupB"/>
+		</xs:attributeGroup>
+    </xs:schema>
+ </types>

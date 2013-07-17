@@ -3,6 +3,7 @@ package fassw.util;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.apache.woden.ErrorReporter;
 import org.apache.woden.WSDLException;
 import org.apache.woden.WSDLFactory;
 import org.apache.woden.WSDLReader;
@@ -11,23 +12,19 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Classe com a responsabilidade de identificar se o arquivo de entrada eh valido e, caso afirmativo,
- * identificar a versao do WSDL.
+ * Classe com a responsabilidade de identificar se o arquivo de entrada eh valido e qual a versao
+ * do SerializadorDOM fornecido para o mapeador.
  * 
  * @author Murilo Honorio
  * @version 0.0
  */
 public class Analisador {
-    
-    public Analisador() {
-        
-    }
-    
+       
     public static boolean identificarVersao(String entrada, boolean linhaDeComando) {
         boolean isVersao20;
 
         //obter elemento raiz
-        Document documento = WSDL.obterDOM(entrada);
+        Document documento = SerializadorDOM.obterDOM(entrada);
         Element raiz = documento.getDocumentElement();
         String elemento = raiz.getTagName();
 
@@ -60,12 +57,14 @@ public class Analisador {
         try {
             WSDLFactory factory = WSDLFactory.newInstance();
             WSDLReader reader = factory.newWSDLReader();
-            reader.setFeature(WSDLReader.FEATURE_VALIDATION, true); //<-- habilitar validacao do WSDL 2.0            
-            Description descricao = reader.readWSDL(caminho);
+            reader.setFeature(org.apache.woden.WSDLReader.FEATURE_VALIDATION, true);
+            reader.readWSDL(caminho);
             
             return true;
         }
+        //tratamento para erros fatais
         catch (WSDLException ex) {
+            System.out.println(ex.getFaultCode());
             switch (ex.getFaultCode()) {
                 case WSDLException.INVALID_WSDL:
                     //wsdl invalido
@@ -87,22 +86,16 @@ public class Analisador {
                     }
                     break;
                 default:
-                    Logger.getLogger(Analisador.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(Analisador.class.getName()).log(Level.SEVERE, null, ex);
                     if (isLinhaDeComando) {
-                        System.err.println("Erro desconhecido.");
+                        System.err.println("Erro desconhecido. Possivelmente arquivo invalido.");
                     }
                     else {
-                        JOptionPane.showMessageDialog(null, "Atencao", "Teste", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Erro desconhecido. Possivelmente arquivo invalido.", "Falha", JOptionPane.ERROR_MESSAGE);
                     }
                     break;
             }
             return false;
         }
-    }
-    
-    private boolean analisarWSDL() {
-        
-        
-        return false;
     }
 }

@@ -1,264 +1,339 @@
 package fassw;
 
-import java.io.File;
-import java.io.IOException;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.FactoryConfigurationError;
-import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import java.util.ArrayList;
+import java.util.List;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
+import org.w3c.dom.NodeList;
 
 /**
  * 
  * @author Murilo Honorio
  * @version 0.0
  */
-public class GroundingDados {
+public class GroundingDados implements GroundingDadosInterface {
     
-    private String WSDLTypes;
-    static StringBuilder artefato = new StringBuilder();
-    static Integer variavelNomeId = 1; //um contador que estabelece um nome unico para cade elemento que nao possua um nome
-    Document documento;
+    private static int CONTADOR = 1; //utilizado para obter ids unicos, sendo increentado por getIdUnico()
+    private String xmlns;
+    private final String XMLSchemaNamespace;
 
-    public GroundingDados(String nomeDoArquivo) {
-        this.WSDLTypes = nomeDoArquivo;
+    public GroundingDados(String xmlns) {
+        this.XMLSchemaNamespace = "http://www.w3.org/2001/XMLSchema";
+        this.xmlns = xmlns;
     }
+    
+    //--- INICIO DAS FUNCOES AUXILIARES ---//
 
     /**
-     * Inicia o grounding de dados, segue os seguintes passos:
-     * - Cria uma instancia de um factory que nos fornece um document builder
-     * - Obter uma instancia do document builder
-     * - Realiza o parse do arquivo recebido como parametro pelo construtor da classe
-     * - Chama o metodo que percorre os esquemas contidos no arquivo
-     */
-    public void inicializar() {
-        
-        try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            dbf.setNamespaceAware(true);
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            documento = db.parse(new File(WSDLTypes));
-
-            Element types = documento.getDocumentElement();
-            percorrerSchemas(types);
-
-        } catch (FactoryConfigurationError e) {
-            System.err.println("Nao foi possivel obter um factory para o Document Builder.");
-            System.err.println("Mais detalhes: " + e.getMessage());
-        } catch (ParserConfigurationException e) {
-            System.err.println("Nao foi possivel configurar o parser DOM.");
-            System.err.println("Mais detalhes: " + e.getMessage());
-        } catch (SAXException e) {
-            System.err.println("Erro durante analise e interpretacao do arquivo.");
-            System.err.println("Mais detalhes: " + e.getMessage());
-        } catch (IOException e) {
-            System.err.println("Erro de entrada e saida.");
-            System.err.println("Mais detalhes: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Percorre cada um dos 'schemas', filhos do elemento 'types' da descricao WSDL.
-     * Para cada esquema, chama a funcao adequada para tratar cada um dos elementos globais (ou seja,
-     * filhos diretos de 'schema'.
+     * Retorna o valor do atributo <b>id</b> do elemento.
+     * Caso o atributo nao exista, ele eh criado.
      * 
-     * @param types elemento types da descricao WSDL
+     * @param elemento
+     * @param documento
+     * @return 
      */
-    private void percorrerSchemas(Element types) {
-        Node esquema = types.getFirstChild();
-        
-        while (esquema != null) {
-            String namespace = esquema.getNamespaceURI();
-            
-            if (namespace != null && namespace.equals("http://www.w3.org/2001/XMLSchema")) {
-                Node elemento = esquema.getFirstChild();
-                
-                while (elemento != null) {
-                    //percorrer apenas os elementos globais
-                    if (elemento.getNodeType() == Node.ELEMENT_NODE) {
-                        String nomeElemento = elemento.getLocalName();
-                        
-                        switch (nomeElemento) {
-                            case "element" :
-                                mapearElement(elemento);
-                                break;
-                            case "simpleType" :
-                                transformarSimpleType(elemento);
-                                break;
-                            case "complexType" :
-                                transformarComplexType(elemento);
-                                break;
-                            case "attribute" :
-                                transformarAttribute(elemento);
-                                break;
-                            case "attributeGroup" :
-                                transformarAttributeGroup(elemento);
-                                break;
-                            case "group" :
-                                transformarGroup(elemento);
-                                break;
-                            default :
-                                break;
-                        }
-                    }
-                    elemento = elemento.getNextSibling();
-                }
-            }
-            esquema = esquema.getNextSibling();
-        }
-    }
-    
-    private String transformarComplexType(Node elemento) {
-        StringBuilder sb = new StringBuilder();
-        String nomeDoElemento;
-        Node name = elemento.getAttributes().getNamedItem("name");
+    private String getIdUnico(Node elemento) {
         Node id = elemento.getAttributes().getNamedItem("id");
         
-        //verificar se o nome eh nulo, tentar pelo id
+        if (id == null) {
+            id = elemento.getOwnerDocument().createAttribute("id");
+            id.setNodeValue("id." + CONTADOR);
+            CONTADOR++;
+            elemento.getAttributes().setNamedItem(id);
+        }
+        return elemento.getAttributes().getNamedItem("id").getNodeValue();
+    }
+    
+    /**
+     * Retorna o valor do atributo 'name' de um elemento, caso exista.
+     * Caso contrario, gera o atributo 'name', com valor que eh a combinacao do elemento e seus id.
+     * O atributo 'nam' eh adicionado ao elemento caso ele nao possua um elemento 'ref'
+     * 
+     * @param elemento
+     * @return 
+     */
+    private String getNome(Node elemento) {
+        String id = getIdUnico(elemento);
+        Node name = elemento.getAttributes().getNamedItem("name");
+        Node ref = elemento.getAttributes().getNamedItem("ref");
+        
         if (name == null) {
-            if (id == null) { 
-                nomeDoElemento = "complexType_" + gerarID();
-                name = documento.createAttribute("name");
-                name.setNodeValue(nomeDoElemento);
+            String nome = elemento.getLocalName() + "." + id;
+            
+            if (ref == null) { //se nao tem ref, adiciona o atributo name ao elemento
+                name = elemento.getOwnerDocument().createAttribute("name");
+                name.setNodeValue(nome);
                 elemento.getAttributes().setNamedItem(name);
+                return elemento.getAttributes().getNamedItem("name").getNodeValue();
+            }
+            else { //se tem ref, apenas retorna o nome gerado
+                return nome;
+            }
+        }
+        return elemento.getAttributes().getNamedItem("name").getNodeValue();
+    }
+    
+     /**
+     * Metodo auxiliar que gera cadeias em WSML para QNames ou built-in types.
+     * 
+     * @param baseType um atributo base ou type, cujo valor sera lido
+     * @param pai o nodo pai que contem o atributo
+     * @return uma representacao WSML do valor do nodo
+     */
+    private String transformarBaseOuType(Node baseType, Node pai) {
+        boolean tipoEmbutido = isTipoEmbutido(baseType.getNodeValue(), pai);
+        if (tipoEmbutido) { //garantidamente tem namespace
+            String[] valorBase = baseType.getNodeValue().split(":");
+            return "_" + valorBase[1].toLowerCase();
+        } else {
+            return baseType.getNodeValue().replace(":", "#");
+        }
+    }
+    
+    /**
+     * Reinicia contador usado para gerar id unicos. Metodo util para as baterias de testes.
+     */
+    public void resetContador() {
+        CONTADOR = 1;
+    }
+    
+        /**
+     * Metodo auxiliar que recupera qualquer elemento que estiver dentro do schema, desde que seja do
+     * mesmo tipo.
+     * 
+     * @param ref o QName do elemento procurado
+     * @param pai o nodo pai, o qual contem o atributo
+     * @return o elemento encontrado ou null
+     */
+    private Node recuperarElemento(String ref, String tipoElemento, Node pai) {
+        //obter lista com todos os elementos do mesmo tipo do nodo pai
+        NodeList elementos = pai.getOwnerDocument().getElementsByTagNameNS(XMLSchemaNamespace, tipoElemento);
+        //percorrer os elementos em busca 
+        for (int i = 0; i < elementos.getLength(); i++) {
+            Node name = elementos.item(i).getAttributes().getNamedItem("name");
+            if (name != null) {
+                if (name.getNodeValue().equals(ref)) {
+                    return elementos.item(i);
+                }
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Processa qualquer elemento XML Schema e retorna as propriedades nao funcionais do elemento
+     * em WSML.
+     * 
+     * @param elemento qualquer elemento XML Schema mapeado
+     * @return uma cadeia contendo as anotacoes
+     */
+    private String getAnnotations(Node elemento) throws ElementoNaoEsperadoException {
+        StringBuilder saida = new StringBuilder();
+        saida.append("\t").append("annotations").append("\n");
+        saida.append("\t\t").append("xmlType hasValue \"").append(elemento.getLocalName()).append("\"").append("\n");
+
+        //todos
+        if (elemento.getAttributes().getNamedItem("id") != null) { 
+            saida.append("\t\t").append("id hasValue \"");
+            saida.append(elemento.getAttributes().getNamedItem("id").getNodeValue()).append("\"\n");
+        }
+        if (elemento.getAttributes().getNamedItem("base") != null) { 
+            saida.append("\t\t").append("baseType hasValue \"");
+            saida.append(elemento.getAttributes().getNamedItem("base").getNodeValue()).append("\"\n");
+        }
+        //attribute, element
+        if (elemento.getAttributes().getNamedItem("default") != null) {
+            saida.append("\t\t").append("default hasValue \"");
+            saida.append(elemento.getAttributes().getNamedItem("default").getNodeValue()).append("\"\n");
+        }
+        //attribute, element
+        if (elemento.getAttributes().getNamedItem("fixed") != null) {
+            saida.append("\t\t").append("fixed hasValue \"");
+            saida.append(elemento.getAttributes().getNamedItem("fixed").getNodeValue()).append("\"\n");
+        }
+        //attribute, element
+        if (elemento.getAttributes().getNamedItem("form") != null) {
+            saida.append("\t\t").append("form hasValue \"");
+            saida.append(elemento.getAttributes().getNamedItem("form").getNodeValue()).append("\"\n");
+        }
+        //element
+        if (elemento.getAttributes().getNamedItem("maxOccurs") != null) {
+            saida.append("\t\t").append("maxOccurs hasValue \"");
+            saida.append(elemento.getAttributes().getNamedItem("maxOccurs").getNodeValue()).append("\"\n");
+        }
+        //element
+        if (elemento.getAttributes().getNamedItem("minOccurs") != null) {
+            saida.append("\t\t").append("minOccurs hasValue \"");
+            saida.append(elemento.getAttributes().getNamedItem("minOccurs").getNodeValue()).append("\"\n");
+        }
+        //element
+        if (elemento.getAttributes().getNamedItem("nillable") != null) {
+            saida.append("\t\t").append("nillable hasValue \"");
+            saida.append(elemento.getAttributes().getNamedItem("nillable").getNodeValue()).append("\"\n");
+        }
+        //element
+        if (elemento.getAttributes().getNamedItem("abstract") != null) {
+            saida.append("\t\t").append("abstract hasValue \"");
+            saida.append(elemento.getAttributes().getNamedItem("abstract").getNodeValue()).append("\"\n");
+        }
+        //attribute
+        if (elemento.getAttributes().getNamedItem("use") != null) {
+            saida.append("\t\t").append("use hasValue \"");
+            saida.append(elemento.getAttributes().getNamedItem("use").getNodeValue()).append("\"\n");
+        }
+        //any processContents
+        if (elemento.getAttributes().getNamedItem("processContents") != null) {
+            saida.append("\t\t").append("processContents hasValue \"");
+            saida.append(elemento.getAttributes().getNamedItem("processContents").getNodeValue()).append("\"\n");
+        } 
+        //element
+        if (elemento.getAttributes().getNamedItem("block") != null) {
+            saida.append("\t\t").append("block hasValue ");
+            
+            Node block = elemento.getAttributes().getNamedItem("block");
+            String listaMembros = block.getNodeValue().replace(":", "#");
+            String[] membros = listaMembros.split(" ");
+            
+            if (membros.length == 1) { //#all
+                saida.append("\"").append(membros[0]).append("\"\n");
+            }
+            else { //extension, restriction, substitution
+                saida.append("{ ");
+                for (String membro : membros) {
+                    saida.append(membro).append(", ");
+                }
+                saida.deleteCharAt(saida.length()-2);
+                saida.append("}").append("\n");
+            }
+        }
+        //element
+        if (elemento.getAttributes().getNamedItem("final") != null) {
+            saida.append("\t\t").append("final hasValue ");
+
+            Node finalAttr = elemento.getAttributes().getNamedItem("final");
+            String listaMembros = finalAttr.getNodeValue().replace(":", "#");
+            String[] membros = listaMembros.split(" ");
+
+            if (membros.length == 1) { //#all
+                saida.append("\"").append(membros[0]).append("\"\n");
+            } else { //extension, restriction
+                saida.append("{ ");
+                for (String membro : membros) {
+                    saida.append(membro).append(", ");
+                }
+                saida.deleteCharAt(saida.length() - 2);
+                saida.append("}").append("\n");
+            }
+        }
+
+        //mapear demais anotacoes
+        Node filho = elemento.getFirstChild();
+        while (filho != null) {
+            if (filho.getNodeType() == Node.ELEMENT_NODE && filho.getLocalName().equals("annotation")) {
+                saida.append(mapearAnnotation(filho));
+            }
+            filho = filho.getNextSibling();
+        }
+
+        saida.append("\t").append("endAnnotations").append("\n");
+
+        return saida.toString();
+    }
+    
+    /**
+     * Metodo auxiliar que detecta se um dado QName eh um tipo de dados embutido (built-in datatype) XML.
+     * 
+     * @param QName valor do atributo <b>type</b> ou <b>base</b>
+     * @param pai nodo do elemento que contem o atributo
+     * @return true se for um built-in datatype que pode ser mapeado para WSML
+     */
+    private boolean isTipoEmbutido(String QName, Node pai) {
+        String[] valor = QName.split(":");
+        //Identificar se o QName eh prefixado ou nao
+        if (valor.length == 2) {
+            //QName eh prefixado, verificar se o namespace eh o padrao
+            String namespace = pai.lookupNamespaceURI(valor[0]);
+            if (namespace != null && namespace.equals(XMLSchemaNamespace)) {
+                //identificar os tipos embutidos que tem conversao para WSML
+                switch (valor[1]) {
+                    case "string":
+                        return true;
+                    case "decimal":
+                        return true;
+                    case "integer":
+                        return true;
+                    case "float":
+                        return true;
+                    case "double":
+                        return true;
+                    case "boolean":
+                        return true;
+                    case "dateTime":
+                        return true;
+                    case "time":
+                        return true;
+                    case "date":
+                        return true;
+                    case "gYearMonth":
+                        return true;
+                    case "gYear":
+                        return true;
+                    case "gMonthDay":
+                        return true;
+                    case "gDay":
+                        return true;
+                    case "gMonth":
+                        return true;
+                    case "hexBinary":
+                        return true;
+                    default:
+                        return false;
+                }
             }
             else {
-                nomeDoElemento = id.getNodeValue();
-                name = documento.createAttribute("name");
-                name.setNodeValue(nomeDoElemento);
-                elemento.getAttributes().setNamedItem(name);
+                //refere-se a algum outro tipo em outro namespace
+                return false;
             }
         }
         else {
-            nomeDoElemento = name.getNodeValue();
+            //QName nao prefixado, portanto nao eh um tipo embutido
+            return false;
         }
-        sb.append("concept ").append(nomeDoElemento).append("\n");
-        
-        //percorrer os atributos e gerar annotations
-        sb.append("\t").append("annotations").append("\n");
-        sb.append("\t\t").append("xmlType hasValue ").append("\"complexType\"").append("\n");
-        Node atributo;
-        
-        atributo = elemento.getAttributes().getNamedItem("abstract");
-        if (atributo != null) 
-            sb.append("\t\t").append("abstract hasValue \"").append(atributo.getNodeValue()).append("\"\n");
-        
-        atributo = elemento.getAttributes().getNamedItem("mixed");
-        if (atributo != null)
-            sb.append("\t\t").append("mixed hasValue \"").append(atributo.getNodeValue()).append("\"\n");
-            
-        //TODO implementar transformacoes das restricoes/extensoes dentro de 'block' e 'final'
-        atributo = elemento.getAttributes().getNamedItem("block");
-        if (atributo != null)
-            sb.append("\t\t").append("block hasValue \"").append(atributo.getNodeValue()).append("\"\n");
-            
-        atributo = elemento.getAttributes().getNamedItem("final");
-        if (atributo != null) 
-            sb.append("\t\t").append("final hasValue \"").append(atributo.getNodeValue()).append("\"\n");
-        
-        Node filho = elemento.getFirstChild();
-        while (filho != null) {
-            if (filho.getNodeType() == Node.ELEMENT_NODE && "annotation".equals(filho.getLocalName())) {
-                sb.append(transformarAnnotation(filho, "\t"));
-                break;
-            }
-            filho = filho.getNextSibling();
-        }
-        
-        sb.append("\t").append("endAnnotations").append("\n");
-        
-        filho = elemento.getFirstChild();
-        while (filho != null) {
-            if (filho.getNodeType() == Node.ELEMENT_NODE) {
-                String componente = filho.getLocalName();
-                
-                switch (componente) {
-                    case "simpleContent":
-                        sb.append(" subConceptOf ");
-                        Node base = filho.getAttributes().getNamedItem("base");
-                        sb.append(transformarElementoBase(base));
-                        break;
-                    case "complexContent":
-                        sb.append(transformarComplexContent(filho));
-                        break;
-                    
-                }
-            }
-            filho = filho.getNextSibling();
-        }
-        
-        System.out.println(sb.toString());
-        return sb.toString();
     }
-
-    //garantido que nao eh nulo
-    private String transformarSimpleType(Node elemento) {
-        StringBuilder sb = new StringBuilder();
-        String nomeDoElemento;
-        Node name = elemento.getAttributes().getNamedItem("name");
-
-        if (name == null) {
-            nomeDoElemento = "simpleType_" + gerarID(); //convencao para atributos sem nome
-            name = documento.createAttribute("name");
-            name.setNodeValue(nomeDoElemento);
-            elemento.getAttributes().setNamedItem(name);
-        } 
-        else {
-            nomeDoElemento = name.getNodeValue();
+    
+    //--- FIM DAS FUNCOES AUXILIARES ---//
+    
+    /**
+     * O elemento annotation eh um elemento que especifica comentarios dentro do schema.
+     * 
+     * <p>annotation mapeia para propriedades nao funcionais do conceito WSMO ao qual pertence.</p>
+     * 
+     * <p> Mais detalhes em: {@link http://www.w3schools.com/schema/el_annotation.asp Documentação XML Schema} </p>
+     * @param raiz o nodo cujo nome local eh annotation
+     * @return um fragmento WSMO escrito em WSML
+     * @throws ElementoNaoEsperadoException caso seja passado outro elemento como parametro
+     */
+    @Override
+    public String mapearAnnotation(Node raiz) throws ElementoNaoEsperadoException {
+        //verificar se o elemento esta correto
+        if (raiz.getLocalName().equals("annotation") == false) {
+            throw new ElementoNaoEsperadoException("annotation", raiz.getLocalName());
         }
-        sb.append("concept ").append(nomeDoElemento);
-
-        //determinar qual o subcomponente
-        Node filho = elemento.getFirstChild();
-        while (filho != null) {
-            if (filho.getNodeType() == Node.ELEMENT_NODE) {
-                String componente = filho.getLocalName();
-                
-                switch (componente) {
-                    case "restriction":
-                        sb.append(" subConceptOf ");
-                        Node base = filho.getAttributes().getNamedItem("base");
-                        sb.append(transformarElementoBase(base));
-                        break;
-                    case "union":
-                        String nomeUnion = "union_" + gerarID();
-                        sb.append(" subConceptOf ");
-                        sb.append(nomeUnion);
-                        
-                        Node id = documento.createAttribute("id");
-                        id.setNodeValue(nomeUnion);
-                        filho.getAttributes().setNamedItem(id);
-                        
-                        break;
-                    
-                }
-            }
-            filho = filho.getNextSibling();
-        }
-        sb.append("\n");
-
-        filho = elemento.getFirstChild();
+        StringBuilder saida = new StringBuilder();
+        String id = getIdUnico(raiz);
+        
+        saida.append("\t").append("\tannotationId hasValue \"").append(id).append("\"\n");
+        
+        Node filho = raiz.getFirstChild();
         while (filho != null) {
             if (filho.getNodeType() == Node.ELEMENT_NODE) {
                 String nomeComponente = filho.getLocalName();
-
+                
                 switch (nomeComponente) {
-                    case "annotation":
-                        sb.append("annotations\n");
-                        sb.append(transformarAnnotation(filho, "\t"));
-                        sb.append("endAnnotations\n");
+                    case "appinfo":
+                        saida.append(mapearAppinfo(filho));
                         break;
-                    case "restriction":
-                        sb.append(transformarRestriction(filho, nomeDoElemento, "\t"));
-                        break;
-                    case "list":
-                        sb.append(transformarList(filho, "\t")).append("\n");
-                        break;
-                    case "union":
-                        sb.append(transformarUnion(filho, "\t"));
+                    case "documentation":
+                        saida.append(mapearDocumentation(filho));
                         break;
                     default:
                         break;
@@ -266,98 +341,496 @@ public class GroundingDados {
             }
             filho = filho.getNextSibling();
         }
-        System.out.println(sb.toString());
-        return sb.toString();
+        return saida.toString();
     }
 
-    private String transformarRestriction(Node elemento, String nomeElementoPai, String indentacao) {
-        StringBuilder sb = new StringBuilder();
-        Node id = elemento.getAttributes().getNamedItem("id");
-
-        sb.append(indentacao).append("axiom ");
-        if (id == null) { 
-            //restriction SEM atributo id
-            String idRestriction = gerarID() + "_constraint";
-            id = documento.createAttribute("id");
-            id.setNodeValue(idRestriction);
-            elemento.getAttributes().setNamedItem(id);
-            sb.append(idRestriction).append("\n");
-        } else {
-            //restriction COM atributo id
-            sb.append(id.getNodeValue()).append("\n");
+    /**
+     * O elemento appinfo especifica informacoes usadas por aplicacoes para processar instrucoes.
+     * 
+     * <p>appinfo mapeia para propriedades nao funcionais do conceito WSMO ao qual pertence.</p>
+     * 
+     * <p> Mais detalhes em: {@link http://www.w3schools.com/schema/el_appinfo.asp Documentação XML Schema} </p>
+     * @param raiz o nodo cujo nome local eh appinfo
+     * @return um fragmento WSMO escrito em WSML
+     * @throws ElementoNaoEsperadoException caso seja passado outro elemento como parametro
+     * @see http://msdn.microsoft.com/en-us/library/ms256134.aspx
+     */
+    @Override
+    public String mapearAppinfo(Node raiz) throws ElementoNaoEsperadoException {
+        //verificar se o elemento esta correto
+        if (raiz.getLocalName().equals("appinfo") == false) {
+            throw new ElementoNaoEsperadoException("appinfo", raiz.getLocalName());
         }
+        StringBuilder saida = new StringBuilder();
+        Node source = raiz.getAttributes().getNamedItem("source");
+        
+        if (source != null) {
+            saida.append("\t").append("\t").append("appinfoSource hasValue _\"").append(source.getNodeValue()).append("\"\n");
+        }
+        saida.append("\t").append("\t").append("appinfo hasValue \"").append(raiz.getTextContent().trim()).append("\"\n");
+        return saida.toString();
+    }
 
-        Node filho = elemento.getFirstChild();
+    /**
+     * O elemento documentation define comentarios de texto em um schema.
+     * 
+     * <p>documentation mapeia para propriedades nao funcionais do conceito WSMO ao qual pertence.</p>
+     * 
+     * <p> Mais detalhes em: {@link http://www.w3schools.com/schema/el_documentation.asp Documentação XML Schema} </p>
+     * @param raiz o nodo cujo nome local eh documentation
+     * @return um fragmento WSMO escrito em WSML
+     * @throws ElementoNaoEsperadoException caso seja passado outro elemento como parametro
+     * @see 
+     */
+    @Override
+    public String mapearDocumentation(Node raiz) throws ElementoNaoEsperadoException {
+        //verificar se o elemento esta correto
+        if (raiz.getLocalName().equals("documentation") == false) {
+            throw new ElementoNaoEsperadoException("documentation", raiz.getLocalName());
+        }
+        StringBuilder saida = new StringBuilder();
+        Node source = raiz.getAttributes().getNamedItem("source");
+        Node language = raiz.getAttributes().getNamedItem("xml:lang");
+        
+        if (source != null) {
+            saida.append("\t").append("\t").append("documentationSource hasValue _\"").append(source.getNodeValue()).append("\"\n");
+        }
+        
+        if (language != null) {
+            saida.append("\t").append("\t").append("dc#language hasValue \"").append(language.getNodeValue()).append("\"\n");
+        }
+        saida.append("\t").append("\t").append("documentation hasValue \"").append(raiz.getTextContent().trim()).append("\"\n");
+        return saida.toString();
+    }
+    
+    /**
+     * O elemento attributeGroup eh utilizado para agrupar um conjunto de declaracoes de atributo, 
+     * de modo que eles podem ser incorporados como um grupo em definicoes de elementos complexType.
+     * 
+     * <p>AttributeGroup eh mapeado para um conceito WSMO, que pode ser usado como alicerce para 
+     * outros conceitos mais complexos. Os atributos <b>name</b> e <b> ref </b> sao mutuamente exclusivos. </p>
+     * 
+     * <p> Mais detalhes em: {@link http://www.w3schools.com/schema/el_attributegroup.asp Documentação XML Schema} </p>
+     * @param raiz o nodo cujo nome local eh attributeGroup
+     * @return um fragmento WSMO escrito em WSML
+     * @throws ElementoNaoEsperadoException caso seja passado outro elemento como parametro
+     */
+    @Override
+    public String mapearAttributeGroup(Node raiz) throws ElementoNaoEsperadoException {
+        if (raiz.getLocalName().equals("attributeGroup") == false) {
+            throw new ElementoNaoEsperadoException("attributeGroup", raiz.getLocalName());
+        }
+        StringBuilder saida = new StringBuilder();
+        String id = getIdUnico(raiz);
+        Node ref = raiz.getAttributes().getNamedItem("ref");
+        
+        if (ref == null) { //nao possui o atributo ref, portanto eh filho de schema
+            Node name = raiz.getAttributes().getNamedItem("name");
+            Node filho = raiz.getFirstChild();
+            
+            saida.append("concept ").append(name.getNodeValue()).append("\n");
+            saida.append(getAnnotations(raiz));
+            
+            List<Node> filhos = new ArrayList<>(); //guardar filhos para processar posteriormente
+            while (filho != null) {
+                if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                    String idFilho = getIdUnico(filho);
+
+                    switch (filho.getLocalName()) {
+                        case "attributeGroup": //garantidamente possui atributo ref
+                            saida.append("\t").append(mapearAttributeGroup(filho)).append("\n");
+                            break;
+                        case "attribute":
+                            if (filho.getAttributes().getNamedItem("ref") == null) {
+                                filhos.add(filho);
+                            }
+                            saida.append("\t").append(getNome(filho)).append(" ofType ").append(idFilho).append("\n");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                filho = filho.getNextSibling();
+            }
+            saida.append("\n");
+            for (Node elem : filhos) {
+                saida.append(mapearAttribute(elem));
+            }
+        }
+        else { //possui o atributo ref, portanto eh filho de complexType
+            saida.append(id).append(" ofType ").append(ref.getNodeValue());
+        }
+        //System.out.println(saida.toString());
+        return saida.toString();
+    }
+
+    /**
+     * O elemento attribute define um atributo.
+     * 
+     * <p>Atributos em XML Schema sempre sao definidos como simpleTypes. Essa definicao pode ocorrer
+     * por meio de referencias, usando o atributo <b>type</b> ou embutindo o simpleType como filho
+     * do proprio attribute. Se usar <b>ref</b> o atributo refere-se a um atributo com name.</p>
+     * 
+     * <p> Mais detalhes em: {@link http://www.w3schools.com/schema/el_attribute.asp Documentação XML Schema} </p>
+     * @param raiz o nodo cujo nome local eh attribute
+     * @return um fragmento WSMO escrito em WSML
+     * @throws ElementoNaoEsperadoException caso seja passado outro elemento como parametro
+     */
+    @Override
+    public String mapearAttribute(Node raiz) throws ElementoNaoEsperadoException {
+        if (raiz.getLocalName().equals("attribute") == false) {
+            throw new ElementoNaoEsperadoException("attribute", raiz.getLocalName());
+        }
+        StringBuilder saida = new StringBuilder();
+        String id = getIdUnico(raiz);
+        String nome = getNome(raiz);
+        Node ref = raiz.getAttributes().getNamedItem("ref");
+        Node type = raiz.getAttributes().getNamedItem("type");
+        
+        saida.append("concept ").append(nome).append("\n");
+        saida.append(getAnnotations(raiz));
+        
+        if (ref == null) { 
+            if (type == null) { //significa que possui um filho simpleType, ou seja, definido internamente
+                Node filho = raiz.getFirstChild();
+                
+                while (filho != null) {
+                    //percorrer apenas os elementos
+                    if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                        if (filho.getLocalName().equals("simpleType")) {
+                            String idFilho = getIdUnico(filho);
+                            saida.append("\t").append("attributeSimpleType").append(" ofType ").append(idFilho).append("\n\n");
+                            saida.append(mapearSimpleType(filho));
+                            break;
+                        }
+                    }
+                    filho = filho.getNextSibling();
+                }
+                
+            } 
+            else { //significa que possui um type, que pode referenciar um tipo embutido ou um simpleType externamente
+                boolean tipoEmbutido = isTipoEmbutido(type.getNodeValue(), raiz);
+                
+                //identificar se a referencia eh a um tipo embutido
+                if (tipoEmbutido) {
+                    String[] valorTipo = type.getNodeValue().split(":");
+                    saida.append("\t").append("value").append(" ofType _").append(valorTipo[1].toLowerCase()).append("\n");
+                }
+                else {
+                    String valorTipo = type.getNodeValue().replace(":", "#");
+                    saida.append("\t").append("value").append(" ofType ").append(valorTipo).append("\n");
+                }
+            }
+        }
+        else { //referencia algum outro atributo que possui name
+            String nomeRef = transformarBaseOuType(ref, raiz);
+            saida.append("\t").append("refAttribute ofType ").append(nomeRef).append("\n");
+        }
+        saida.append("\n");
+        //System.out.println(saida.toString());
+        return saida.toString();
+    }
+
+    
+    /**
+     * O elemento simpleType define um tipo simples e especifica as restrições e as informações 
+     * sobre os valores de atributos ou elementos somente-texto.
+     * 
+     * <p>Um simpleType tem sempre um dos seguintes componentes filhos: um <b>restriction</b>, um 
+     * <b>list</b> ou um <b>union</b>. Um atributo <b>name</b> eh obrigatorio se o simpleType for
+     * filho de <b>schema</b>.</p>
+     * 
+     * <p>O mapeamento de um simpleType pode resultar na geracao de um ou mais componentes WSMO. O
+     * atributo <b>id</b> eh usado para estabelecer a ligacao entre os elementos do simpleType.
+     * Caso ele nao exista, eh criado automaticamente por meio de funcao auxiliar.</p>
+     * 
+     * <p> Mais detalhes em: {@link http://www.w3schools.com/schema/el_simpletype.asp Documentação XML Schema} </p>
+     * @param raiz o nodo cujo nome local eh simpleType
+     * @return um fragmento WSMO escrito em WSML
+     * @throws ElementoNaoEsperadoException caso seja passado outro elemento como parametro
+     */
+    @Override
+    public String mapearSimpleType(Node raiz) throws ElementoNaoEsperadoException {
+        if (raiz.getLocalName().equals("simpleType") == false) {
+            throw new ElementoNaoEsperadoException("simpleType", raiz.getLocalName());
+        }
+        StringBuilder saida = new StringBuilder();
+        String nome = getNome(raiz);
+
+        saida.append("concept ").append(nome);
+
+        //determinar qual o subcomponente
+        Node filho = raiz.getFirstChild();
         while (filho != null) {
-            if (filho.getNodeType() == Node.ELEMENT_NODE
-                    && filho.getLocalName() != null
-                    && filho.getLocalName().equals("annotation")) {
-                sb.append(indentacao).append("annotations\n");
-                sb.append(transformarAnnotation(filho, indentacao + "\t"));
-                sb.append(indentacao).append("endAnnotations\n");
+            if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                String componente = filho.getLocalName();
+                
+                switch (componente) {
+                    case "restriction":
+                        saida.append(" subConceptOf ");
+                        Node base = filho.getAttributes().getNamedItem("base"); //Atributo base eh obrigatorio
+                        boolean tipoEmbutido = isTipoEmbutido(base.getNodeValue(), filho);
+                        if (tipoEmbutido) {
+                            String[] valorBase = base.getNodeValue().split(":");
+                            saida.append("_").append(valorBase[1].toLowerCase()).append("\n");
+                        }
+                        else {
+                            saida.append(transformarBaseOuType(base, raiz)).append("\n");
+                        }
+                        break;
+                    case "list":
+                        saida.append("\n");
+                        break;
+                    case "union":
+                        String nomeUnion = getNome(filho);
+                        saida.append(" subConceptOf ").append(nomeUnion).append("\n");
+                        break;
+                    default:
+                        break;
+                }
             }
             filho = filho.getNextSibling();
         }
+        saida.append(getAnnotations(raiz));
 
-        sb.append(indentacao).append("\tdefinedBy\n");
-        sb.append(indentacao).append("\t\t").append("!- naf (\n");
-        sb.append(indentacao).append("\t\t").append("?X memberOf ");
+        filho = raiz.getFirstChild();
+        while (filho != null) {
+            if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                String nomeComponente = filho.getLocalName();
 
-        Node base = elemento.getAttributes().getNamedItem("base");
-        sb.append(transformarElementoBase(base)).append("\n");
+                switch (nomeComponente) {
+                    case "restriction":
+                        saida.append("\n").append(mapearRestriction(filho)).append("\n");
+                        break;
+                    case "list":
+                        saida.append(mapearList(filho)).append("\n");
+                        break;
+                    case "union":
+                        saida.append("\n").append(mapearUnion(filho)).append("\n");
+                        break;
+                    default:
+                        break;
+                }
+            }
+            filho = filho.getNextSibling();
+        }
         
-        sb.append(indentacao).append("\t\t\t").append("and ?X memberOf ").append(nomeElementoPai).append(" ?\n\n");
+        //System.out.println(saida.toString());
+        return saida.toString();
+    }
 
-        filho = elemento.getFirstChild();
+    /**
+     * O elemento restriction determina restrições sobre definicoes de simpleType, simpleContent ou
+     * complexContent.
+     * 
+     * <p>O atributo <b>base</b> eh requerido e indica o nome de tipo embutido, <b>simpleType</b> ou
+     * <b>complexType</b> que eh restringido. Um <b>restriction</b> possui um ou mais elementos 
+     * filhos <b>facets</b> XML.</p>
+     * 
+     * <p>O mapeamento de um restriction resulta na geracao de um axioma WSMO, cuja expressao varia de
+     * acordo com as facetas.
+     * <br>Facets mapeados: enumeration; minExclusive; minInclusive; maxExclusive; maxInclusive.
+     * <br>Facets nao-mapeados: totalDigits; fractionDigits; length; minLength; maxLength; whiteSpace; pattern.</p>
+     * 
+     * <p> Mais detalhes em: {@link http://www.w3schools.com/schema/el_restriction.asp Documentação XML Schema} </p>
+     * @param raiz o nodo cujo nome local eh restriction
+     * @return um fragmento WSMO escrito em WSML
+     * @throws ElementoNaoEsperadoException caso seja passado outro elemento como parametro
+     */
+    @Override
+    public String mapearRestriction(Node raiz) throws ElementoNaoEsperadoException {
+        //verificar se o elemento esta correto
+        if (raiz.getLocalName().equals("restriction") == false) {
+            throw new ElementoNaoEsperadoException("restriction", raiz.getLocalName());
+        }
+        StringBuilder saida = new StringBuilder();
+        String id = getIdUnico(raiz);
+        String elementoPai = raiz.getParentNode().getLocalName();
+        
+        if (elementoPai.equals("complexContent")) {
+            String nome = getNome(raiz);
+            saida.append("concept ").append(nome).append("\n");
+            saida.append(getAnnotations(raiz));
+
+            //mapear atributos
+            Node filho = raiz.getFirstChild();
+            while (filho != null) {
+                if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                    String componente = filho.getLocalName();
+
+                    switch (componente) {
+                        case "group":
+                            saida.append("\t").append("groupAttribute ofType ").append(getIdUnico(filho)).append("\n");
+                            break;
+                        case "all":
+                            saida.append("\t").append("allAttribute ofType ").append(getIdUnico(filho)).append("\n");
+                            break;
+                        case "choice":
+                            saida.append("\t").append("choiceAttribute ofType ").append(getIdUnico(filho)).append("\n");
+                            break;
+                        case "sequence":
+                            saida.append("\t").append("sequenceAttribute ofType ").append(getIdUnico(filho)).append("\n");
+                            break;
+                        case "attribute":
+                            saida.append("\t").append(getNome(filho)).append(" ofType ").append(getIdUnico(filho)).append("\n");
+                            break;
+                        case "attributeGroup":
+                            saida.append("\t").append(getNome(filho)).append(" ofType ").append(getIdUnico(filho)).append("\n");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                filho = filho.getNextSibling();
+            }
+            //gerar conceitos filhos
+            filho = raiz.getFirstChild();
+            while (filho != null) {
+                if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                    String componente = filho.getLocalName();
+
+                    switch (componente) {
+                        case "group":
+                            saida.append("\n").append(mapearGroup(filho));
+                            break;
+                        case "all":
+                            saida.append("\n").append(mapearAll(filho));
+                            break;
+                        case "choice":
+                            saida.append("\n").append(mapearChoice(filho));
+                            break;
+                        case "sequence":
+                            saida.append("\n").append(mapearSequence(filho));
+                            break;
+                        case "attribute":
+                            saida.append("\n").append(mapearAttribute(filho));
+                            break;
+                        case "attributeGroup":
+                            saida.append("\n").append(mapearAttributeGroup(filho));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                filho = filho.getNextSibling();
+            }
+            //System.out.println(saida.toString());
+            return saida.toString();
+        }
+        if (elementoPai.equals("simpleContent")) {
+            String nome = getNome(raiz);
+            saida.append("concept ").append(nome).append("\n");
+            saida.append(getAnnotations(raiz));
+
+            //mapear atributos
+            Node filho = raiz.getFirstChild();
+            while (filho != null) {
+                if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                    String componente = filho.getLocalName();
+
+                    switch (componente) {
+                        case "attribute":
+                            saida.append("\t").append(getNome(filho)).append(" ofType ").append(getIdUnico(filho)).append("\n");
+                            break;
+                        case "attributeGroup":
+                            saida.append("\t").append(getNome(filho)).append(" ofType ").append(getIdUnico(filho)).append("\n");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                filho = filho.getNextSibling();
+            }
+            //gerar conceitos filhos
+            filho = raiz.getFirstChild();
+            while (filho != null) {
+                if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                    String componente = filho.getLocalName();
+
+                    switch (componente) {
+                        case "attribute":
+                            saida.append("\n").append(mapearAttribute(filho));
+                            break;
+                        case "attributeGroup":
+                            saida.append("\n").append(mapearAttributeGroup(filho));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                filho = filho.getNextSibling();
+            }
+        }
+        //gerar axioma para o simpleType ou simpleContent
+        saida.append("axiom ").append(id).append("\n");
+        
+        saida.append(getAnnotations(raiz));
+
+        saida.append("\t").append("definedBy").append("\n");
+        saida.append("\t\t").append("!- naf (").append("\n");
+        saida.append("\t\t").append("?X memberOf ");
+
+        Node base = raiz.getAttributes().getNamedItem("base");
+        saida.append(transformarBaseOuType(base, raiz)).append("\n");
+        
+        saida.append("\t\t").append("and ?X memberOf ").append(getNome(raiz.getParentNode())).append(" ?").append("\n");
+
+        Node filho = raiz.getFirstChild();
         boolean primeiroEnum = true;
         
         while (filho != null) {
             if (filho.getNodeType() == Node.ELEMENT_NODE) {
                 String nomeComponente = filho.getLocalName();
                 Node value = filho.getAttributes().getNamedItem("value");
-                
 
                 if (value != null) {
                     String valor = value.getNodeValue();
 
                     switch (nomeComponente) {
                         case "minExclusive":
-                            sb.append(indentacao).append("\t\t").append("and X > ").append(valor).append(" ?\n");
+                            saida.append("\t\t").append("and X > ").append(valor).append(" ?\n");
                             break;
                         case "minInclusive":
-                            sb.append(indentacao).append("\t\t").append("and X >= ").append(valor).append(" ?\n");
+                            saida.append("\t\t").append("and X >= ").append(valor).append(" ?\n");
                             break;
                         case "maxExclusive":
-                            sb.append(indentacao).append("\t\t").append("and X < ").append(valor).append(" ?\n");
+                            saida.append("\t\t").append("and X < ").append(valor).append(" ?\n");
                             break;
                         case "maxInclusive":
-                            sb.append(indentacao).append("\t\t").append("and X <= ").append(valor).append(" ?\n");
+                            saida.append("\t\t").append("and X <= ").append(valor).append(" ?\n");
                             break;
-                        case "totalDigits": //criar daqui para baixo
+                        case "totalDigits":
+                            //NAO DEFINIDO
                             break;
                         case "fractionDigits":
+                            //NAO DEFINIDO
                             break;
                         case "length":
+                            //NAO DEFINIDO
                             break;
                         case "minLength":
+                            //NAO DEFINIDO
                             break;
                         case "maxLength":
+                            //NAO DEFINIDO
                             break;
                         case "enumeration":
-                            sb.append(indentacao).append("\t\t");
+                            saida.append("\t\t");
                             
                             if (primeiroEnum == true) {
                                 primeiroEnum = false;
-                                sb.append("and ( X hasValue '").append(valor).append("'-\n");
+                                saida.append("and ( X hasValue '").append(valor).append("' \n");
                             }
                             else {
-                                sb.deleteCharAt(sb.length()-5);
-                                sb.append("or X hasValue '").append(valor).append("' )\n");
+                                saida.deleteCharAt(saida.length()-4);
+                                saida.append("or X hasValue '").append(valor).append("' )\n");
                             }
                             break;
                         case "whiteSpace":
+                            //NAO DEFINIDO
                             break;
                         case "pattern":
+                            //NAO DEFINIDO
                             break;
                         default:
                             break;
@@ -366,272 +839,283 @@ public class GroundingDados {
             }
             filho = filho.getNextSibling();
         }
-        sb.append(indentacao).append("\t)\n");
-        return sb.toString();
+        saida.append("\t\t").append(").").append("\n");
+        return saida.toString();
     }
 
     /**
-     * Processa o elemento 'annotation' e seus filhos 'documentation' e 'appinfo'
+     * O elemento list define um elemento simpleType como uma lista de valores de um tipo de dados especificado.
      * 
-     * @param elemento
-     * @param indentacao
-     * @return 
-     */
-    private String transformarAnnotation(Node elemento, String indentacao) {
-        StringBuilder sb = new StringBuilder();
-        String identificador = obterID(elemento);
-        
-        sb.append(indentacao).append("\tannotationId hasValue \"").append(identificador).append("\"\n");
-        
-        Node filho = elemento.getFirstChild();
-        while (filho != null) {
-            if (filho.getNodeType() == Node.ELEMENT_NODE) {
-                String nomeComponente = filho.getLocalName();
-                
-                switch (nomeComponente) {
-                    case "appinfo":
-                        sb.append(indentacao).append("\t").append(transformarAppInfo(filho, indentacao + "\t"));
-                        break;
-                    case "documentation":
-                        sb.append(indentacao).append("\t").append(transformarDocumentation(filho, indentacao + "\t"));
-                        break;
-                    default:
-                        break;
-                }
-            }
-            filho = filho.getNextSibling();
-        }
-        return sb.toString();
-    }
-
-    private String transformarAppInfo(Node elemento, String indentacao) {
-        StringBuilder sb = new StringBuilder();
-        Node source = elemento.getAttributes().getNamedItem("source");
-        
-        if (source != null) {
-            sb.append("appinfoSource hasValue _\"").append(source.getNodeValue()).append("\"\n");
-            sb.append(indentacao);
-        }
-        
-        sb.append("appinfo hasValue \"").append(elemento.getTextContent().trim()).append("\"\n");
-        
-        return sb.toString();
-    }
-
-    private String transformarDocumentation(Node elemento, String indentacao) {
-        StringBuilder sb = new StringBuilder();
-        Node source = elemento.getAttributes().getNamedItem("source");
-        Node language = elemento.getAttributes().getNamedItem("xml:lang");
-        
-        if (source != null) {
-            sb.append("documentationSource hasValue _\"").append(source.getNodeValue()).append("\"\n");
-            sb.append(indentacao);
-        }
-        
-        if (language != null) {
-            sb.append("dc#language hasValue \"").append(language.getNodeValue()).append("\"\n");
-            sb.append(indentacao);
-        }
-        
-        sb.append("documentation hasValue \"").append(elemento.getTextContent().trim()).append("\"\n");
-        
-        return sb.toString();
-    }
-
-    /**
-     * Realiza a converao entre os tipos de dados embutidos xml (built-in datatypes xml) e os tipos
-     * de dados embutidos em WSML. Trata-se apenas de conversao de formatacao, ja que o WSML suporta
-     * todos os tipos de dados XML.
-     * Conforme a lista em http://www.wsmo.org/TR/d16/d16.1/v1.0/, apêndice B.1, 
-     * usamos a sintaxe resumida para os tipos de dados.
+     * <p>Um <b>list</b> pode conter elementos <b>simpleType</b> definidos no proprio escopo da lista ou 
+     * definidos em outro lugar no <b>schema</b>. No primeiro caso, nao ha nome associado e ele eh
+     * gerado conforme convencao. No segundo caso, cada item possui um nome associado.</p>
+     * <p>O resultado da transformacao da lista esta definido dentro do conceito gerado pelo simpleType
+     * que a contem.</p>
      * 
-     * @param elemento
-     * @return resultado a avaliacao
+     * <p> Mais detalhes em: {@link http://www.w3schools.com/schema/el_list.asp Documentação XML Schema} </p>
+     * @param raiz o nodo cujo nome local eh restriction
+     * @return um fragmento WSMO escrito em WSML
+     * @throws ElementoNaoEsperadoException caso seja passado outro elemento como parametro
      */
-    private String transformarElementoBase(Node elemento) {
-        String resultado;
-        String[] base = elemento.getNodeValue().split(":");
-        String namespace = elemento.lookupNamespaceURI(base[0]);
-
-        if (namespace.equals("http://www.w3.org/2001/XMLSchema")) {
-            resultado = "_" + base[1].toLowerCase();
-        } else {
-            resultado = namespace + "#" + base[1];
+    @Override
+    public String mapearList(Node raiz) throws ElementoNaoEsperadoException {
+        //verificar se o elemento esta correto
+        if (raiz.getLocalName().equals("list") == false) {
+            throw new ElementoNaoEsperadoException("list", raiz.getLocalName());
         }
-        return resultado;
-    }
-
-    private String transformarUnion(Node elemento, String indentacao) {
-        StringBuilder sb = new StringBuilder();
-        String id = obterID(elemento);
-        sb.append("\nconcept ").append(id).append(" subConceptOf ").append("{ ");
+        StringBuilder saida = new StringBuilder();
+        saida.append("\t").append("hasValues (1 *) ofType ");
         
-        Node memberTypes = elemento.getAttributes().getNamedItem("memberTypes");
-        
-        if (memberTypes != null) {
-            String[] membros = memberTypes.getNodeValue().split(" ");
-            
-            for (String m : membros) {
-                sb.append(m).append(", ");
-            }
-        }
-        
-        Node filho = elemento.getFirstChild();
-        while (filho != null) {
-            if (filho.getNodeType() == Node.ELEMENT_NODE && filho.getLocalName().equals("simpleType")) {
-                String nomeSimpleType = "item_in_union_" + gerarID();
-                Node name = documento.createAttribute("name");
-                
-                name.setNodeValue(nomeSimpleType);
-                filho.getAttributes().setNamedItem(name);
-                sb.append(nomeSimpleType).append(", ");
-            }
-            filho = filho.getNextSibling();
-        }
-        
-        filho = elemento.getFirstChild();
-        while (filho != null) {
-            if (filho.getNodeType() == Node.ELEMENT_NODE && filho.getLocalName().equals("annotation")) {
-                sb.append(transformarAnnotation(filho, indentacao + "\t"));
-                break;
-            }
-            filho = filho.getNextSibling();
-        }
-        
-        sb.deleteCharAt(sb.length()-2);
-        sb.append("}").append("\n");
-        
-        
-        filho = elemento.getFirstChild();
-        while (filho != null) {
-            if (filho.getNodeType() == Node.ELEMENT_NODE && filho.getLocalName().equals("simpleType")) {
-                transformarSimpleType(filho);
-            }
-            filho = filho.getNextSibling();
-        }
-        
-        return sb.toString();
-    }
-
-
-
-    private Object transformarList(Node elemento, String indentacao) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(indentacao).append("hasValues (1*) ofType ");
-        
-        Node itemType = elemento.getAttributes().getNamedItem("itemType");
-
-        if (itemType != null) {
-            sb.append(itemType.getNodeValue()).append("\n");
-        } else {
-            Node filho = elemento.getFirstChild();
+        Node itemType = raiz.getAttributes().getNamedItem("itemType");
+        if (itemType != null) { //se itemType eh requerido, significa que nao tem simpleType embutido
+            String item = transformarBaseOuType(itemType, raiz);
+            saida.append(item).append("\n");
+        } 
+        else {
+            Node filho = raiz.getFirstChild();
             
             while (filho != null) {
                 if (filho.getNodeType() == Node.ELEMENT_NODE) {
                     Node name = filho.getAttributes().getNamedItem("name");
-                    String nomeSimpleType = "list_simple_type_" + gerarID();
+                    String nomeSimpleType = "list_simple_type_" + getIdUnico(filho);
                     
                     if (name == null) {
-                        name = documento.createAttribute("name");
+                        name = raiz.getOwnerDocument().createAttribute("name");
                         name.setNodeValue(nomeSimpleType);
                         filho.getAttributes().setNamedItem(name);
                     }
-                    
-                    sb.append(nomeSimpleType).append("\n\n");
-                    sb.append(transformarSimpleType(filho));
+                    saida.append(nomeSimpleType).append("\n\n");
+                    saida.append(mapearSimpleType(filho));
                 }
                 filho = filho.getNextSibling();
             } 
         }
-        return sb.toString();
-    }
-
-    //TODO Completar esse aqui e os demais que seguem a mesma estrutura
-    private String transformarComplexContent(Node elemento) {
-        StringBuilder saida = new StringBuilder();
-        
-        String identificador = obterID(elemento);
-        
-        
         return saida.toString();
     }
-    
-    /**
-     * O elemento element define um elemento. 
-     * Verifica se eh filho do schema
-     * 
-     * @param elemento
-     * @return 
-     */
-    private String mapearElement(Node elemento) {
-        StringBuilder sb = new StringBuilder();
-        
-        if (elemento.getParentNode().getLocalName().equals("schema")) {
-            //caso seja filho de schema, o atributo name é requerido
-            //GERAR CONCEPT
-        }
-        else {
-            //significa que eh filho de um choice, all, sequence ou group
-            //adicionar um nome ou id
-        }
-        
-        Node type = elemento.getAttributes().getNamedItem("type");
-        if (type != null) {
-            //significa que o elemento eh baseado em um tipo embutido, ou em um simpleType ou complexType definido externamente
-            //se for um simpleType ou complexType, deve ter um name. Se tem um name, ele eh o nome do conceito
-            String tipo = type.getNodeValue();
-        }
-        else { //significa que 
-            
-        }
-        
-        
-        return sb.toString();
-    }
 
-    private void transformarAttribute(Node elemento) {
-        throw new UnsupportedOperationException("Ainda nao implementado."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private void transformarAttributeGroup(Node elemento) {
-        throw new UnsupportedOperationException("Ainda nao implementado."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
     /**
-     * Extension e Restriction sao elementos que sao filhos de simpleType, simpleContent e complexContent.
-     * Ambos possuem os mesmo filhos: group, all, choice e sequence.
-     * O comportamento para o mapeamento de ambos eh o mesmo: criar um conceito e atributos referentes aos filhos
+     * O elemento union define um elemento simpleType como uma colecao de valores dos tipos de dados especificados.
      * 
-     * @param elemento 
+     * <p>A definição de um <b>union</b> considera tres tipos possiveis que podem ser usados​​. O 
+     * primeiro sao built-in data types, que sao diretamente suportados em WSMO sem alteracao. O 
+     * segundo sao <b>simpleTypes</b> definidos em outras partes do schema e portanto tem um atributo 
+     * nome que pode ser usado para identifica-los. O terceiro sao <b>simpleTypes</b> definidos no 
+     * ambito do proprio <b>union</b>, sao <b>simpleTypes</b> que nao tem um atributo nome definido.</p>
+     * 
+     * <p> Mais detalhes em: {@link http://www.w3schools.com/schema/el_union.asp Documentação XML Schema} </p>
+     * @param raiz o nodo cujo nome local eh union
+     * @return um fragmento WSMO escrito em WSML
+     * @throws ElementoNaoEsperadoException caso seja passado outro elemento como parametro
      */
-    private String transformarExtensionRestriction(Node elemento) {
+    @Override
+    public String mapearUnion(Node raiz) throws ElementoNaoEsperadoException {
+        //verificar se o elemento esta correto
+        if (raiz.getLocalName().equals("union") == false) {
+            throw new ElementoNaoEsperadoException("union", raiz.getLocalName());
+        }
         StringBuilder saida = new StringBuilder();
-        saida.append("concept ").append(obterNome(elemento)).append("\n");
-        saida.append(processarAnnotations(elemento));
+        String id = getIdUnico(raiz);
+        saida.append("concept ").append(id).append(" subConceptOf ").append("{ ");
+        
+        Node memberTypes = raiz.getAttributes().getNamedItem("memberTypes");
+        if (memberTypes != null) {
+            String listaMembros = memberTypes.getNodeValue().replace(":", "#");
+            String[] membros = listaMembros.split(" ");
+            
+            for (String membro : membros) {
+                saida.append(membro).append(", ");
+            }
+        }
+        
+        Node filho = raiz.getFirstChild();
+        while (filho != null) {
+            if (filho.getNodeType() == Node.ELEMENT_NODE && filho.getLocalName().equals("simpleType")) {
+                String nomeSimpleType = "item_in_union_" + getIdUnico(filho);
+                Node name = raiz.getOwnerDocument().createAttribute("name");
+                
+                name.setNodeValue(nomeSimpleType);
+                filho.getAttributes().setNamedItem(name);
+                saida.append(nomeSimpleType).append(", ");
+            }
+            filho = filho.getNextSibling();
+        }
+        saida.deleteCharAt(saida.length()-2);
+        saida.append("}").append("\n");
+        saida.append(getAnnotations(raiz));
+        
+        filho = raiz.getFirstChild();
+        while (filho != null) {
+            if (filho.getNodeType() == Node.ELEMENT_NODE && filho.getLocalName().equals("simpleType")) {
+                mapearSimpleType(filho);
+            }
+            filho = filho.getNextSibling();
+        }
+        return saida.toString();
+    }
 
+    /**
+     * O elemento element define um elemento. Hahaha...
+     * 
+     * <p>Element pode possuir um nome ou nao. O nome eh obrigatorio se for filho de <b>schema</b>.
+     * Pode ser definido por um <b>simpleType</b> ou um <b>complexType</b>, quer seja internamente 
+     * (filho) ou externamente (atraves do atributo <b>type</b>). No caso trivial, o <b>simpleType</b>
+     * eh um tipo embutido.</p>
+     * 
+     * <p>Se houver um atributo <b>ref</b> estiver presente, os elementos complexType, simpleType, key,
+     * keyref e unique, e os atributos nillable, default, fixed, form, block e type nao podem estar.
+     * Ele faz referencia a outro <b>element</b>. <b>ref</b> nao eh permitido em filhos de <b>schema</b>.
+     * </p>
+     * 
+     * <p>Element mapeia para um conceitos WSMO e seus filhos tambem, de acordo com as outras 
+     * transformações.</p>
+     * 
+     * <p> Mais detalhes em: {@link http://www.w3schools.com/schema/el_element.asp Documentação XML Schema} </p>
+     * @param raiz o nodo cujo nome local eh element
+     * @return um fragmento WSMO escrito em WSML
+     * @throws ElementoNaoEsperadoException caso seja passado outro elemento como parametro
+     * @see http://msdn.microsoft.com/en-us/library/ms256118.aspx
+     */
+    @Override
+    public String mapearElement(Node raiz) throws ElementoNaoEsperadoException {
+        //verificar se o elemento esta correto
+        if (raiz.getLocalName().equals("element") == false) {
+            throw new ElementoNaoEsperadoException("element", raiz.getLocalName());
+        }
+        StringBuilder saida = new StringBuilder();
+        
+        String nome = getNome(raiz);
+        saida.append("concept ").append(nome).append("\n");
+        saida.append(getAnnotations(raiz));
+        
+        Node ref = raiz.getAttributes().getNamedItem("ref");
+        
+        if (ref == null) { //element eh filho de schema
+            Node type = raiz.getAttributes().getNamedItem("type");
+            Node substitutionGroup = raiz.getAttributes().getNamedItem("substitutionGroup");
+            
+            if (substitutionGroup != null) { //elemento definido por substitutionGroup nao eh convertido
+                return "";
+            }
+            if (type == null) { //elemento definido internamente
+                //determinar qual o subcomponente
+                Node filho = raiz.getFirstChild();
+                while (filho != null) {
+                    if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                        String componente = filho.getLocalName();
+                        String id = getIdUnico(filho);
 
-        Node filho = elemento.getFirstChild();
+                        switch (componente) {
+                            case "simpleType":
+                                saida.append("\t").append("simpleTypeAttribute ofType ").append(id).append("\n");
+                                saida.append(mapearSimpleType(filho));
+                                break;
+                            case "complexType":
+                                saida.append("\t").append("complexTypeAttribute ofType ").append(id).append("\n");
+                                saida.append(mapearComplexType(filho));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    filho = filho.getNextSibling();
+                }
+            }
+            else { //elemento definido por type
+                String QName = transformarBaseOuType(type, raiz);
+                boolean tipoEmbutido = isTipoEmbutido(type.getNodeValue(), raiz);
+                if (tipoEmbutido) {
+                    saida.append("\t").append("refAttribute").append(" ofType ").append(QName).append("\n");
+                }
+                else {
+                    Node elementoRef = recuperarElemento(QName, "simpleType", raiz);
+                    if (elementoRef != null) { //eh simpleType
+                        String id = getIdUnico(elementoRef);
+                        saida.append("\t").append(QName).append(" ofType ").append(id).append("\n");
+                        saida.append("\n").append(mapearElement(elementoRef));
+                    }
+                    else { //eh complexType
+                        elementoRef = recuperarElemento(QName, "complexType", raiz);
+                        String id = getIdUnico(elementoRef);
+                        saida.append("\t").append(QName).append(" ofType ").append(id).append("\n");
+                    }
+                }
+            }
+        }
+        else { //elemento eh definido por outro element
+            Node elementoRef = recuperarElemento(ref.getNodeValue(), "element", raiz);
+            String QName = ref.getNodeValue().replace(":", "#");
+            
+            if (elementoRef != null) { //o ref esta dentro do documento
+                String id = getIdUnico(elementoRef);
+                saida.append("\t").append(QName).append(" ofType ").append(id).append("\n");
+                //mapear element? NAO POIS ESTA NO SCHEMA, PODE ACABAR DUPLICANDO
+            }
+            else { //nao encontrou o elemento indicado por ref
+                saida.append("\t").append("refElementAttribute").append(" ofType ").append(QName).append("\n");
+            }
+        }
+        //System.out.println(saida.toString());
+        return saida.toString();
+    }
 
+    /**
+     * O elemento complexType define um tipo complexo, que eh um elemento XML que contem outros
+     * elementos e/ou atributos.
+     * 
+     * <p>Um elemento <b>complexType</b> pode ser definido por um agrupamento particular de elementos
+     * filhos usando palavras-chave, como <b>sequence</b> ou <b>choice</b>, para definir a estrutura
+     * exigida desses elementos filhos.</p>
+     * <p> Um <b>complexType</b> também pode ser definido por restricoes ou extensoes sobre um 
+     * <b>simpleType</b> ou <b>complexType</b> usando os elementos <b>simpleContent</b> ou 
+     * <b>complexContent</b>.</p>
+     * 
+     * <p>complexType mapeia para um conceito WSMO.</p>
+     * 
+     * <p> Mais detalhes em: {@link http://www.w3schools.com/schema/el_complextype.asp Documentação XML Schema} </p>
+     * @param raiz o nodo cujo nome local eh complexType
+     * @return um fragmento WSMO escrito em WSML
+     * @throws ElementoNaoEsperadoException caso seja passado outro elemento como parametro
+     */
+    @Override
+    public String mapearComplexType(Node raiz) throws ElementoNaoEsperadoException {
+        //verificar se o elemento esta correto
+        if (raiz.getLocalName().equals("complexType") == false) {
+            throw new ElementoNaoEsperadoException("complexType", raiz.getLocalName());
+        }
+        StringBuilder saida = new StringBuilder();
+        
+        String nome = getNome(raiz);
+        saida.append("concept ").append(nome).append("\n");
+        saida.append(getAnnotations(raiz));
+        
+        //mapear atributos
+        Node filho = raiz.getFirstChild();
         while (filho != null) {
             if (filho.getNodeType() == Node.ELEMENT_NODE) {
-                String idFilho = obterID(filho);
-
-                switch (filho.getLocalName()) {
+                String componente = filho.getLocalName();
+                
+                switch (componente) {
+                    case "simpleContent":
+                        break;
+                    case "complexContent":
+                        break;
                     case "group":
-                        saida.append("\t").append("groupAttribute ofType ").append(idFilho).append("\n\n");
-                        saida.append(transformarGroup(filho));
+                        saida.append("\t").append("groupAttribute ofType ").append(getIdUnico(filho)).append("\n");
                         break;
                     case "all":
-                        saida.append("\t").append("allAttribute ofType ").append(idFilho).append("\n\n");
-                        saida.append(transformarAllChoiceSequence(filho));
+                        saida.append("\t").append("allAttribute ofType ").append(getIdUnico(filho)).append("\n");
                         break;
                     case "choice":
-                        saida.append("\t").append("choiceAttribute ofType ").append(idFilho).append("\n\n");
-                        saida.append(transformarAllChoiceSequence(filho));
+                        saida.append("\t").append("choiceAttribute ofType ").append(getIdUnico(filho)).append("\n");
                         break;
                     case "sequence":
-                        saida.append("\t").append("sequenceAttribute ofType ").append(idFilho).append("\n\n");
-                        saida.append(transformarAllChoiceSequence(filho));
+                        saida.append("\t").append("sequenceAttribute ofType ").append(getIdUnico(filho)).append("\n");
+                        break;
+                    case "attribute":
+                        saida.append("\t").append(getNome(filho)).append(" ofType ").append(getIdUnico(filho)).append("\n");
+                        break;
+                    case "attributeGroup":
+                        saida.append("\t").append(getNome(filho)).append(" ofType ").append(getIdUnico(filho)).append("\n");
                         break;
                     default:
                         break;
@@ -639,159 +1123,504 @@ public class GroundingDados {
             }
             filho = filho.getNextSibling();
         }
-        System.out.println(saida.toString());
+        //gerar conceitos filhos
+        filho = raiz.getFirstChild();
+        while (filho != null) {
+            if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                String componente = filho.getLocalName();
+                
+                switch (componente) {
+                    case "simpleContent": //processar extension ou restriction
+                        saida.append(mapearSimpleContent(filho));
+                        break;
+                    case "complexContent":
+                        saida.append(mapearComplexContent(filho));
+                        break;
+                    case "group":
+                        saida.append("\n").append(mapearGroup(filho));
+                        break;
+                    case "all":
+                        saida.append("\n").append(mapearAll(filho));
+                        break;
+                    case "choice":
+                        saida.append("\n").append(mapearChoice(filho));
+                        break;
+                    case "sequence":
+                        saida.append("\n").append(mapearSequence(filho));
+                        break;
+                    case "attribute":
+                        saida.append("\n").append(mapearAttribute(filho));
+                        break;
+                    case "attributeGroup":
+                        saida.append("\n").append(mapearAttributeGroup(filho));
+                        break;
+                    default:
+                        break;
+                }
+            }
+            filho = filho.getNextSibling();
+        }
+        //System.out.println(saida.toString());
+        return saida.toString() + "\n";
+    }
+
+    /**
+     * O elemento simpleContent contem extensoes ou restricoes sobre um complexType ou um simpleType.
+     * 
+     * <p>simpleContent mapeia para um atributo do conceito WSMO gerado a partir do seu elemento pai.</p>
+     * 
+     * <p> Mais detalhes em: {@link http://www.w3schools.com/schema/el_simplecontent.asp Documentação XML Schema} </p>
+     * @param raiz o nodo cujo nome local eh simpleContent
+     * @return um fragmento WSMO escrito em WSML
+     * @throws ElementoNaoEsperadoException caso seja passado outro elemento como parametro
+     */
+    @Override
+    public String mapearSimpleContent(Node raiz) throws ElementoNaoEsperadoException {
+        //verificar se o elemento esta correto
+        if (raiz.getLocalName().equals("simpleContent") == false) {
+            throw new ElementoNaoEsperadoException("simpleContent", raiz.getLocalName());
+        }
+        StringBuilder saida = new StringBuilder();
+        Node filho = raiz.getFirstChild();
+            
+        while (filho != null) {
+            if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                String elementoFilho = filho.getLocalName();
+                saida.append("\t").append("simpleContentAttribute ofType ").append(getIdUnico(filho)).append("\n");
+
+                if (elementoFilho.equals("extension")) {
+                    saida.append("\n").append(mapearExtension(filho));
+                }
+                else { //restriction em um simpleContent resulta no mesmo mapeamento de simpleType
+                    saida.append("\n").append(mapearRestriction(filho));
+                }
+            }
+            filho = filho.getNextSibling();
+        }
+        return saida.toString();
+    }
+
+     /**
+     * O elemento complexContent define extensoes ou restricoes sobre um complexType que contenha
+     * conteudo misto ou somente elementos.
+     * 
+     * <p>complexContent mapeia para um atributo do conceito WSMO gerado a partir do seu elemento pai.</p>
+     * 
+     * <p> Mais detalhes em: {@link http://www.w3schools.com/schema/el_complexcontent.asp Documentação XML Schema} </p>
+     * @param raiz o nodo cujo nome local eh complexContent
+     * @return um fragmento WSMO escrito em WSML
+     * @throws ElementoNaoEsperadoException caso seja passado outro elemento como parametro
+     */
+    @Override
+    public String mapearComplexContent(Node raiz) throws ElementoNaoEsperadoException {
+        //verificar se o elemento esta correto
+        if (raiz.getLocalName().equals("complexContent") == false) {
+            throw new ElementoNaoEsperadoException("complexContent", raiz.getLocalName());
+        }
+        StringBuilder saida = new StringBuilder();
+        Node filho = raiz.getFirstChild();
+
+        while (filho != null) {
+            if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                String elementoFilho = filho.getLocalName();
+                saida.append("\t").append("complexContentAttribute ofType ").append(getIdUnico(filho)).append("\n");
+
+                if (elementoFilho.equals("extension")) {
+                    saida.append("\n").append(mapearExtension(filho));
+                }
+                else { //restriction em um simpleContent resulta no mesmo mapeamento de simpleType
+                    saida.append("\n").append(mapearRestriction(filho));
+                }
+            }
+            filho = filho.getNextSibling();
+        }
         return saida.toString();
     }
     
     /**
-     * O elemento Group eh utilizado para definir um grupo de elementos para serem usados em definicoes complexType.
-     * Nao pode ter um atributo name e um atributo ref ao mesmo tempo. 
-     * - Caso tenha um 'name', seus fihos serao 'all', 'choice' ou 'sequence'.
-     * - Caso tenha um 'ref', faz referencia a outro grupo.
+     * O elemento extension estende um elemento simpleType ou complexType existente.
      * 
-     * @param elemento 
+     * <p>extension mapeia para um conceito WSMO.</p>
+     * 
+     * <p> Mais detalhes em: {@link http://www.w3schools.com/schema/el_extension.asp Documentação XML Schema} </p>
+     * @param raiz o nodo cujo nome local eh extension
+     * @return um fragmento WSMO escrito em WSML
+     * @throws ElementoNaoEsperadoException caso seja passado outro elemento como parametro
      */
-    private String transformarGroup(Node elemento) {
-        StringBuilder saida = new StringBuilder();        
-        saida.append("concept ").append(obterNome(elemento)).append("\n");       
-        saida.append(processarAnnotations(elemento));
+    @Override
+    public String mapearExtension(Node raiz) throws ElementoNaoEsperadoException {
+        //EH PRATICAMENTO O MESMO DE COMPLEX TYPE
+        //verificar se o elemento esta correto
+        if (raiz.getLocalName().equals("extension") == false) {
+            throw new ElementoNaoEsperadoException("extension", raiz.getLocalName());
+        }
+        StringBuilder saida = new StringBuilder();
+        Node base = raiz.getAttributes().getNamedItem("base"); //base eh requerido, mas nao eh usado na transformacao
         
-        if (elemento.getAttributes().getNamedItem("ref") == null) {
-            Node filho = elemento.getFirstChild();
+        String nome = getNome(raiz);
+        saida.append("concept ").append(nome).append("\n");
+        saida.append(getAnnotations(raiz));
+        
+        //mapear atributos
+        Node filho = raiz.getFirstChild();
+        while (filho != null) {
+            if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                String componente = filho.getLocalName();
+                
+                switch (componente) {
+                    case "group":
+                        saida.append("\t").append("groupAttribute ofType ").append(getIdUnico(filho)).append("\n");
+                        break;
+                    case "all":
+                        saida.append("\t").append("allAttribute ofType ").append(getIdUnico(filho)).append("\n");
+                        break;
+                    case "choice":
+                        saida.append("\t").append("choiceAttribute ofType ").append(getIdUnico(filho)).append("\n");
+                        break;
+                    case "sequence":
+                        saida.append("\t").append("sequenceAttribute ofType ").append(getIdUnico(filho)).append("\n");
+                        break;
+                    case "attribute":
+                        saida.append("\t").append(getNome(filho)).append(" ofType ").append(getIdUnico(filho)).append("\n");
+                        break;
+                    case "attributeGroup":
+                        saida.append("\t").append(getNome(filho)).append(" ofType ").append(getIdUnico(filho)).append("\n");
+                        break;
+                    default:
+                        break;
+                }
+            }
+            filho = filho.getNextSibling();
+        }
+        //gerar conceitos filhos
+        filho = raiz.getFirstChild();
+        while (filho != null) {
+            if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                String componente = filho.getLocalName();
+                
+                switch (componente) {
+                    case "group":
+                        saida.append("\n").append(mapearGroup(filho));
+                        break;
+                    case "all":
+                        saida.append("\n").append(mapearAll(filho));
+                        break;
+                    case "choice":
+                        saida.append("\n").append(mapearChoice(filho));
+                        break;
+                    case "sequence":
+                        saida.append("\n").append(mapearSequence(filho));
+                        break;
+                    case "attribute":
+                        saida.append("\n").append(mapearAttribute(filho));
+                        break;
+                    case "attributeGroup":
+                        saida.append("\n").append(mapearAttributeGroup(filho));
+                        break;
+                    default:
+                        break;
+                }
+            }
+            filho = filho.getNextSibling();
+        }
+        //System.out.println(saida.toString());
+        return saida.toString();
+    }
 
+    /**
+     * O elemento group define um grupo de elementos para serem usados em definicoes de complexType.
+     * 
+     * <p>group mapeia para um conceito WSMO.</p>
+     * 
+     * <p> Mais detalhes em: {@link http://www.w3schools.com/schema/el_group.asp Documentação XML Schema} </p>
+     * @param raiz o nodo cujo nome local eh group
+     * @return um fragmento WSMO escrito em WSML
+     * @throws ElementoNaoEsperadoException caso seja passado outro elemento como parametro
+     * @see http://msdn.microsoft.com/en-us/library/ms256093.aspx
+     */
+    @Override
+    public String mapearGroup(Node raiz) throws ElementoNaoEsperadoException {
+        //verificar se o elemento esta correto
+        if (raiz.getLocalName().equals("group") == false) {
+            throw new ElementoNaoEsperadoException("group", raiz.getLocalName());
+        }
+        StringBuilder saida = new StringBuilder();
+        String nome = getNome(raiz);
+        Node ref = raiz.getAttributes().getNamedItem("ref");
+
+        saida.append("concept ").append(nome).append("\n");
+        saida.append(getAnnotations(raiz));
+        
+        if (ref == null) { //possui name
+            Node filho = raiz.getFirstChild();
+            
+            //gerar atributos do conceito
             while (filho != null) {
                 if (filho.getNodeType() == Node.ELEMENT_NODE) {
-                    String idFilho = obterID(filho);
-                    
-                    switch (filho.getLocalName()) {
-                        case "all" :
-                            saida.append("\t").append("allAttribute ofType ").append(idFilho).append("\n\n");
-                            saida.append(transformarAllChoiceSequence(filho));
+                    String componente = filho.getLocalName();
+
+                    switch (componente) {
+                        case "all":
+                            saida.append("\t").append("allAttribute ofType ").append(getIdUnico(filho)).append("\n");
                             break;
-                        case "choice" :
-                            saida.append("\t").append("choiceAttribute ofType ").append(idFilho).append("\n\n");
-                            saida.append(transformarAllChoiceSequence(filho));
+                        case "choice":
+                            saida.append("\t").append("choiceAttribute ofType ").append(getIdUnico(filho)).append("\n");
                             break;
-                        case "sequence" :
-                            saida.append("\t").append("sequenceAttribute ofType ").append(idFilho).append("\n\n");
-                            saida.append(transformarAllChoiceSequence(filho));
+                        case "sequence":
+                            saida.append("\t").append("sequenceAttribute ofType ").append(getIdUnico(filho)).append("\n");
                             break;
-                        default :
+                        default:
+                            break;
+                    }
+                }
+                filho = filho.getNextSibling();
+            }
+            //gerar demais conceitos
+            filho = raiz.getFirstChild();
+            while (filho != null) {
+                if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                    String componente = filho.getLocalName();
+
+                    switch (componente) {
+                        case "all":
+                            saida.append("\n").append(mapearAll(filho));
+                            break;
+                        case "choice":
+                            saida.append("\n").append(mapearChoice(filho));
+                            break;
+                        case "sequence":
+                            saida.append("\n").append(mapearSequence(filho));
+                            break;
+                        default:
                             break;
                     }
                 }
                 filho = filho.getNextSibling();
             }
         }
-        else {
-            Node ref = elemento.getAttributes().getNamedItem("ref");
-            saida.append("\t").append("attributeRef ofType ").append(ref.getNodeValue()).append("\n");
+        else { //elemento eh definido por outro group
+            Node groupRef = recuperarElemento(ref.getNodeValue(), "group", raiz);
+            String QName = ref.getNodeValue().replace(":", "#");
+            
+            if (groupRef != null) { //o ref esta dentro do documento
+                String id = getIdUnico(groupRef);
+                saida.append("\t").append(QName).append(" ofType ").append(id).append("\n");
+                //NAO MAPEAR, POIS ESTA NA RAIZ DO SCHEMA E SERA DUPLICADO
+                //saida.append("\n").append(mapearGroup(groupRef));
+            }
+            else { //nao encontrou o elemento indicado por ref
+                saida.append("\t").append("refGroupAttribute").append(" ofType ").append(QName).append("\n");
+            }
         }
-
-        System.out.println(saida.toString());
+        
+        //System.out.println(saida.toString());
         return saida.toString();
     }
 
     /**
-     * Metodo auxiliar que retorna a String que representa o atributo id. Caso o elemento nao possua
-     * o atributo id, um id unico global dentro do esquema eh gerado.
+     * O elemento all especifica que cada elemento filho pode aparecer em qualquer ordem. Cada
+     * elemento filho pode ocorrer zero ou uma vez.
      * 
-     * @param elemento
-     * @return 
+     * <p>all mapeia para um conceito WSMO.</p>
+     * 
+     * <p> Mais detalhes em: {@link http://www.w3schools.com/schema/el_all.asp Documentação XML Schema} </p>
+     * @param raiz o nodo cujo nome local eh all
+     * @return um fragmento WSMO escrito em WSML
+     * @throws ElementoNaoEsperadoException caso seja passado outro elemento como parametro
      */
-    private String obterID(Node elemento) {
-        Node id = elemento.getAttributes().getNamedItem("id");
-        
-        if (id == null) {
-            id = documento.createAttribute("id");
-            id.setNodeValue("id." + gerarID());
-            elemento.getAttributes().setNamedItem(id);
+    @Override
+    public String mapearAll(Node raiz) throws ElementoNaoEsperadoException {
+        //verificar se o elemento esta correto
+        if (raiz.getLocalName().equals("all") == false) {
+            throw new ElementoNaoEsperadoException("all", raiz.getLocalName());
         }
-        return elemento.getAttributes().getNamedItem("id").getNodeValue();
-    }
-
-    private Object processarAnnotations(Node elemento) {
         StringBuilder saida = new StringBuilder();
-        saida.append("\t").append("annotations").append("\n");
-        saida.append("\t\t").append("xmlType hasValue \"").append(elemento.getLocalName()).append("\"").append("\n");
-        
-        if (elemento.getAttributes().getNamedItem("base") != null) {
-            saida.append("\t\t").append("baseType hasvalue \"");
-            saida.append(elemento.getAttributes().getNamedItem("base").getNodeValue()).append("\"\n");
-        }
-        if (elemento.getAttributes().getNamedItem("maxOccurs") != null) {
-            saida.append("\t\t").append("maxOccurs hasvalue \"");
-            saida.append(elemento.getAttributes().getNamedItem("maxOccurs").getNodeValue()).append("\"\n");
-        }
-        if (elemento.getAttributes().getNamedItem("minOccurs") != null) {
-            saida.append("\t\t").append("minOccurs hasvalue \"");
-            saida.append(elemento.getAttributes().getNamedItem("minOccurs").getNodeValue()).append("\"\n");
-        }
-        
-        Node filho = elemento.getFirstChild();
-        while (filho != null) {
-            if (filho.getNodeType() == Node.ELEMENT_NODE && filho.getLocalName().equals("annotation")) {
-                saida.append(transformarAnnotation(filho, "\t"));
-            }
-            filho = filho.getNextSibling();
-        }
-        
-        saida.append("\t").append("endAnnotations").append("\n");
-        
-        return saida.toString();
-        
-    }
-
-    private String transformarAllChoiceSequence(Node elemento) {
-        StringBuilder saida = new StringBuilder();
-        String nome = obterNome(elemento);
+        String nome = getNome(raiz);
         
         saida.append("concept ").append(nome).append("\n");
-        saida.append(processarAnnotations(elemento));
+        saida.append(getAnnotations(raiz));
         
-        //percorrer os filhos, todos element
-        Node filho = elemento.getFirstChild();
+        //gerar atributos do conceito
+        Node filho = raiz.getFirstChild();
         while (filho != null) {
-            if (filho.getNodeType() == Node.ELEMENT_NODE) {
-                saida.append("\t").append(obterNome(filho)).append(" ofType ").append(obterID(filho)).append("\n");
+            if (filho.getNodeType() == Node.ELEMENT_NODE && filho.getNodeName().equals("element")) {
+                saida.append("\t").append(getNome(filho)).append(" ofType ").append(getIdUnico(filho)).append("\n");
             }
             filho = filho.getNextSibling();
         }
-        
-        return saida.toString();
-    }
-    
-    
-    private String transformarGenerico(Node elemento) {
-        StringBuilder saida = new StringBuilder();
-        
+        //gerar demais conceitos
+        filho = raiz.getFirstChild();
+        while (filho != null) {
+            if (filho.getNodeType() == Node.ELEMENT_NODE && filho.getNodeName().equals("element")) {
+                saida.append("\n").append(mapearElement(filho));
+            }
+            filho = filho.getNextSibling();
+        }
         return saida.toString();
     }
 
     /**
-     * Metodo auxiliar que retorna o valor do atributo 'name' de um elemento, caso exista.
-     * Caso contrario, gera o atributo 'name', com valor que eh a combinacao do elemento e seus id.
+     * O elemento choice permite a somente um dos elementos contidos no seu escopo estar presente no
+     * elemento que o contem.
      * 
-     * @param elemento
-     * @return 
+     * <p>choice mapeia para um conceito WSMO.</p>
+     * 
+     * <p> Mais detalhes em: {@link http://www.w3schools.com/schema/el_choice.asp Documentação XML Schema} </p>
+     * @param raiz o nodo cujo nome local eh choice
+     * @return um fragmento WSMO escrito em WSML
+     * @throws ElementoNaoEsperadoException caso seja passado outro elemento como parametro
      */
-    private String obterNome(Node elemento) {
-        String id = obterID(elemento);
-        Node name = elemento.getAttributes().getNamedItem("name");
-        
-        if (name == null) {
-            name = documento.createAttribute("name");
-            name.setNodeValue(elemento.getLocalName() + "_" + id);
-            elemento.getAttributes().setNamedItem(name);
+    @Override
+    public String mapearChoice(Node raiz) throws ElementoNaoEsperadoException {
+        //verificar se o elemento esta correto
+        if (raiz.getLocalName().equals("choice") == false) {
+            throw new ElementoNaoEsperadoException("choice", raiz.getLocalName());
         }
-        return elemento.getAttributes().getNamedItem("name").getNodeValue();
+        StringBuilder saida = new StringBuilder();
+        String nome = getNome(raiz);
+        
+        saida.append("concept ").append(nome).append("\n");
+        saida.append(getAnnotations(raiz));
+        
+        //gerar atributos do conceito
+        Node filho = raiz.getFirstChild();
+        while (filho != null) {
+            if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                String componente = filho.getLocalName();
+                
+                switch (componente) {
+                    case "element":
+                        saida.append("\t").append(getNome(filho)).append(" ofType ").append(getIdUnico(filho)).append("\n");
+                        break;
+                    case "group":
+                        saida.append("\t").append(getNome(filho)).append(" ofType ").append(getIdUnico(filho)).append("\n");
+                        break;
+                    case "choice":
+                        saida.append("\t").append("choiceAttribute ofType ").append(getIdUnico(filho)).append("\n");
+                        break;
+                    case "sequence":
+                        saida.append("\t").append("sequenceAttribute ofType ").append(getIdUnico(filho)).append("\n");
+                        break;
+                    case "any":
+                        //TODO MAPEAR
+                        break;
+                    default:
+                        break;
+                }
+            }
+            filho = filho.getNextSibling();
+        }
+        //gerar demais conceitos
+        filho = raiz.getFirstChild();
+        while (filho != null) {
+            if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                String componente = filho.getLocalName();
+                
+                switch (componente) {
+                    case "element":
+                        saida.append("\n").append(mapearElement(filho));
+                        break;
+                    case "group":
+                        saida.append("\n").append(mapearGroup(filho));
+                        break;
+                    case "choice":
+                        saida.append("\n").append(mapearChoice(filho));
+                        break;
+                    case "sequence":
+                        saida.append("\n").append(mapearSequence(filho));
+                        break;
+                    case "any":
+                        //TODO MAPEAR
+                        break;
+                    default:
+                        break;
+                }
+            }
+            filho = filho.getNextSibling();
+        }
+        return saida.toString();
     }
-    
+
      /**
-     * Metodo auxiliar que retorna numeros em sequencia para gerar ids unicos.
-     */
-    private String gerarID() {
-        variavelNomeId++;
-        return variavelNomeId.toString();
+     * O elemento sequence estabelece a ordem em que os elementos filhos devem aparecer. Cada elemento
+     * filho pode ocorrer zero ou mais vezes.
+     * 
+     * <p>sequence mapeia para um conceito WSMO.</p>
+     * 
+     * <p> Mais detalhes em: {@link http://www.w3schools.com/schema/el_sequence.asp Documentação XML Schema} </p>
+     * @param raiz o nodo cujo nome local eh sequence
+     * @return um fragmento WSMO escrito em WSML
+     * @throws ElementoNaoEsperadoException caso seja passado outro elemento como parametro
+     */   
+    @Override
+    public String mapearSequence(Node raiz) throws ElementoNaoEsperadoException {
+        //OBS.: identico ao group
+        //verificar se o elemento esta correto
+        if (raiz.getLocalName().equals("sequence") == false) {
+            throw new ElementoNaoEsperadoException("sequence", raiz.getLocalName());
+        }
+        StringBuilder saida = new StringBuilder();
+        String nome = getNome(raiz);
+        
+        saida.append("concept ").append(nome).append("\n");
+        saida.append(getAnnotations(raiz));
+        
+        //gerar atributos do conceito
+        Node filho = raiz.getFirstChild();
+        while (filho != null) {
+            if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                String componente = filho.getLocalName();
+                
+                switch (componente) {
+                    case "element":
+                        saida.append("\t").append(getNome(filho)).append(" ofType ").append(getIdUnico(filho)).append("\n");
+                        break;
+                    case "group":
+                        saida.append("\t").append(getNome(filho)).append(" ofType ").append(getIdUnico(filho)).append("\n");
+                        break;
+                    case "choice":
+                        saida.append("\t").append("choiceAttribute ofType ").append(getIdUnico(filho)).append("\n");
+                        break;
+                    case "sequence":
+                        saida.append("\t").append("sequenceAttribute ofType ").append(getIdUnico(filho)).append("\n");
+                        break;
+                    case "any":
+                        //TODO MAPEAR
+                        break;
+                    default:
+                        break;
+                }
+            }
+            filho = filho.getNextSibling();
+        }
+        //gerar demais conceitos
+        filho = raiz.getFirstChild();
+        while (filho != null) {
+            if (filho.getNodeType() == Node.ELEMENT_NODE) {
+                String componente = filho.getLocalName();
+                
+                switch (componente) {
+                    case "element":
+                        saida.append("\n").append(mapearElement(filho));
+                        break;
+                    case "group":
+                        saida.append("\n").append(mapearGroup(filho));
+                        break;
+                    case "choice":
+                        saida.append("\n").append(mapearChoice(filho));
+                        break;
+                    case "sequence":
+                        saida.append("\n").append(mapearSequence(filho));
+                        break;
+                    case "any":
+                        //TODO MAPEAR
+                        break;
+                    default:
+                        break;
+                }
+            }
+            filho = filho.getNextSibling();
+        }
+        return saida.toString();
     }
 }

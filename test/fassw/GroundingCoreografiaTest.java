@@ -48,8 +48,6 @@ public class GroundingCoreografiaTest {
      */
     @BeforeClass
     public static void setUpClass() throws FileNotFoundException, UnsupportedEncodingException, IOException, InvalidModelException {
-        GroundingCoreografia gc = new GroundingCoreografia();
-        gc.gerar();
     }
 
     @AfterClass

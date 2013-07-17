@@ -1,0 +1,65 @@
+concept attribute.id.1
+	annotations
+		xmlType hasValue "attribute"
+		id hasValue "id.1"
+		use hasValue "required"
+	endAnnotations
+	value ofType _string
+
+concept attribute.id.2
+	annotations
+		xmlType hasValue "attribute"
+		id hasValue "id.2"
+		use hasValue "required"
+	endAnnotations
+	value ofType atributoExemplo
+
+concept attribute.id.3
+	annotations
+		xmlType hasValue "attribute"
+		id hasValue "id.3"
+		use hasValue "required"
+	endAnnotations
+	value ofType prod#exemplo
+
+concept atributoST
+	annotations
+		xmlType hasValue "attribute"
+		id hasValue "id.4"
+		form hasValue "qualified"
+	endAnnotations
+	attributeSimpleType ofType id.5
+
+concept simpleType.id.5 subConceptOf _string
+	annotations
+		xmlType hasValue "simpleType"
+		id hasValue "id.5"
+	endAnnotations
+
+axiom id.6
+	annotations
+		xmlType hasValue "restriction"
+		id hasValue "id.6"
+		baseType hasValue "xs:string"
+	endAnnotations
+	definedBy
+		!- naf (
+		?X memberOf _string
+		and ?X memberOf simpleType.id.5 ?
+		).
+
+
+concept attribute.id.7
+	annotations
+		xmlType hasValue "attribute"
+		id hasValue "id.7"
+	endAnnotations
+	refAttribute ofType outroAtributo
+
+concept outroAtributo
+	annotations
+		xmlType hasValue "attribute"
+		id hasValue "id.8"
+	endAnnotations
+	value ofType _integer
+

@@ -1,0 +1,23 @@
+<types>
+	<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://example.com/types"
+        xmlns:t="http://example.com/types"
+        elementFormDefault="qualified">
+		
+		<!-- Exemplos que usam os elementos annotation, appinfo e documentation -->
+		<xs:annotation>
+			<xs:appinfo>W3Schools Note</xs:appinfo>
+			<xs:documentation xml:lang="en">
+				This Schema defines a W3Schools note!
+			</xs:documentation>
+		</xs:annotation>
+		
+		<xs:annotation id="tipo.Anotacao">
+			<xs:appinfo source="http://example.com/note.htm">Um appinfo</xs:appinfo>
+			<xs:documentation>
+				Um documentation escrito
+				em duas linhas.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:schema>
+ </types>

@@ -1,0 +1,351 @@
+concept myComplexType
+	annotations
+		xmlType hasValue "complexType"
+		id hasValue "id.1"
+	endAnnotations
+	allAttribute ofType id.2
+	myAttribute ofType id.3
+
+concept all.id.2
+	annotations
+		xmlType hasValue "all"
+		id hasValue "id.2"
+	endAnnotations
+
+concept myAttribute
+	annotations
+		xmlType hasValue "attribute"
+		id hasValue "id.3"
+	endAnnotations
+	value ofType _decimal
+
+
+concept chadState
+	annotations
+		xmlType hasValue "complexType"
+		id hasValue "id.4"
+	endAnnotations
+	choiceAttribute ofType id.5
+	attribute.id.6 ofType id.6
+
+concept choice.id.5
+	annotations
+		xmlType hasValue "choice"
+		id hasValue "id.5"
+		maxOccurs hasValue "1"
+		minOccurs hasValue "1"
+	endAnnotations
+	selected ofType id.7
+	unselected ofType id.8
+	dimpled ofType id.9
+
+concept selected
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.7"
+	endAnnotations
+	refAttribute ofType _string
+
+concept unselected
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.8"
+	endAnnotations
+	refAttribute ofType _string
+
+concept dimpled
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.9"
+	endAnnotations
+	refAttribute ofType _string
+
+concept attribute.id.6
+	annotations
+		xmlType hasValue "attribute"
+		id hasValue "id.6"
+	endAnnotations
+	refAttribute ofType myAttribute
+
+
+concept ordertype
+	annotations
+		xmlType hasValue "complexType"
+		id hasValue "id.10"
+	endAnnotations
+	groupAttribute ofType id.11
+	status ofType id.12
+
+concept grupoExemplo
+	annotations
+		xmlType hasValue "group"
+		id hasValue "id.11"
+	endAnnotations
+	sequenceAttribute ofType id.13
+
+concept sequence.id.13
+	annotations
+		xmlType hasValue "sequence"
+		id hasValue "id.13"
+	endAnnotations
+	customer ofType id.14
+	orderdetails ofType id.15
+	billto ofType id.16
+	shipto ofType id.17
+
+concept customer
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.14"
+	endAnnotations
+	refAttribute ofType _string
+
+concept orderdetails
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.15"
+	endAnnotations
+	refAttribute ofType _string
+
+concept billto
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.16"
+	endAnnotations
+	refAttribute ofType _string
+
+concept shipto
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.17"
+	endAnnotations
+	refAttribute ofType _string
+
+concept status
+	annotations
+		xmlType hasValue "attribute"
+		id hasValue "id.12"
+	endAnnotations
+	value ofType _string
+
+
+concept FamilyMountainBikeSizes
+	annotations
+		xmlType hasValue "complexType"
+		id hasValue "id.18"
+	endAnnotations
+	simpleContentAttribute ofType id.19
+
+concept extension.id.19
+	annotations
+		xmlType hasValue "extension"
+		id hasValue "id.19"
+		baseType hasValue "mountainbikesize"
+	endAnnotations
+	familyMember ofType id.20
+
+concept familyMember
+	annotations
+		xmlType hasValue "attribute"
+		id hasValue "id.20"
+	endAnnotations
+	value ofType _string
+
+
+concept ChildMountainBikeSizes
+	annotations
+		xmlType hasValue "complexType"
+		id hasValue "id.21"
+	endAnnotations
+	simpleContentAttribute ofType id.22
+
+concept restriction.id.22
+	annotations
+		xmlType hasValue "restriction"
+		id hasValue "id.22"
+		baseType hasValue "FamilyMountainBikeSizes"
+	endAnnotations
+axiom id.22
+	annotations
+		xmlType hasValue "restriction"
+		id hasValue "id.22"
+		baseType hasValue "FamilyMountainBikeSizes"
+	endAnnotations
+	definedBy
+		!- naf (
+		?X memberOf FamilyMountainBikeSizes
+		and ?X memberOf simpleContent.id.23 ?
+		and ( X hasValue 'small'
+		or X hasValue 'medium' )
+		).
+
+concept personinfo
+	annotations
+		xmlType hasValue "complexType"
+		id hasValue "id.24"
+	endAnnotations
+	sequenceAttribute ofType id.25
+
+concept sequence.id.25
+	annotations
+		xmlType hasValue "sequence"
+		id hasValue "id.25"
+	endAnnotations
+	firstname ofType id.26
+	lastname ofType id.27
+
+concept firstname
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.26"
+	endAnnotations
+	refAttribute ofType _string
+
+concept lastname
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.27"
+	endAnnotations
+	refAttribute ofType _string
+
+concept animais
+	annotations
+		xmlType hasValue "complexType"
+		id hasValue "id.28"
+	endAnnotations
+	sequenceAttribute ofType id.29
+	tamanho ofType id.30
+	pelo ofType id.31
+
+concept sequence.id.29
+	annotations
+		xmlType hasValue "sequence"
+		id hasValue "id.29"
+		maxOccurs hasValue "unbounded"
+		minOccurs hasValue "0"
+	endAnnotations
+	elefante ofType id.32
+	urso ofType id.33
+	girafa ofType id.34
+
+concept elefante
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.32"
+	endAnnotations
+	refAttribute ofType _string
+
+concept urso
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.33"
+	endAnnotations
+	refAttribute ofType _string
+
+concept girafa
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.34"
+	endAnnotations
+	refAttribute ofType _string
+
+concept tamanho
+	annotations
+		xmlType hasValue "attribute"
+		id hasValue "id.30"
+	endAnnotations
+	value ofType _decimal
+
+
+concept pelo
+	annotations
+		xmlType hasValue "attribute"
+		id hasValue "id.31"
+	endAnnotations
+	value ofType _string
+
+
+concept maisAnimais
+	annotations
+		xmlType hasValue "complexType"
+		id hasValue "id.35"
+	endAnnotations
+	complexContentAttribute ofType id.36
+
+concept extension.id.36
+	annotations
+		xmlType hasValue "extension"
+		id hasValue "id.36"
+		baseType hasValue "personinfo"
+	endAnnotations
+	sequenceAttribute ofType id.37
+
+concept sequence.id.37
+	annotations
+		xmlType hasValue "sequence"
+		id hasValue "id.37"
+	endAnnotations
+	macaco ofType id.38
+	camelo ofType id.39
+
+concept macaco
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.38"
+	endAnnotations
+	refAttribute ofType _string
+
+concept camelo
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.39"
+	endAnnotations
+	refAttribute ofType _string
+
+concept animaisRestriction
+	annotations
+		xmlType hasValue "complexType"
+		id hasValue "id.40"
+	endAnnotations
+	complexContentAttribute ofType id.41
+
+concept restriction.id.41
+	annotations
+		xmlType hasValue "restriction"
+		id hasValue "id.41"
+		baseType hasValue "animais"
+	endAnnotations
+	sequenceAttribute ofType id.42
+
+concept sequence.id.42
+	annotations
+		xmlType hasValue "sequence"
+		id hasValue "id.42"
+	endAnnotations
+	elefante ofType id.43
+	urso ofType id.44
+	girafa ofType id.45
+
+concept elefante
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.43"
+		fixed hasValue "dumbo"
+	endAnnotations
+	refAttribute ofType _string
+
+concept urso
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.44"
+		fixed hasValue "catatau"
+	endAnnotations
+	refAttribute ofType _string
+
+concept girafa
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.45"
+	endAnnotations
+	refAttribute ofType _string
+

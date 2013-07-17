@@ -9,6 +9,10 @@ import javax.swing.JOptionPane;
  * Os metodos abrirArquivo e salvarArquivo usam o JFileChooser para retornar cadeias contendo caminhos
  * para abrir e salvar arquivos.
  * 
+ * Referências: 
+ * <br> {@link http://cinforum.forumeiros.com/t2-tutorial-usando-o-jfilechooser}
+ * <br> {@link http://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html#input}
+ * 
  * @author Murilo Honorio
  * @version 0.0
  */
@@ -42,10 +46,11 @@ public class InterfaceGrafica {
             caminho = chooser.getSelectedFile().getAbsolutePath();
         }
         if (!caminho.equals("")) {
-            arquivo = new File(caminho);
+            return caminho;
         } else {
             JOptionPane.showMessageDialog(null, "Usuario nao definiu onde salvar o resultado. Programa encerrado.", "Atencao!", JOptionPane.WARNING_MESSAGE);
+            System.exit(0);
         }
-        return caminho;
+        return null;
     }
 }
