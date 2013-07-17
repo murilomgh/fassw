@@ -1,13 +1,9 @@
 package fassw.util;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import org.apache.woden.ErrorReporter;
 import org.apache.woden.WSDLException;
 import org.apache.woden.WSDLFactory;
 import org.apache.woden.WSDLReader;
-import org.apache.woden.wsdl20.Description;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -19,7 +15,15 @@ import org.w3c.dom.Element;
  * @version 0.0
  */
 public class Analisador {
-       
+    
+    /**
+     * Metodo que identifica a versao do arquivo WSDL verificando elemento raiz.
+     * Caso "description" -> WSDL 2.0
+     * Caso "definitions" -> WSDL 1.1
+     * @param entrada
+     * @param linhaDeComando
+     * @return 
+     */
     public static boolean identificarVersao(String entrada, boolean linhaDeComando) {
         boolean isVersao20;
 
@@ -59,7 +63,7 @@ public class Analisador {
             WSDLReader reader = factory.newWSDLReader();
             reader.setFeature(org.apache.woden.WSDLReader.FEATURE_VALIDATION, true);
             reader.readWSDL(caminho);
-            
+            System.out.println("Analise OK");
             return true;
         }
         //tratamento para erros fatais

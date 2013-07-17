@@ -46,6 +46,7 @@ concept selected
 	endAnnotations
 	refAttribute ofType _string
 
+
 concept unselected
 	annotations
 		xmlType hasValue "element"
@@ -53,12 +54,14 @@ concept unselected
 	endAnnotations
 	refAttribute ofType _string
 
+
 concept dimpled
 	annotations
 		xmlType hasValue "element"
 		id hasValue "id.9"
 	endAnnotations
 	refAttribute ofType _string
+
 
 concept attribute.id.6
 	annotations
@@ -100,12 +103,14 @@ concept customer
 	endAnnotations
 	refAttribute ofType _string
 
+
 concept orderdetails
 	annotations
 		xmlType hasValue "element"
 		id hasValue "id.15"
 	endAnnotations
 	refAttribute ofType _string
+
 
 concept billto
 	annotations
@@ -114,12 +119,14 @@ concept billto
 	endAnnotations
 	refAttribute ofType _string
 
+
 concept shipto
 	annotations
 		xmlType hasValue "element"
 		id hasValue "id.17"
 	endAnnotations
 	refAttribute ofType _string
+
 
 concept status
 	annotations
@@ -201,12 +208,14 @@ concept firstname
 	endAnnotations
 	refAttribute ofType _string
 
+
 concept lastname
 	annotations
 		xmlType hasValue "element"
 		id hasValue "id.27"
 	endAnnotations
 	refAttribute ofType _string
+
 
 concept animais
 	annotations
@@ -235,6 +244,7 @@ concept elefante
 	endAnnotations
 	refAttribute ofType _string
 
+
 concept urso
 	annotations
 		xmlType hasValue "element"
@@ -242,12 +252,14 @@ concept urso
 	endAnnotations
 	refAttribute ofType _string
 
+
 concept girafa
 	annotations
 		xmlType hasValue "element"
 		id hasValue "id.34"
 	endAnnotations
 	refAttribute ofType _string
+
 
 concept tamanho
 	annotations
@@ -295,12 +307,14 @@ concept macaco
 	endAnnotations
 	refAttribute ofType _string
 
+
 concept camelo
 	annotations
 		xmlType hasValue "element"
 		id hasValue "id.39"
 	endAnnotations
 	refAttribute ofType _string
+
 
 concept animaisRestriction
 	annotations
@@ -334,6 +348,7 @@ concept elefante
 	endAnnotations
 	refAttribute ofType _string
 
+
 concept urso
 	annotations
 		xmlType hasValue "element"
@@ -342,10 +357,12 @@ concept urso
 	endAnnotations
 	refAttribute ofType _string
 
+
 concept girafa
 	annotations
 		xmlType hasValue "element"
 		id hasValue "id.45"
 	endAnnotations
 	refAttribute ofType _string
+
 

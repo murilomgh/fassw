@@ -34,11 +34,10 @@ public class MapeadorTest {
     @Test
     public void testExecutar() throws Exception {
         System.out.println("executar");
-        Mapeador instance = new Mapeador(null, null);
+        Mapeador mapeador = new Mapeador("Z:\\exemploTypes.wsdl", "Z:\\svc20.wsml", true);
         boolean expResult = true;
-        boolean result = instance.executar();
+        boolean result = mapeador.executar();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 }

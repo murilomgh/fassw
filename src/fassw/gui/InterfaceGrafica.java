@@ -5,7 +5,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
- * A interface gráfica consiste em gerar uma instancia de JFileChooser.
+ * A interface grafica consiste em gerar uma instancia de JFileChooser.
  * Os metodos abrirArquivo e salvarArquivo usam o JFileChooser para retornar cadeias contendo caminhos
  * para abrir e salvar arquivos.
  * 
@@ -52,5 +52,18 @@ public class InterfaceGrafica {
             System.exit(0);
         }
         return null;
+    }
+    
+    public boolean converterArquivo() {
+        int converter = JOptionPane.showConfirmDialog(null, 
+                        "Em caso de arquivo WSDL versao 1.1, gostaria de tentar converter?", 
+                        "Versao diferente", 
+                        JOptionPane.YES_NO_OPTION);
+        if (converter == JOptionPane.YES_OPTION) {
+            return true;
+        } 
+        else {
+            return false;
+        }
     }
 }

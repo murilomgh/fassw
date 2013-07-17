@@ -57,4 +57,12 @@ public class MainTest {
         String[] args = {"mapeador", "Z:\\Dev\\svc20.wsdl", "Z:\\svc20.wsml"};
         Main.main(args);
     }
+    
+    @Test
+    public void testarArquivoWSDL11() throws UnsupportedOperationException, InvalidModelException, IOException {
+        System.out.println("testarArquivoWSDL11");
+        System.out.println("===================");
+        String[] args = {"Z:\\Dev\\svc20.wsdl", "Z:\\svc20.wsml", "s"};
+        Main.main(args);
+    }
 }

@@ -569,14 +569,7 @@ public class GroundingDados implements GroundingDadosInterface {
                     case "restriction":
                         saida.append(" subConceptOf ");
                         Node base = filho.getAttributes().getNamedItem("base"); //Atributo base eh obrigatorio
-                        boolean tipoEmbutido = isTipoEmbutido(base.getNodeValue(), filho);
-                        if (tipoEmbutido) {
-                            String[] valorBase = base.getNodeValue().split(":");
-                            saida.append("_").append(valorBase[1].toLowerCase()).append("\n");
-                        }
-                        else {
-                            saida.append(transformarBaseOuType(base, raiz)).append("\n");
-                        }
+                        saida.append(transformarBaseOuType(base, raiz)).append("\n");
                         break;
                     case "list":
                         saida.append("\n");
@@ -593,6 +586,7 @@ public class GroundingDados implements GroundingDadosInterface {
         }
         saida.append(getAnnotations(raiz));
 
+        //gerar conceito do subcomponente
         filho = raiz.getFirstChild();
         while (filho != null) {
             if (filho.getNodeType() == Node.ELEMENT_NODE) {
@@ -762,17 +756,14 @@ public class GroundingDados implements GroundingDadosInterface {
             }
         }
         //gerar axioma para o simpleType ou simpleContent
-        saida.append("axiom ").append(id).append("\n");
+        Node base = raiz.getAttributes().getNamedItem("base");
         
+        saida.append("axiom ").append(id).append("\n");
         saida.append(getAnnotations(raiz));
-
         saida.append("\t").append("definedBy").append("\n");
         saida.append("\t\t").append("!- naf (").append("\n");
         saida.append("\t\t").append("?X memberOf ");
-
-        Node base = raiz.getAttributes().getNamedItem("base");
         saida.append(transformarBaseOuType(base, raiz)).append("\n");
-        
         saida.append("\t\t").append("and ?X memberOf ").append(getNome(raiz.getParentNode())).append(" ?").append("\n");
 
         Node filho = raiz.getFirstChild();
@@ -1007,11 +998,11 @@ public class GroundingDados implements GroundingDadosInterface {
                         switch (componente) {
                             case "simpleType":
                                 saida.append("\t").append("simpleTypeAttribute ofType ").append(id).append("\n");
-                                saida.append(mapearSimpleType(filho));
+                                saida.append("\n").append(mapearSimpleType(filho));
                                 break;
                             case "complexType":
                                 saida.append("\t").append("complexTypeAttribute ofType ").append(id).append("\n");
-                                saida.append(mapearComplexType(filho));
+                                saida.append("\n").append(mapearComplexType(filho));
                                 break;
                             default:
                                 break;
@@ -1024,7 +1015,7 @@ public class GroundingDados implements GroundingDadosInterface {
                 String QName = transformarBaseOuType(type, raiz);
                 boolean tipoEmbutido = isTipoEmbutido(type.getNodeValue(), raiz);
                 if (tipoEmbutido) {
-                    saida.append("\t").append("refAttribute").append(" ofType ").append(QName).append("\n");
+                    saida.append("\t").append("refAttribute").append(" ofType ").append(QName).append("\n\n");
                 }
                 else {
                     Node elementoRef = recuperarElemento(QName, "simpleType", raiz);

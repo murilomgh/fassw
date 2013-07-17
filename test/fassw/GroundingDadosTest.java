@@ -275,7 +275,7 @@ public class GroundingDadosTest {
      * 
      * @throws Exception 
      */
-//    @Test
+    @Test
     public void testMapearElement() throws Exception {
         System.out.println("MapearElement");
         System.out.println("================");
@@ -295,11 +295,13 @@ public class GroundingDadosTest {
                 elementos.add(item);
             }
         }
-        System.out.println("Numero de element: " + elementos.size());
+        System.out.println("Numero de element testados: " + elementos.size());
         System.out.println("--------------------");
         String saida = "";
+        int i = 1;
         for (Node elemento : elementos) {
             saida = saida + gd.mapearElement(elemento);
+            i++;
         }
         System.out.println(saida);
         FileUtils.write(resultado, saida);

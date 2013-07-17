@@ -1,11 +1,8 @@
 package fassw;
 
-import old.GroundingDados;
-import fassw.gui.InterfaceGrafica;
 import fassw.util.Analisador;
 import fassw.util.Conversor;
 import java.io.File;
-import javax.swing.JOptionPane;
 /**
  * Classe responsável por ler as descrições dos serviços Web em WSDL e transformar em descrições 
  * WSML segundo o modelo WSMO.
@@ -15,20 +12,14 @@ import javax.swing.JOptionPane;
 class Mapeador {
     private String entrada, saida; //caminhos para os arquivos de entrada e saida
     boolean linhaDeComando;
+    boolean converter; //deseja converter caso WSDL 1.1
 
-    //versao do mapeador por linha de comando
-    public Mapeador(String entrada, String saida) {
+    public Mapeador(String entrada, String saida, boolean converter) {
         this.entrada = entrada;
         this.saida = saida;
+        this.converter = converter;
+        
         this.linhaDeComando = true;
-    }
-    
-    //versao do mapeador com interface grafica
-    public Mapeador() {
-        InterfaceGrafica ig = new InterfaceGrafica();
-        this.entrada = ig.abrirArquivo();
-        this.saida = ig.salvarArquivo();
-        this.linhaDeComando = false;
     }
 
     /**
@@ -41,17 +32,13 @@ class Mapeador {
         try {
             sucesso = Analisador.identificarVersao(entrada, linhaDeComando);
             if (!sucesso) {
-                int resposta = JOptionPane.showConfirmDialog(null, 
-                        "Arquivo WSDL versao 1.1. Gostaria de converter?", 
-                        "Versao diferente", 
-                        JOptionPane.YES_NO_OPTION);
-
-                if (resposta == JOptionPane.YES_OPTION) {
+                if (converter == true) {
                     sucesso = Conversor.converter(entrada, linhaDeComando);
                     int index = entrada.lastIndexOf(File.separatorChar);
                     //converter o caminho de entrada para o arquivo temporario convertido
                     entrada = entrada.substring(0, index) + File.separatorChar + "temp" + File.separatorChar + entrada.substring(index, entrada.length()) + "2";
-                } else {
+                }
+                else {
                     sucesso = false;
                 }
             }
@@ -60,8 +47,10 @@ class Mapeador {
                 sucesso = Analisador.analisarArquivo(entrada, linhaDeComando);
             }
             if (sucesso) {
-                GroundingDados gd = new GroundingDados(entrada, saida);
+                //EXECUTAR O GROUNDING DE DADOS
+                RunGroundingDados gd = new RunGroundingDados(entrada, saida);
                 sucesso = gd.processar();
+                System.out.println("Geracao de Ontology OK");
             }
             if (sucesso) {
                 GroundingCoreografia gc = new GroundingCoreografia(entrada, saida);
@@ -69,6 +58,7 @@ class Mapeador {
             }
             return sucesso;
         } catch (RuntimeException re) {
+            System.err.println(re.fillInStackTrace());
             System.exit(0);
         }
         return false;

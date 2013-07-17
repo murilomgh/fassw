@@ -22,8 +22,6 @@
 		<xs:element name="from" type="xs:string" block="restricao1 restricao2"/>
 		<!-- exemplos de element com atributo final #all que previne todos os elementos derivados -->
 		<xs:element name="heading" type="xs:string" final="#all"/>
-		<!-- exemplos de element com atributo ref (nao poderia ser filho de schema, apenas para testes) -->
-		<xs:element ref="to"/>
 		
 		<!-- exemplo de element com simpleType embutido -->
 		<xs:element name="age">
@@ -35,10 +33,9 @@
 			</xs:simpleType>
 		</xs:element>
 		
-		<!-- exemplo de element com substitutionGroup -->
-		<xs:element name="notaSubstituition" substitutionGroup="note"/>
+		<!-- exemplo de element com substitutionGroup (NAO IMPLEMENTADO) -->
+		<!-- <xs:element name="para" type="xs:string" substitutionGroup="to"/> -->
 		
-		<!-- exemplo completo -->
 		<!-- usando um simpleContent, a seguinte declaracao de element contem um complexType que 
 		define o conteudo do elemento como do tipo decimal com um unico atributo (sizing) -->
 		<xs:element name="shoeSize">
@@ -56,17 +53,6 @@
 							</xs:simpleType>
 						</xs:attribute>
 					</xs:extension>
-				</xs:simpleContent>
-			</xs:complexType>
-		</xs:element>
-		
-		<xs:element name="ChildMountainBikeSizes">
-			<xs:complexType >
-				<xs:simpleContent>
-					<xs:restriction base="FamilyMountainBikeSizes" >
-						<xs:enumeration value="small"/>
-						<xs:enumeration value="medium"/>
-					</xs:restriction>
 				</xs:simpleContent>
 			</xs:complexType>
 		</xs:element>
