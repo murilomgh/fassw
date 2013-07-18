@@ -11,8 +11,6 @@ import java.io.IOException;
  */
 public class Main {
     
-    private String entrada, saida; //caminhos para os arquivos de entrada e saida
-
     /**
      * Método de entrada da ferramenta.
      * Caso passe como parametros "entrada.wsdl saida.wsml [opcao]", funciona em linha de comando, 

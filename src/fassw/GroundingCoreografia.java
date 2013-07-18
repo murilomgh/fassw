@@ -209,7 +209,7 @@ public class GroundingCoreografia {
     }
 
     /**
-     * Esse bloco declara as variaveis compartilhadas entre pre-condicoes, pos-condicoes, assuncoes 
+     * Bloco que declara as variaveis compartilhadas entre pre-condicoes, pos-condicoes, assuncoes 
      * e efeitos de uma capacidade. 
      * Sao criadas apenas duas no nosso prototipo: request para
      * as operacoes de entrada do servico Web e response para as operacoes de saida.
@@ -280,7 +280,7 @@ public class GroundingCoreografia {
      */
     protected String declararInterface(String nomeDoServico, List<String> namespaceDasOntologias) {
         StringBuilder saida = new StringBuilder();
-        saida.append("interface ").append(nomeDoServico + "Interface").append("\n\n");
+        saida.append("interface ").append(nomeDoServico).append("Interface").append("\n\n");
         saida.append("\t").append("importsOntology").append("\n");
 
         for (String namespace : namespaceDasOntologias) {
@@ -302,7 +302,7 @@ public class GroundingCoreografia {
      */
     protected String declararChoreography(String nomeDoServico, List<String> namespaceOntologias, List<String> conceitosIn, List<String> conceitosOut) {
         StringBuilder saida = new StringBuilder();
-        saida.append("\tchoreography ").append(nomeDoServico + "Choreography").append("\n\n");
+        saida.append("\tchoreography ").append(nomeDoServico).append("Choreography").append("\n\n");
         saida.append("\t\tstateSignature").append("\n");
         saida.append("\t\t\timportsOntology").append("\n");
         for (String namespace : namespaceOntologias) {
@@ -342,7 +342,6 @@ public class GroundingCoreografia {
     protected String declararTransitionRules(String nomeDoServico, List<String> conceitosIn) {
         StringBuilder saida = new StringBuilder();
         saida.append("\t\ttransitionRules ").append(nomeDoServico).append("StateSignatureRules").append("\n");
-        //REPETIR PARA TODOS OS CONCEITOS
         for (String in : conceitosIn) {
             saida.append("\t\t\t").append(in);
             saida.append("\t\tand ?controlstate[oasm#value hasValue oasm#InitialState]) do\n");

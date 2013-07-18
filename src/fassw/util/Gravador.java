@@ -53,9 +53,7 @@ public class Gravador {
             pw = new PrintWriter(arquivo.getAbsoluteFile(), "UTF-8");
             pw.append(documento);
             
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Gravador.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedEncodingException ex) {
+        } catch (FileNotFoundException | UnsupportedEncodingException ex) {
             Logger.getLogger(Gravador.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             pw.close();

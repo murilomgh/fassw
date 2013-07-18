@@ -70,26 +70,17 @@ public class Leitor {
             File arquivo = new File(entrada);
             WSDLFactory factory = WSDLFactory.newInstance();
             WSDLReader reader = factory.newWSDLReader();
-            //reader.setFeature(WSDLReader.FEATURE_VALIDATION, true); //<-- enable WSDL 2.0 validation(optional)
-            ErrorReporter errorReporter = reader.getErrorReporter();
-            ErrorHandler errorHandler = errorReporter.getErrorHandler();
-            
-            
-            ErrorReporter er = new ErrorReporterImpl();
-            ErrorHandler errorHandler2 = er.getErrorHandler();
+            //TODO averiguar o comportamento do validador para arquivos WSDL com problemas na sintaxe
+            reader.setFeature(WSDLReader.FEATURE_VALIDATION, true);
             descricao = reader.readWSDL(arquivo.getAbsolutePath()); //<-- the Description component, always returned
         } 
         catch (org.apache.woden.WSDLException e) {
             switch (e.getFaultCode()) {
-                case WSDLException.INVALID_WSDL:
-                    //wsdl invalido
-                    System.out.println(e.getFaultCode());
-                    System.out.println(e.getLocalizedMessage());
+                case WSDLException.INVALID_WSDL: //wsdl invalido
+                    System.out.println(e.getFaultCode() + "\n" + e.getLocalizedMessage());
                     break;
-                case WSDLException.OTHER_ERROR:
-                    //arquivo invalido
+                case WSDLException.OTHER_ERROR: //arquivo invalido
                     System.out.println(e.getFaultCode());
-                    e.printStackTrace();
                     break;
                 default:
                     Logger.getLogger(Leitor.class.getName()).log(Level.SEVERE, null, e);

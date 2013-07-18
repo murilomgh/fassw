@@ -10,16 +10,15 @@ import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.FactoryConfigurationError;
-import org.apache.woden.WSDLException;
-import org.apache.woden.wsdl20.Description;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
+ * Classe com a responsabilidade organizar a execucao do grounding de dados para os schema
+ * embutidos no elemento types da descricao do servico web.
  * 
  * @author Murilo Honorio
- * @version 0.0
  */
 public class MapeadorDados {
     
@@ -40,9 +39,7 @@ public class MapeadorDados {
     public boolean processar() {
         try {
             Document documento = Leitor.obterDocument(entrada);
-            Description desc = Leitor.obterDescription(entrada);
             Node types = documento.getElementsByTagName("types").item(0);
-            
             
             if (types == null) { //arquivo nao possui schema
                 System.err.println("Documento fornecido nao contem elemento Types. Nao ha processamento a realizar");
@@ -50,7 +47,6 @@ public class MapeadorDados {
             } 
             percorrerSchemas(types);
             return true;
-
         } catch (ElementoNaoEsperadoException e) {
             System.err.println("Erro de logica: " + e.getMessage());
         } catch (FactoryConfigurationError e) {
@@ -170,7 +166,7 @@ public class MapeadorDados {
         saida.append("wsmlVariant _\"").append(VarianteWSML.Flight).append("\"\n");
         
         //declarar namespaces
-        saida.append("namespace {").append("_\"" + targetNamespace).append("#\",\n");
+        saida.append("namespace {").append("_\"").append(targetNamespace).append("#\",\n");
         //Obter demais namespaces
         saida.append("\t").append("dc\t_\"http://purl.org/dc/elements/1.1#\",\n");
         saida.append("\t").append("wsml\t_\"http://www.wsmo.org/wsml/wsml-syntax#\"\n");
@@ -178,7 +174,7 @@ public class MapeadorDados {
         //declarar cabecalho do artefato
         saida.append("ontology _\"").append(targetNamespace).append("\"\n");
         saida.append("\t").append("annotations").append("\n");
-        saida.append("\t\t").append("dc#title").append(" hasValue \"").append("ontologia ad-hoc " + nomeOntologia).append("\"\n");
+        saida.append("\t\t").append("dc#title").append(" hasValue \"").append("ontologia ad-hoc ").append(nomeOntologia).append("\"\n");
         saida.append("\t\t").append("dc#creator").append(" hasValue \"").append("FASSW").append("\"\n");
         saida.append("\t\t").append("dc#source").append(" hasValue \"").append(entrada).append("\"\n");
         saida.append("\t").append("endAnnotations").append("\n\n");

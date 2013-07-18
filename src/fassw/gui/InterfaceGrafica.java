@@ -5,7 +5,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
- * A interface grafica consiste em gerar uma instancia de JFileChooser.
+ * A interface grafica consiste na geracao de instancias de JFileChooser.
  * Os metodos abrirArquivo e salvarArquivo usam o JFileChooser para retornar cadeias contendo caminhos
  * para abrir e salvar arquivos.
  * 
@@ -14,7 +14,6 @@ import javax.swing.JOptionPane;
  * <br> {@link http://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html#input}
  * 
  * @author Murilo Honorio
- * @version 0.0
  */
 public class InterfaceGrafica {
 
@@ -39,7 +38,6 @@ public class InterfaceGrafica {
     
     public String salvarArquivo() {
         String caminho = "";
-        File arquivo = null;
         JOptionPane.showMessageDialog(null, "Escolha a pasta de saida. Digite nome e extensao do arquivo.", "Local de salvamento", JOptionPane.QUESTION_MESSAGE);
         int retorno = chooser.showSaveDialog(null);
         if (retorno == JFileChooser.APPROVE_OPTION) {

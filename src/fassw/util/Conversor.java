@@ -6,10 +6,9 @@ import org.apache.woden.tool.converter.Convert;
  * Prototipo do conversor de serviços de WSDL 1.1 para 2.0.
  * Todo credito vai para Sagara Gunathunga {@link http://www.blogger.com/profile/00728327638746992048}
  * 
- * O conversão faz uso da biblioteca Apache Woden. O projeto Woden prove um conversor baseado em XSL para essa tarefa.
+ * <br> O conversor faz uso da biblioteca Apache Woden. O projeto Woden prove um conversor baseado em XSL para essa tarefa.
+ * <br> O conversor depende da biblioteca WSMO4J para tratamento de excecoes.
  *
- * @author murilo.honorio@usp.br
- * @version 0.1
  * Fonte: {@link http://ssagara.blogspot.com.br/2009/01/converting-wsdl11-to-wsdl20-using-woden.html}
  */
 public class Conversor 

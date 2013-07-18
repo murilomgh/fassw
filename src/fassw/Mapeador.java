@@ -3,6 +3,7 @@ package fassw;
 import fassw.util.Analisador;
 import fassw.util.Conversor;
 import java.io.File;
+
 /**
  * Classe responsável por ler as descrições dos serviços Web em WSDL e transformar em descrições 
  * WSML segundo o modelo WSMO.
@@ -20,9 +21,9 @@ class Mapeador {
     }
 
     /**
-     * Realiza o processo de conversao do servico web.
+     * Realiza o processo de conversao do servico Web WSDL em artefatos Ontology e WebService WSMO.
      * 
-     * @return 
+     * @return um booleano indicando se a conversao ocorreu com sucesso.
      */
     public boolean executar() {
         boolean sucesso;

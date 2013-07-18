@@ -7,6 +7,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
+ * Implementacao dos metodos para gerar fragmentos WSML que representam conceitos WSMO, incluindo
+ * diversos metodos auxiliares.
  * 
  * @author Murilo Honorio
  * @version 0.0
@@ -21,7 +23,6 @@ public class GroundingDadosImpl implements GroundingDados {
     }
     
     //--- INICIO DAS FUNCOES AUXILIARES ---//
-
     /**
      * Retorna o valor do atributo <b>id</b> do elemento.
      * Caso o atributo nao exista, ele eh criado.
@@ -95,7 +96,7 @@ public class GroundingDadosImpl implements GroundingDados {
         CONTADOR = 1;
     }
     
-        /**
+    /**
      * Metodo auxiliar que recupera qualquer elemento que estiver dentro do schema, desde que seja do
      * mesmo tipo.
      * 
@@ -529,7 +530,6 @@ public class GroundingDadosImpl implements GroundingDados {
         //System.out.println(saida.toString());
         return saida.toString();
     }
-
     
     /**
      * O elemento simpleType define um tipo simples e especifica as restrições e as informações 

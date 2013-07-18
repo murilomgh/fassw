@@ -5,10 +5,9 @@ import org.w3c.dom.Document;
 
 /**
  * Classe com a responsabilidade de identificar se o arquivo de entrada eh valido e qual a versao
- * do Leitor fornecido para o mapeador.
+ * do documento WSDL fornecido para o mapeador.
  * 
  * @author Murilo Honorio
- * @version 0.0
  */
 public class Analisador {
     
