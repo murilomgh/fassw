@@ -6,19 +6,17 @@ import java.io.File;
 /**
  * Classe responsável por ler as descrições dos serviços Web em WSDL e transformar em descrições 
  * WSML segundo o modelo WSMO.
+ * 
  * @author Murilo Honorio
- * @version 0.0
  */
 class Mapeador {
     private String entrada, saida; //caminhos para os arquivos de entrada e saida
-    boolean linhaDeComando;
-    boolean converter; //deseja converter caso WSDL 1.1
+    boolean conversao; //flag se tentar conversao caso receba documento WSDL 1.1
 
-    public Mapeador(String entrada, String saida, boolean converter) {
+    public Mapeador(String entrada, String saida, boolean conversao) {
         this.entrada = entrada;
         this.saida = saida;
-        this.converter = converter;
-        this.linhaDeComando = true;
+        this.conversao = conversao;
     }
 
     /**
@@ -30,12 +28,12 @@ class Mapeador {
         boolean sucesso;
         
         try {
-            sucesso = Analisador.identificarVersao(entrada, linhaDeComando);
+            sucesso = Analisador.identificarVersao(entrada);
             if (!sucesso) {
-                if (converter == true) {
-                    sucesso = Conversor.converter(entrada, linhaDeComando);
+                if (conversao == true) {
+                    sucesso = Conversor.converter(entrada);
                     int index = entrada.lastIndexOf(File.separatorChar);
-                    //converter o caminho de entrada para o arquivo temporario convertido
+                    //desviar o caminho de entrada para o arquivo temporario convertido
                     entrada = entrada.substring(0, index) + File.separatorChar + "temp" + File.separatorChar + entrada.substring(index, entrada.length()) + "2";
                 }
                 else {
@@ -44,12 +42,11 @@ class Mapeador {
             }
 
             if (sucesso) {
-                sucesso = Analisador.analisarArquivo(entrada, linhaDeComando);
+                sucesso = Analisador.analisarArquivo(entrada);
             }
             if (sucesso) {
                 MapeadorDados gd = new MapeadorDados(entrada, saida);
                 sucesso = gd.processar();
-                System.out.println("Geracao de Ontology OK");
             }
             if (sucesso) {
                 GroundingCoreografia gc = new GroundingCoreografia(entrada, saida);

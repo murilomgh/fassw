@@ -55,8 +55,9 @@ public class GroundingCoreografiaTest {
     }
 
     /**
-     * Test of processar method, of class GroundingCoreografia.
+     * Teste de geracao de arquivo completo
      */
+    //TODO escrever teste para o metodo processar()
     @Test
     public void testProcessar() {
         /*
@@ -64,7 +65,6 @@ public class GroundingCoreografiaTest {
         boolean expResult = false;
         boolean result = instance.processar();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
         */
         fail("The test case is a prototype.");
     }

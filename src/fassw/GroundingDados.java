@@ -16,6 +16,7 @@
  */
 package fassw;
 
+import fassw.util.ElementoNaoEsperadoException;
 import org.w3c.dom.Node;
 
 /**

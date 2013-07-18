@@ -20,7 +20,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * 
  * @author Murilo Honorio
  */
 public class MapeadorTest {
@@ -28,13 +28,11 @@ public class MapeadorTest {
     public MapeadorTest() {
     }
 
-    /**
-     * Test of executar method, of class Mapeador.
-     */
     @Test
-    public void testExecutar() throws Exception {
-        System.out.println("executar");
-        Mapeador mapeador = new Mapeador("Z:\\git-repo\\fassw\\testes\\exemplo\\servicoExemplo20.wsdl", ".\\testes\\exemplo\\servicoExemplo20.wsml", true);
+    public void testExecutarSemConverterComSucesso() throws Exception {
+        System.out.println("Teste executar()");
+        System.out.println("================");
+        Mapeador mapeador = new Mapeador(".\\testes\\exemplo\\servicoExemplo20.wsdl", ".\\testes\\exemplo\\servicoExemplo20.wsml", false);
         boolean resultadoEsperado = true;
         boolean result = mapeador.executar();
         assertEquals(resultadoEsperado, result);

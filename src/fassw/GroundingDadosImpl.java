@@ -1,5 +1,6 @@
 package fassw;
 
+import fassw.util.ElementoNaoEsperadoException;
 import java.util.ArrayList;
 import java.util.List;
 import org.w3c.dom.Node;
@@ -1491,7 +1492,7 @@ public class GroundingDadosImpl implements GroundingDados {
                         saida.append("\t").append("sequenceAttribute ofType ").append(getIdUnico(filho)).append("\n");
                         break;
                     case "any":
-                        //TODO MAPEAR
+                        //TODO mapear elemento Any
                         break;
                     default:
                         break;
@@ -1519,7 +1520,7 @@ public class GroundingDadosImpl implements GroundingDados {
                         saida.append("\n").append(mapearSequence(filho));
                         break;
                     case "any":
-                        //TODO MAPEAR
+                        //TODO mapear elemento Any
                         break;
                     default:
                         break;
@@ -1574,7 +1575,7 @@ public class GroundingDadosImpl implements GroundingDados {
                         saida.append("\t").append("sequenceAttribute ofType ").append(getIdUnico(filho)).append("\n");
                         break;
                     case "any":
-                        //TODO MAPEAR
+                        //TODO mapear elemento Any
                         break;
                     default:
                         break;
@@ -1602,7 +1603,7 @@ public class GroundingDadosImpl implements GroundingDados {
                         saida.append("\n").append(mapearSequence(filho));
                         break;
                     case "any":
-                        //TODO MAPEAR
+                        //TODO mapear elemento Any
                         break;
                     default:
                         break;

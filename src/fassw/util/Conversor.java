@@ -1,6 +1,5 @@
 package fassw.util;
 
-import javax.swing.JOptionPane;
 import org.apache.woden.tool.converter.Convert;
 
 /**
@@ -23,7 +22,7 @@ public class Conversor
      * 
      * @see org.apache.woden.tool.converter.Convert#convertFile
      */
-    public static boolean converter(String entrada, boolean linhaDeComando) {
+    public static boolean converter(String entrada) {
         String novoNamespaceAlvo = null;
         String diretorioDestino = "temp"; //cria pasta temp como subpasta da entrada
         boolean mensagensDetalhadas = true;
@@ -32,23 +31,16 @@ public class Conversor
         Convert conversor = new Convert();
         try {
             String convertFile = conversor.convertFile(novoNamespaceAlvo, entrada, diretorioDestino, mensagensDetalhadas, sobrescreverArquivo);
-            if (linhaDeComando) {
-                System.out.println(convertFile);
-            }
-            else {
-                JOptionPane.showMessageDialog(null, "Modulo Conversor efetuou tarefa com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            }
+            System.out.println("ARQUIVO CONVERTIDO:\n" + convertFile);
         }
         catch (javax.wsdl.WSDLException e) {
             if (e.getLocation().contains("description")) {
-                System.out.println("O arquivo fornecido como entrada já está na versão WSDL 2.0");
-                e.printStackTrace();
+                System.out.println("O arquivo fornecido como entrada já está na versão WSDL 2.0" + e.getMessage());
             }
         }
         catch (java.io.IOException e) {
             if (e.getMessage().contains("already exists")) {
-                System.out.println("O serviço já foi convertido anteriormente.");
-                e.printStackTrace();
+                System.out.println("O serviço já foi convertido anteriormente.\n" + e.getMessage());
             }
         }
         return true;

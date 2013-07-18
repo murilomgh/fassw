@@ -1,11 +1,8 @@
 package fassw;
 
 import fassw.gui.InterfaceGrafica;
-import fassw.util.Conversor;
-import java.io.File;
 import java.io.IOException;
 import javax.swing.JOptionPane;
-import org.wsmo.common.exception.InvalidModelException;
 
 /**
  * Contém o metodo de entrada do prototipo.
@@ -25,28 +22,23 @@ public class Main {
      * 
      * @param args nome da operacao, arquivo de entrada, arquivo de saida
      */
-    public static void main(String[] args) throws UnsupportedOperationException, InvalidModelException, IOException {
+    public static void main(String[] args) throws UnsupportedOperationException, IOException {
         boolean sucesso = false;
         Mapeador mapeador;
         
         if (args.length == 3) {
-            if (args[2].equals("-s")) {
-                mapeador = new Mapeador(args[0], args[1], true);
-                sucesso = mapeador.executar();
-            }
-            else if (args[2].equals("-n")) {
-                mapeador = new Mapeador(args[0], args[1], false);
-                sucesso = mapeador.executar();
-            }
-            else {
-                System.err.println("Parametro " + args[2] + " invalido. O programa espera 's' ou 'n'.");
-            }
-            
-            if (sucesso) {
-                System.out.println("Módulo mapeador efetuou a tarefa com sucesso.");
-            }
-            else {
-                System.err.println("Módulo mapeador não conseguiu concluir a tarefa.");
+            switch (args[2]) {
+                case "-s":
+                    mapeador = new Mapeador(args[0], args[1], true);
+                    sucesso = mapeador.executar();
+                    break;
+                case "-n":
+                    mapeador = new Mapeador(args[0], args[1], false);
+                    sucesso = mapeador.executar();
+                    break;
+                default:
+                    System.err.println("Parametro " + args[2] + " invalido. O programa espera '-s' ou '-n'.");
+                    break;
             }
         }
         else {
@@ -63,12 +55,12 @@ public class Main {
                 mapeador = new Mapeador(entrada, saida, false);
             }
             sucesso = mapeador.executar();
-            if (sucesso) {
-                JOptionPane.showMessageDialog(null, "Módulo mapeador efetuou a tarefa com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            }
-            else {
-                JOptionPane.showMessageDialog(null, "Módulo mapeador não conseguiu concluir a tarefa.", "Erro", JOptionPane.ERROR_MESSAGE);
-            }
+        }
+        if (sucesso) {
+            System.out.println("Módulo mapeador efetuou a tarefa com sucesso.");
+        } 
+        else {
+            System.err.println("Módulo mapeador não conseguiu concluir a tarefa.");
         }
     }
 }

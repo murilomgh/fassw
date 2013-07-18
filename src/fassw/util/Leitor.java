@@ -1,6 +1,5 @@
 package fassw.util;
 
-import fassw.GroundingCoreografia;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -8,9 +7,12 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import org.apache.woden.ErrorHandler;
+import org.apache.woden.ErrorReporter;
 import org.apache.woden.WSDLException;
 import org.apache.woden.WSDLFactory;
 import org.apache.woden.WSDLReader;
+import org.apache.woden.internal.ErrorReporterImpl;
 import org.apache.woden.wsdl20.Description;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -45,15 +47,12 @@ public class Leitor {
         } catch (ParserConfigurationException e) {
             System.err.println("Nao foi possivel configurar o parser DOM.");
             System.err.println("Mais detalhes: " + e.getMessage());
-            e.printStackTrace();
         } catch (SAXException e) {
             System.err.println("Erro durante analise e interpretacao do arquivo.");
             System.err.println("Mais detalhes: " + e.getMessage());
-            e.printStackTrace();
         } catch (IOException e) {
             System.err.println("Erro de entrada e saida.");
             System.err.println("Mais detalhes: " + e.getMessage());
-            e.printStackTrace();
         }
         return documento;
     }
@@ -71,10 +70,16 @@ public class Leitor {
             File arquivo = new File(entrada);
             WSDLFactory factory = WSDLFactory.newInstance();
             WSDLReader reader = factory.newWSDLReader();
-            //reader.setFeature(WSDLReader.FEATURE_VALIDATION, true); //<-- enable WSDL 2.0 validation(optional) 
+            //reader.setFeature(WSDLReader.FEATURE_VALIDATION, true); //<-- enable WSDL 2.0 validation(optional)
+            ErrorReporter errorReporter = reader.getErrorReporter();
+            ErrorHandler errorHandler = errorReporter.getErrorHandler();
+            
+            
+            ErrorReporter er = new ErrorReporterImpl();
+            ErrorHandler errorHandler2 = er.getErrorHandler();
             descricao = reader.readWSDL(arquivo.getAbsolutePath()); //<-- the Description component, always returned
         } 
-        catch (WSDLException e) {
+        catch (org.apache.woden.WSDLException e) {
             switch (e.getFaultCode()) {
                 case WSDLException.INVALID_WSDL:
                     //wsdl invalido
@@ -87,7 +92,7 @@ public class Leitor {
                     e.printStackTrace();
                     break;
                 default:
-                    Logger.getLogger(GroundingCoreografia.class.getName()).log(Level.SEVERE, null, e);
+                    Logger.getLogger(Leitor.class.getName()).log(Level.SEVERE, null, e);
                     break;
             }
         }

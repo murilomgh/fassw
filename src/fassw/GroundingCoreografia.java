@@ -7,14 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 //--- Elementos de Apache Woden ---//
 import org.apache.woden.schema.InlinedSchema;
-import org.apache.woden.types.NamespaceDeclaration;
 import org.apache.woden.wsdl20.Description;
 import org.apache.woden.wsdl20.Interface;
 import org.apache.woden.wsdl20.InterfaceMessageReference;
 import org.apache.woden.wsdl20.InterfaceOperation;
 import org.apache.woden.wsdl20.Service;
 import org.apache.woden.wsdl20.enumeration.Direction;
-import org.apache.woden.wsdl20.xml.TypesElement;
 
 /**
  * Classe responsavel por gerar o artefato WSMO Web Service, na sintaxe Surface, conforme os passos
@@ -57,21 +55,12 @@ public class GroundingCoreografia {
 
         //definir variante WSML-Flight
         docWSML.append(declararWSMLVariant(VarianteWSML.Flight.IRI()));
-
-        if (descricao.toElement().getTypesElement() != null) {
-            System.out.println("ENTROU");
-            TypesElement typesElement = descricao.toElement().getTypesElement();
-            NamespaceDeclaration[] declaredNamespaces = typesElement.getDeclaredNamespaces();
-            System.out.println(declaredNamespaces.length);
-            for (NamespaceDeclaration ns : declaredNamespaces) {
-                System.out.println(ns.getNamespaceURI().toASCIIString());
-            }
-        }
+        
+        //obter os esquemas que estao dentro do arquivo
         InlinedSchema[] names = descricao.toElement().getTypesElement().getInlinedSchemas();
         for (InlinedSchema schema : names) {
             namespaceDasOntologias.add(schema.getNamespace().toASCIIString());
         }
-
 
         //inserir namespace das ontologias
         docWSML.append(declararNamespaces(targetNamespaceWSDL, nomeDoServico, namespaceDasOntologias));

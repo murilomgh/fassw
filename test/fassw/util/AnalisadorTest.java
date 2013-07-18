@@ -55,9 +55,8 @@ public class AnalisadorTest {
     public void testIdentificarVersao20() {
         System.out.println("Identificar Versao 2.0");
         String entrada = ".\\testes\\analisador\\servico20.wsdl";
-        boolean linhaDeComando = true;
         boolean esperado = true;
-        boolean result = Analisador.identificarVersao(entrada, linhaDeComando);
+        boolean result = Analisador.identificarVersao(entrada);
         assertEquals(esperado, result);
     }
     
@@ -68,9 +67,8 @@ public class AnalisadorTest {
     public void testIdentificarVersao11() {
         System.out.println("Identificar Versao 1.1");
         String entrada = ".\\testes\\analisador\\servico11.wsdl";
-        boolean linhaDeComando = true;
         boolean esperado = false; //equivale a WSDL 1.1
-        boolean result = Analisador.identificarVersao(entrada, linhaDeComando);
+        boolean result = Analisador.identificarVersao(entrada);
         assertEquals(esperado, result);
     }
 
@@ -81,10 +79,8 @@ public class AnalisadorTest {
     public void testAnalisarArquivo() {
         System.out.println("Analisar Arquivo Sintaxe Errada");
         String caminho = ".\\testes\\analisador\\sintaxeErrada.wsdl";
-        boolean isLinhaDeComando = true;
         boolean resultado = false;
-        Analisador a = new Analisador();
-        boolean result = a.analisarArquivo(caminho, isLinhaDeComando);
+        boolean result = Analisador.analisarArquivo(caminho);
         assertEquals(resultado, result);
     }
 }

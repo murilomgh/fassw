@@ -8,12 +8,11 @@ namespace { _"http://www.example.com/exemplosvc/exemplo#"
 
 
 webService _"http://www.example.com/exemplosvc"
-	nonFunctionalProperties
+	annotations
 		dc#title hasValue "exemplo"
 		dc#creator hasValue "FASSW"
-		wsml#endpointDescription hasValue http://www.example.com/exemplosvc#wsdl.service(exemplo)
-
-	endNonFunctionalProperties
+		wsml#endpointDescription hasValue "http://www.example.com/exemplosvc#wsdl.service(exemplo)"
+	endAnnotations
 
 capability exemploCapability
 

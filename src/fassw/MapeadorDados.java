@@ -1,5 +1,6 @@
 package fassw;
 
+import fassw.util.ElementoNaoEsperadoException;
 import fassw.util.Leitor;
 import fassw.util.VarianteWSML;
 import java.io.File;
@@ -9,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.FactoryConfigurationError;
+import org.apache.woden.WSDLException;
 import org.apache.woden.wsdl20.Description;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
