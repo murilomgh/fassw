@@ -1,57 +1,51 @@
 package fassw;
 
+import fassw.util.Leitor;
+import fassw.util.VarianteWSML;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.FactoryConfigurationError;
-import javax.xml.parsers.ParserConfigurationException;
+import org.apache.woden.wsdl20.Description;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 
 /**
  * 
  * @author Murilo Honorio
  * @version 0.0
  */
-public class RunGroundingDados {
+public class MapeadorDados {
     
-    private final String xmlns = "http://www.w3.org/2001/XMLSchema";
     private static Integer contador = 1; //um contador que estabelece um nome unico para cade elemento que nao possua um nome
     private String entrada, caminho;
-    private GroundingDadosInterface mapeador;
-    private Document documento;
+    private GroundingDados mapeador;
 
-    public RunGroundingDados(String entrada, String saida) {
+    public MapeadorDados(String entrada, String saida) {
         this.entrada = entrada;
         this.caminho = saida.substring(0, saida.lastIndexOf(File.separatorChar)) + File.separatorChar;
-        this.mapeador = new GroundingDados(xmlns);
     }
 
     /**
-     * Inicia o grounding de dados, segue os seguintes passos:
-     * - Cria uma instancia de um factory que nos fornece um document builder
-     * - Obter uma instancia do document builder
-     * - Realiza o parse do arquivo recebido como parametro pelo construtor da classe
-     * - Chama o metodo que percorre os esquemas contidos no arquivo
+     * Inicia o grounding de dados, que obtem um objeto do tipo Document (DOM), testa se o elemento
+     * types existe no documento WSDL importado e chama o metodo que percorre os esquemas embutidos
+     * em types.
      */
     public boolean processar() {
         try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            dbf.setNamespaceAware(true);
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            File arquivo = new File(entrada);
-            
-            documento = db.parse(arquivo.getAbsolutePath());
-
+            Document documento = Leitor.obterDocument(entrada);
+            Description desc = Leitor.obterDescription(entrada);
             Node types = documento.getElementsByTagName("types").item(0);
+            
+            
+            if (types == null) { //arquivo nao possui schema
+                System.err.println("Documento fornecido nao contem elemento Types. Nao ha processamento a realizar");
+                return true;
+            } 
             percorrerSchemas(types);
             return true;
 
@@ -59,15 +53,6 @@ public class RunGroundingDados {
             System.err.println("Erro de logica: " + e.getMessage());
         } catch (FactoryConfigurationError e) {
             System.err.println("Nao foi possivel obter um factory para o Document Builder.");
-            System.err.println("Mais detalhes: " + e.getMessage());
-        } catch (ParserConfigurationException e) {
-            System.err.println("Nao foi possivel configurar o parser DOM.");
-            System.err.println("Mais detalhes: " + e.getMessage());
-        } catch (SAXException e) {
-            System.err.println("Erro durante analise e interpretacao do arquivo.");
-            System.err.println("Mais detalhes: " + e.getMessage());
-        } catch (IOException e) {
-            System.err.println("Erro de entrada e saida.");
             System.err.println("Mais detalhes: " + e.getMessage());
         }
         return false;
@@ -93,7 +78,7 @@ public class RunGroundingDados {
             if (namespace != null && namespace.equals("http://www.w3.org/2001/XMLSchema")) {
                 String nomeOntologia = getNomeOntologia(esquema);
                 //gerar cabecalho
-                saida.append(getCabecalho(esquema, nomeOntologia));
+                saida.append(declararCabecalho(esquema, nomeOntologia));
                 
                 Node elemento = esquema.getFirstChild();
                 while (elemento != null) {
@@ -134,7 +119,7 @@ public class RunGroundingDados {
                     saida.delete(0, saida.length());
                 } 
                 catch (FileNotFoundException | UnsupportedEncodingException ex) {
-                    Logger.getLogger(RunGroundingDados.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(MapeadorDados.class.getName()).log(Level.SEVERE, null, ex);
                 } 
                 finally {
                     pw.close();
@@ -175,9 +160,12 @@ public class RunGroundingDados {
      * @param esquema o nodo do qual a ontologia sera gerada
      * @return um cabecalho para o elemento Ontology escrito WSML "surface"
      */
-    private String getCabecalho(Node esquema, String nomeOntologia) {
+    private String declararCabecalho(Node esquema, String nomeOntologia) {
         StringBuilder saida = new StringBuilder();
         String targetNamespace = esquema.getAttributes().getNamedItem("targetNamespace").getNodeValue();
+        
+        //declarar variante
+        saida.append("wsmlVariant _\"").append(VarianteWSML.Flight).append("\"\n");
         
         //declarar namespaces
         saida.append("namespace {").append("_\"" + targetNamespace).append("#\",\n");

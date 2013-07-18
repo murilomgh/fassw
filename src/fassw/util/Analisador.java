@@ -9,7 +9,7 @@ import org.w3c.dom.Element;
 
 /**
  * Classe com a responsabilidade de identificar se o arquivo de entrada eh valido e qual a versao
- * do SerializadorDOM fornecido para o mapeador.
+ * do Leitor fornecido para o mapeador.
  * 
  * @author Murilo Honorio
  * @version 0.0
@@ -28,7 +28,7 @@ public class Analisador {
         boolean isVersao20;
 
         //obter elemento raiz
-        Document documento = SerializadorDOM.obterDOM(entrada);
+        Document documento = Leitor.obterDocument(entrada);
         Element raiz = documento.getDocumentElement();
         String elemento = raiz.getTagName();
 

@@ -19,7 +19,8 @@ public class Main {
 
     /**
      * Método de entrada da ferramenta.
-     * Caso passe como parametros "entrada.wsdl saida.wsml converter", funciona em linha de comando.
+     * Caso passe como parametros "entrada.wsdl saida.wsml [opcao]", funciona em linha de comando, 
+     * onde [opcao] pode ser -s (deseja tentar converter WSDL 1.1) ou -n (nao deseja tentar a conversao).
      * Senao, funciona atraves da interface grafica.
      * 
      * @param args nome da operacao, arquivo de entrada, arquivo de saida
@@ -29,11 +30,11 @@ public class Main {
         Mapeador mapeador;
         
         if (args.length == 3) {
-            if (args[2].equals("s")) {
+            if (args[2].equals("-s")) {
                 mapeador = new Mapeador(args[0], args[1], true);
                 sucesso = mapeador.executar();
             }
-            else if (args[2].equals("n")) {
+            else if (args[2].equals("-n")) {
                 mapeador = new Mapeador(args[0], args[1], false);
                 sucesso = mapeador.executar();
             }

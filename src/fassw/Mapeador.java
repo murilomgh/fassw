@@ -18,11 +18,11 @@ class Mapeador {
         this.entrada = entrada;
         this.saida = saida;
         this.converter = converter;
-        
         this.linhaDeComando = true;
     }
 
     /**
+     * Realiza o processo de conversao do servico web.
      * 
      * @return 
      */
@@ -47,8 +47,7 @@ class Mapeador {
                 sucesso = Analisador.analisarArquivo(entrada, linhaDeComando);
             }
             if (sucesso) {
-                //EXECUTAR O GROUNDING DE DADOS
-                RunGroundingDados gd = new RunGroundingDados(entrada, saida);
+                MapeadorDados gd = new MapeadorDados(entrada, saida);
                 sucesso = gd.processar();
                 System.out.println("Geracao de Ontology OK");
             }

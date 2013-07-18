@@ -1,3 +1,4 @@
+wsmlVariant _"Flight"
 namespace {_"http://www.example.com/exemplosvc/types#",
 	dc	_"http://purl.org/dc/elements/1.1#",
 	wsml	_"http://www.wsmo.org/wsml/wsml-syntax#"
@@ -49,32 +50,32 @@ concept element.id.5
 concept employee
 	annotations
 		xmlType hasValue "element"
-		id hasValue "id.6"
+		id hasValue "_#1"
 	endAnnotations
-	fullpersoninfo ofType id.7
+	fullpersoninfo ofType id.6
 concept personinfo
 	annotations
 		xmlType hasValue "complexType"
-		id hasValue "id.8"
+		id hasValue "id.7"
 		final hasValue "#all"
-		annotationId hasValue "id.9"
+		annotationId hasValue "id.8"
 		dc#language hasValue "en"
 		documentation hasValue "Texto de exemplo de documentação."
 	endAnnotations
-	sequenceAttribute ofType id.10
+	sequenceAttribute ofType id.9
 
-concept sequence.id.10
+concept sequence.id.9
 	annotations
 		xmlType hasValue "sequence"
-		id hasValue "id.10"
+		id hasValue "id.9"
 	endAnnotations
-	firstname ofType id.11
-	lastname ofType id.12
+	firstname ofType id.10
+	lastname ofType id.11
 
 concept firstname
 	annotations
 		xmlType hasValue "element"
-		id hasValue "id.11"
+		id hasValue "id.10"
 	endAnnotations
 	refAttribute ofType _string
 
@@ -82,7 +83,7 @@ concept firstname
 concept lastname
 	annotations
 		xmlType hasValue "element"
-		id hasValue "id.12"
+		id hasValue "id.11"
 	endAnnotations
 	refAttribute ofType _string
 
@@ -90,31 +91,31 @@ concept lastname
 concept fullpersoninfo
 	annotations
 		xmlType hasValue "complexType"
-		id hasValue "id.7"
+		id hasValue "id.6"
 	endAnnotations
-	complexContentAttribute ofType id.13
+	complexContentAttribute ofType id.12
 
-concept extension.id.13
+concept extension.id.12
 	annotations
 		xmlType hasValue "extension"
-		id hasValue "id.13"
+		id hasValue "id.12"
 		baseType hasValue "personinfo"
 	endAnnotations
-	sequenceAttribute ofType id.14
+	sequenceAttribute ofType id.13
 
-concept sequence.id.14
+concept sequence.id.13
 	annotations
 		xmlType hasValue "sequence"
-		id hasValue "id.14"
+		id hasValue "id.13"
 	endAnnotations
-	address ofType id.15
-	city ofType id.16
-	country ofType id.17
+	address ofType id.14
+	city ofType id.15
+	country ofType id.16
 
 concept address
 	annotations
 		xmlType hasValue "element"
-		id hasValue "id.15"
+		id hasValue "id.14"
 	endAnnotations
 	refAttribute ofType _string
 
@@ -122,7 +123,7 @@ concept address
 concept city
 	annotations
 		xmlType hasValue "element"
-		id hasValue "id.16"
+		id hasValue "id.15"
 	endAnnotations
 	refAttribute ofType _string
 
@@ -130,7 +131,7 @@ concept city
 concept country
 	annotations
 		xmlType hasValue "element"
-		id hasValue "id.17"
+		id hasValue "id.16"
 	endAnnotations
 	refAttribute ofType _string
 

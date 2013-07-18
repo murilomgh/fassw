@@ -1,32 +1,20 @@
 package fassw;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
+import fassw.util.Gravador;
+import fassw.util.Leitor;
+import fassw.util.VarianteWSML;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.wsdl.Operation;
 //--- Elementos de Apache Woden ---//
-import org.apache.woden.WSDLException;
-import org.apache.woden.WSDLFactory;
-import org.apache.woden.WSDLReader;
-import org.apache.woden.XMLElement;
 import org.apache.woden.schema.InlinedSchema;
+import org.apache.woden.types.NamespaceDeclaration;
 import org.apache.woden.wsdl20.Description;
 import org.apache.woden.wsdl20.Interface;
 import org.apache.woden.wsdl20.InterfaceMessageReference;
 import org.apache.woden.wsdl20.InterfaceOperation;
 import org.apache.woden.wsdl20.Service;
 import org.apache.woden.wsdl20.enumeration.Direction;
-import org.apache.woden.wsdl20.xml.DescriptionElement;
-import org.apache.woden.wsdl20.xml.InterfaceElement;
-import org.apache.woden.wsdl20.xml.InterfaceMessageReferenceElement;
-import org.apache.woden.wsdl20.xml.InterfaceOperationElement;
-import org.omwg.logicalexpression.Molecule;
+import org.apache.woden.wsdl20.xml.TypesElement;
 
 /**
  * Classe responsavel por gerar o artefato WSMO Web Service, na sintaxe Surface, conforme os passos
@@ -37,145 +25,145 @@ import org.omwg.logicalexpression.Molecule;
  */
 public class GroundingCoreografia {
 
-    private static File arquivoEntrada;
-    private static File arquivoSaida;
-    public static final String VARIANTE_RULE = "http://www.wsmo.org/wsml/wsml-syntax/wsml-rule";
-    public static final String VARIANTE_FLIGHT = "http://www.wsmo.org/wsml/wsml-syntax/wsml-flight";
-
+    String entrada, saida;
+    
     GroundingCoreografia(String entrada, String saida) {
-        this.arquivoEntrada = new File(entrada);
-        this.arquivoSaida = new File(saida);
+        this.entrada = entrada;
+        this.saida = saida;
     }
 
     /**
-     * Le a descricao do servico web contida no documento WSDL utilizando funcionalidades providas
-     * pela biblioteca Apache Woden.
-     *
-     * @return
-     */
-    private Description carregarArquivoWSDL() {
-        try {
-            WSDLFactory factory = WSDLFactory.newInstance();
-            WSDLReader reader = factory.newWSDLReader();
-            reader.setFeature(WSDLReader.FEATURE_VALIDATION, true); //<-- enable WSDL 2.0 validation(optional) 
-
-            Description descricao = reader.readWSDL(arquivoEntrada.getAbsolutePath()); //<-- the Description component, always returned
-            return descricao;
-        } catch (WSDLException ex) {
-            switch (ex.getFaultCode()) {
-                case WSDLException.INVALID_WSDL:
-                    //wsdl invalido
-                    System.out.println(ex.getFaultCode());
-                    System.out.println(ex.getLocalizedMessage());
-                    break;
-                case WSDLException.OTHER_ERROR:
-                    //arquivo invalido
-                    System.out.println(ex.getFaultCode());
-                    break;
-                default:
-                    Logger.getLogger(GroundingCoreografia.class.getName()).log(Level.SEVERE, null, ex);
-                    break;
-            }
-            return null;
-        }
-    }
-
-    /**
-     * Gera um documento WSML contendo um WebService WSMO.
-     *
-     * @throws FileNotFoundException
+     * Gera e salvar em arquivo um WebService WSMO, escrito em WSML, conforme as regras definidas no trabalho de
+     * conclusao de curso. O artefato consiste em um conjunto de declaracoes, na sintaxe 'surface'.
+     * 
+     * @return um valor booleano indicando se o processo foi concluido com sucesso
      */
     boolean processar() {
-        try (PrintWriter pw = new PrintWriter(arquivoSaida, "UTF-8")) {
-            StringBuilder sb = new StringBuilder();
+        StringBuilder docWSML = new StringBuilder();
+        //Componentes do Woden
+        Description descricao = Leitor.obterDescription(entrada); //o componentes abstratos da descricao do servico
+        if (descricao == null) return false;
 
-            //Componentes do Woden
-            Description descricao = carregarArquivoWSDL(); //o componentes abstratos da descricao do servico
-            DescriptionElement elementosXML = descricao.toElement(); //os elementos e atributos xml da descricao do servico
+        if (descricao.getServices().length == 0) {
+            System.err.println("Documento WSDL fornecido nao contem elemento Service. O processamento foi interrompido.");
+            return false;
+        }
+        //obter propriedades gerais do servico Web
+        Service servicoWSDL = descricao.getServices()[0];
+        String targetNamespaceWSDL = servicoWSDL.getName().getNamespaceURI();
+        String nomeDoServico = servicoWSDL.getName().getLocalPart();
+        String fragmentoIdentificadorServico = targetNamespaceWSDL + "#" + servicoWSDL.getFragmentIdentifier().toString();
+        List<String> namespaceDasOntologias = new ArrayList();
 
-            String targetNamespaceWSDL = elementosXML.getTargetNamespace().toASCIIString();
-            String nomeDoServico = elementosXML.getServiceElements()[0].getName().getLocalPart();
+        //definir variante WSML-Flight
+        docWSML.append(declararWSMLVariant(VarianteWSML.Flight.IRI()));
 
-            sb.append(setWSMLVariant(VARIANTE_FLIGHT));
+        if (descricao.toElement().getTypesElement() != null) {
+            System.out.println("ENTROU");
+            TypesElement typesElement = descricao.toElement().getTypesElement();
+            NamespaceDeclaration[] declaredNamespaces = typesElement.getDeclaredNamespaces();
+            System.out.println(declaredNamespaces.length);
+            for (NamespaceDeclaration ns : declaredNamespaces) {
+                System.out.println(ns.getNamespaceURI().toASCIIString());
+            }
+        }
+        InlinedSchema[] names = descricao.toElement().getTypesElement().getInlinedSchemas();
+        for (InlinedSchema schema : names) {
+            namespaceDasOntologias.add(schema.getNamespace().toASCIIString());
+        }
 
-            InlinedSchema[] schemas = elementosXML.getTypesElement().getInlinedSchemas();
-            //inserir namespace das ontologias
-            sb.append(setNamespaces(targetNamespaceWSDL + "/" + nomeDoServico, schemas));
 
-            Service[] servicos = descricao.getServices();
-            //criar webservice
-            sb.append(setWebService(targetNamespaceWSDL, nomeDoServico, servicos));
+        //inserir namespace das ontologias
+        docWSML.append(declararNamespaces(targetNamespaceWSDL, nomeDoServico, namespaceDasOntologias));
 
-            //definir capacidade
-            sb.append(setCapability(targetNamespaceWSDL, nomeDoServico, schemas));
-            sb.append(setSharedVariables());
+        //criar webservice
+        docWSML.append(declararWebService(targetNamespaceWSDL, nomeDoServico, fragmentoIdentificadorServico));
 
-            //definir interface
-            sb.append(setInterface(nomeDoServico, schemas));
-            
-            Interface[] listaDeInterfaces = descricao.getInterfaces();
+        //definir capacidade
+        docWSML.append(declararCapability(targetNamespaceWSDL, nomeDoServico, names));
+        docWSML.append(setSharedVariables());
+
+        //definir interface
+        docWSML.append(setInterface(nomeDoServico, names));
+
+        //processar as interfaces do servico Web caso tenham sido declaradas
+        Interface[] listaDeInterfaces = descricao.getInterfaces();
+        if (listaDeInterfaces.length > 0) {
             InterfaceOperation[] listaDeOperacoes = listaDeInterfaces[0].getInterfaceOperations();
             //definir pre e pos condicoes
-            sb.append(setPreConditions(listaDeOperacoes));
-            sb.append(setPostConditions(listaDeOperacoes));
+            docWSML.append(setPreConditions(listaDeOperacoes));
+            docWSML.append(setPostConditions(listaDeOperacoes));
             //gerar coreografia
-            sb.append(setChoreography(targetNamespaceWSDL, nomeDoServico, schemas, listaDeOperacoes));
+            docWSML.append(setChoreography(targetNamespaceWSDL, nomeDoServico, names, listaDeOperacoes));
             //gerar regras de transicao
-            sb.append(setTransitionRules(listaDeOperacoes));
-            
-            pw.append(sb.toString());
-
-
-            return true;
-
-            //TODO tratar todas as condicoes de erro
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(GroundingCoreografia.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(GroundingCoreografia.class.getName()).log(Level.SEVERE, null, ex);
+            docWSML.append(setTransitionRules(listaDeOperacoes));
         }
-        return false;
+        Gravador.gravarWSML(docWSML.toString(), saida);
+        return true;
     }
 
-    private String setWSMLVariant(String variante) {
-        StringBuilder saida = new StringBuilder();
-        saida.append("wsmlVariant").append(" _\"").append(variante).append("\"\n");
-        return saida.toString();
+    /**
+     * Declara a variante WSML usada pelo documento. WSML tem cinco variantes (WSML-Core, WSML-DL,
+     * WSML-Flight, WSML-Rule e WSML-Full.
+     * Os documentos 
+     * 
+     * @param IRIdaVariante o IRI que identifica a variante de linguagem desejada
+     * @return uma declaracao wsmlVariant em WSML
+     */
+    protected String declararWSMLVariant(String IRIdaVariante) {
+        return "wsmlVariant _\"" + IRIdaVariante + "\"\n";
     }
 
-    private String setNamespaces(String targetNamespace, InlinedSchema[] schemas) {
+    /**
+     * Declara o namespace padrao e namespace adicionais relacionados com o artefato. 
+     * 
+     * @param targetNamespace o namespace alvo do servico web convertido
+     * @param nomeDoServico o valor do atributo name do elemento service da descricao wsdl do servico
+     * @param namespaceDasOntologias uma lista de namespaces dos elementos schema embutidos na descricao wsdl do servico
+     * @return uma declaracao namespace em WSML
+     */
+    protected String declararNamespaces(String targetNamespace, String nomeDoServico, List<String> namespaceDasOntologias) {
+        if (targetNamespace == null || nomeDoServico == null || namespaceDasOntologias == null) { return ""; }
+        
         StringBuilder saida = new StringBuilder();
-        saida.append("namespace {").append(" _\"").append(targetNamespace).append("\n,\n");
+        saida.append("namespace {").append(" _\"").append(targetNamespace).append("/").append(nomeDoServico).append("#\"\n,\n");
         //adicionar namespaces
         saida.append("\t").append("dc _\"").append("http://purl.org/dc/elements/1.1").append("#\",\n");
         saida.append("\t").append("oasm _\"").append("http://www.wsmo.org/ontologies/choreography/oasm").append("#\",\n");
         saida.append("\t").append("wsml _\"").append("http://www.wsmo.org/wsml/wsml-syntax").append("#\",\n");
 
-        int i = 1;
-        for (InlinedSchema schema : schemas) {
-            saida.append("\t").append("onto" + i + "_\"" + schema.getNamespace() + "#").append("\"\n");
-            i++;
+        for (int i = 0; i < namespaceDasOntologias.size(); i++) {
+            saida.append("\t").append("onto").append(i+1).append(" _\"").append(namespaceDasOntologias.get(i)).append("#\",\n");
         }
         saida.delete(saida.length() - 2, saida.length());
         saida.append(" }\n\n\n");
         return saida.toString();
     }
 
-    private String setWebService(String targetNamespaceWSDL, String nomeDoServico, Service[] servicos) {
+    /**
+     * Declara um WebService WSMO. Inclui propriedades nao funcionais
+     * <br>* dc#title: nome do servico web
+     * <br>* dc#creator: FASSW
+     * <br>* <b>wsml#endpointDescription</b>: aponta de um WSMO webService para o servico WSDL 
+     * apropriado. Prove detalhes de enderecamento e rede para comunicacao das mensagens.
+     * 
+     * @param namespaceAlvo o targetNamespace da descricao WSDL
+     * @param nome o atributo name do elemento Service da descricao WSDL
+     * @param fragmento o fragmento identificador do elemento Service da descricao WSDL
+     * @return uma declaracao webService em WSML
+     */
+    protected String declararWebService(String namespaceAlvo, String nome, String fragmento) {
         StringBuilder saida = new StringBuilder();
-        saida.append("webService _\"").append(targetNamespaceWSDL).append("\"\n");
-        saida.append("\t").append("nonFunctionalProperties").append("\n");
-        saida.append("\t\t").append("dc#title hasValue \"").append(nomeDoServico).append("\"\n");
+        saida.append("webService _\"").append(namespaceAlvo).append("\"\n");
+        saida.append("\t").append("annotations").append("\n");
+        saida.append("\t\t").append("dc#title hasValue \"").append(nome).append("\"\n");
         saida.append("\t\t").append("dc#creator hasValue \"").append("FASSW").append("\"\n");
-        //endpoints
-        for (Service s : servicos) {
-            saida.append("\t\t").append("wsml#endpointDescription hasValue \"").append(s.getName().getNamespaceURI() + "#" + s.getFragmentIdentifier()).append("\"\n");
-        }
-        saida.append("\t").append("endNonFunctionalProperties").append("\n\n");
+        saida.append("\t\t").append("wsml#endpointDescription hasValue \"").append(fragmento).append("\"\n");
+        saida.append("\t").append("endAnnotations").append("\n\n");
         return saida.toString();
     }
 
-    private String setCapability(String targetNamespaceWSDL, String nomeDoServico, InlinedSchema[] schemas) {
+    protected String declararCapability(String targetNamespaceWSDL, String nomeDoServico, InlinedSchema[] schemas) {
         StringBuilder saida = new StringBuilder();
         saida.append("capability ").append(nomeDoServico + "Capability").append("\n\n");
         saida.append("\t").append("importsOntology").append("\n");

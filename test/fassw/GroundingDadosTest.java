@@ -87,7 +87,7 @@ public class GroundingDadosTest {
         esperado = new File(".\\testes\\schema\\annotation.wsml");        
         pw = new PrintWriter(resultado);
         
-        GroundingDados gd = new GroundingDados(xmlns);
+        GroundingDadosImpl gd = new GroundingDadosImpl(xmlns);
         gd.resetContador();
         Node schema = documento.getElementsByTagNameNS(xmlns, "schema").item(0);
         List<Node> elementos = new ArrayList<>();
@@ -128,7 +128,7 @@ public class GroundingDadosTest {
         esperado = new File(".\\testes\\schema\\attributeGroup.wsml");        
         pw = new PrintWriter(resultado);
         
-        GroundingDados gd = new GroundingDados(xmlns);
+        GroundingDadosImpl gd = new GroundingDadosImpl(xmlns);
         gd.resetContador();
         Node schema = documento.getElementsByTagNameNS(xmlns, "schema").item(0);
         List<Node> elementos = new ArrayList<>();
@@ -168,7 +168,7 @@ public class GroundingDadosTest {
         esperado = new File(".\\testes\\schema\\attribute.wsml");        
         //pw = new PrintWriter(resultado);
         
-        GroundingDados gd = new GroundingDados(xmlns);
+        GroundingDadosImpl gd = new GroundingDadosImpl(xmlns);
         gd.resetContador();
         Node schema = documento.getElementsByTagNameNS(xmlns, "schema").item(0);
         List<Node> elementos = new ArrayList<>();
@@ -207,7 +207,7 @@ public class GroundingDadosTest {
         documento = db.parse(new File(".\\testes\\schema\\simpleType.xsd"));
         esperado = new File(".\\testes\\schema\\simpleType.wsml");        
         
-        GroundingDados gd = new GroundingDados(xmlns);
+        GroundingDadosImpl gd = new GroundingDadosImpl(xmlns);
         gd.resetContador();
         Node schema = documento.getElementsByTagNameNS(xmlns, "schema").item(0);
         List<Node> elementos = new ArrayList<>();
@@ -245,7 +245,7 @@ public class GroundingDadosTest {
         documento = db.parse(new File(".\\testes\\schema\\complexType.xsd"));
         esperado = new File(".\\testes\\schema\\complexType.wsml");        
         
-        GroundingDados gd = new GroundingDados(xmlns);
+        GroundingDadosImpl gd = new GroundingDadosImpl(xmlns);
         gd.resetContador();
         Node schema = documento.getElementsByTagNameNS(xmlns, "schema").item(0);
         List<Node> elementos = new ArrayList<>();
@@ -283,7 +283,7 @@ public class GroundingDadosTest {
         documento = db.parse(new File(".\\testes\\schema\\element.xsd"));
         esperado = new File(".\\testes\\schema\\element.wsml");        
         
-        GroundingDados gd = new GroundingDados(xmlns);
+        GroundingDadosImpl gd = new GroundingDadosImpl(xmlns);
         gd.resetContador();
         Node schema = documento.getElementsByTagNameNS(xmlns, "schema").item(0);
         List<Node> elementos = new ArrayList<>();
