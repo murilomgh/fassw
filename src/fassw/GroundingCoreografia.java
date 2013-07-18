@@ -19,16 +19,8 @@ import org.apache.woden.wsdl20.enumeration.Direction;
  * desenvolvidos e descritos no apendice B.
  *
  * @author Murilo Honorio
- * @version 0.0
  */
 public class GroundingCoreografia {
-
-    String entrada, saida;
-    
-    GroundingCoreografia(String entrada, String saida) {
-        this.entrada = entrada;
-        this.saida = saida;
-    }
 
     /**
      * Gera e salvar em arquivo um WebService WSMO, escrito em WSML, conforme as regras definidas no trabalho de
@@ -36,11 +28,14 @@ public class GroundingCoreografia {
      * 
      * @return um valor booleano indicando se o processo foi concluido com sucesso
      */
-    boolean processar() {
+    boolean processar(String entrada, String saida) {
         StringBuilder docWSML = new StringBuilder();
         //Componentes do Woden
         Description descricao = Leitor.obterDescription(entrada); //o componentes abstratos da descricao do servico
-        if (descricao == null) return false;
+        if (descricao == null) {
+            System.err.println("Nao foi possível obter uma descricao. Documento WSDL apresenta falhas.");
+            return false;
+        }
 
         if (descricao.getServices().length == 0) {
             System.err.println("Documento WSDL fornecido nao contem elemento Service. O processamento foi interrompido.");

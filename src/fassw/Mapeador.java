@@ -49,8 +49,8 @@ class Mapeador {
                 sucesso = gd.processar();
             }
             if (sucesso) {
-                GroundingCoreografia gc = new GroundingCoreografia(entrada, saida);
-                sucesso = gc.processar();
+                GroundingCoreografia gc = new GroundingCoreografia();
+                sucesso = gc.processar(entrada, saida);
             }
             return sucesso;
         } catch (RuntimeException re) {

@@ -2,7 +2,6 @@ package fassw;
 
 import fassw.gui.InterfaceGrafica;
 import java.io.IOException;
-import javax.swing.JOptionPane;
 
 /**
  * Contém o metodo de entrada do prototipo.
