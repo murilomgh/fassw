@@ -31,6 +31,27 @@
 				</xs:complexType>
 			</xs:element>
 			
+			<xs:element name="exemploElementoComplexTypeInterno2">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="e:productName"/>
+						<xs:element ref="e:shelf"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:complexType name="fullpersoninfo">
+				<xs:complexContent>
+					<xs:extension base="personinfo">
+						<xs:sequence>
+							<xs:element name="address" type="xs:string"/>
+							<xs:element name="city" type="xs:string"/>
+							<xs:element name="country" type="xs:string"/>
+						</xs:sequence>
+					</xs:extension>
+				</xs:complexContent>
+			</xs:complexType>
+			
 			<!-- attribute -->
 			
 			<!-- group -->
@@ -53,17 +74,7 @@
 				</xs:sequence>
 			</xs:complexType>
 		
-			<xs:complexType name="fullpersoninfo">
-				<xs:complexContent>
-					<xs:extension base="personinfo">
-						<xs:sequence>
-							<xs:element name="address" type="xs:string"/>
-							<xs:element name="city" type="xs:string"/>
-							<xs:element name="country" type="xs:string"/>
-						</xs:sequence>
-					</xs:extension>
-				</xs:complexContent>
-			</xs:complexType>
+			
 			
 		</xs:schema>
 	</types>
@@ -74,6 +85,11 @@
 
 		<operation name="operacaoExemplo" pattern="http://www.w3.org/ns/wsdl/in-only">
 			<input messageLabel="In" element="e:exemploElementoComplexTypeInterno"/>
+		</operation>
+		
+		<operation name="operacaoX" pattern="http://www.w3.org/ns/wsdl/in-out">
+			<input messageLabel="In" element="e:exemploElementoComplexTypeInterno2"/>
+			<output messageLabel="Out" element="e:employee"/>
 		</operation>
 	</interface>
 	
@@ -90,6 +106,6 @@
 	<service name="exemplo" interface="ex:interfaceExemplo"> 
 		<endpoint name="endpointExemplo" 
 			binding="ex:bindingSOAPExemplo"
-			address="http://servico.example.com/"/>
+			address="http://servico.example.com/server.php?"/>
 	</service>
 </description>

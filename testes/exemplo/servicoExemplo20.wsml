@@ -19,35 +19,50 @@ capability exemploCapability
 	importsOntology
 		_"http://www.example.com/exemplosvc/types"
 
-sharedVariables {?request, ?response}
+	sharedVariables {?request1, ?request2}
+
+	precondition
+		definedBy
+			?request1 memberOf onto1#exemploElementoComplexTypeInterno or
+			?request2 memberOf onto1#exemploElementoComplexTypeInterno2.
+
+	postcondition
+		definedBy
+ 			(?request2 memberOf onto1#exemploElementoComplexTypeInterno2 and ?response2 memberOf onto1#employee).
 
 interface exemploInterface
 
 	importsOntology
 		_"http://www.example.com/exemplosvc/types"
 
-	precondition
-		definedBy
-			?request memberOf ex#operacaoExemplo.
-
-	postcondition
-		definedBy
-( IN-ONLY ).
-
 	choreography exemploChoreography
-	stateSignature
-		importsOntology
-			_"http://www.example.com/exemplosvc/types"
 
-		in
-			concept --FOR CONCEITOS-- withGrounding
-				--GERAR FRAGMENTO--,
+		stateSignature
+			importsOntology
+				_"http://www.example.com/exemplosvc/types"
 
-		out
-			concept --FOR CONCEITOS-- withGrounding
-				--GERAR FRAGMENTO--,
+			in
+				concept onto1#exemploElementoComplexTypeInterno
+					 withGrounding _"http://servico.example.com/server.php?#wsdl.interfaceMessageReference(interfaceExemplo/operacaoExemplo/In)",
+				concept onto1#exemploElementoComplexTypeInterno2
+					 withGrounding _"http://servico.example.com/server.php?#wsdl.interfaceMessageReference(interfaceExemplo/operacaoX/In)"
 
-	transitionRules 
-		forall {?request} with (?request memberOf --IN-OP--) do
-			add (?response memberOf --OUT-OP--)
-		endForall
+			out
+				concept onto1#employee
+
+			controlled
+				concept oasm#ControlState
+
+		transitionRules exemploStateSignatureRules
+			forall {?request1,?controlstate} with (?request1 memberOf onto#1exemploElementoComplexTypeInterno
+		and ?controlstate[oasm#value hasValue oasm#InitialState]) do
+				delete (?controlstate [oasm#value hasValue oasm#InitialState])
+				add (?controlstate [oasm#value hasValue oasm#EndState])
+			endForall
+
+			forall {?request2,?controlstate} with (?request2 memberOf onto#1exemploElementoComplexTypeInterno2
+		and ?controlstate[oasm#value hasValue oasm#InitialState]) do
+				delete (?controlstate [oasm#value hasValue oasm#InitialState])
+				add (?controlstate [oasm#value hasValue oasm#EndState])
+			endForall
+
