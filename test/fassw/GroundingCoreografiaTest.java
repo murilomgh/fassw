@@ -30,6 +30,7 @@ public class GroundingCoreografiaTest {
     
     @Before
     public void setUp() {
+        gc = new GroundingCoreografia();
     }
     
     @After

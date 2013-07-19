@@ -1,5 +1,6 @@
 package fassw.util;
 
+import java.io.File;
 import org.apache.woden.tool.converter.Convert;
 
 /**
@@ -22,10 +23,13 @@ public class Conversor
      * @see org.apache.woden.tool.converter.Convert#convertFile
      */
     public static boolean converter(String entrada) {
+        File caminho = new File(entrada);
         String novoNamespaceAlvo = null;
-        String diretorioDestino = "temp"; //cria pasta temp como subpasta da entrada
+        String diretorioDestino = caminho.getParent() + "\\temp"; //cria pasta temp como subpasta da entrada
         boolean mensagensDetalhadas = true;
         boolean sobrescreverArquivo = true;
+        
+        
         
         Convert conversor = new Convert();
         try {

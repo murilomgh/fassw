@@ -1,0 +1,161 @@
+concept exemploElementoComplexTypeInterno
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.1"
+	endAnnotations
+	complexTypeAttribute ofType id.2
+
+concept complexType.id.2
+	annotations
+		xmlType hasValue "complexType"
+		id hasValue "id.2"
+	endAnnotations
+	sequenceAttribute ofType id.3
+
+concept sequence.id.3
+	annotations
+		xmlType hasValue "sequence"
+		id hasValue "id.3"
+	endAnnotations
+	element.id.4 ofType id.4
+	element.id.5 ofType id.5
+
+concept element.id.4
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.4"
+	endAnnotations
+	refElementAttribute ofType e#productName
+
+concept element.id.5
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.5"
+	endAnnotations
+	refElementAttribute ofType e#shelf
+
+concept exemploElementoComplexTypeInterno2
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.6"
+	endAnnotations
+	complexTypeAttribute ofType id.7
+
+concept complexType.id.7
+	annotations
+		xmlType hasValue "complexType"
+		id hasValue "id.7"
+	endAnnotations
+	sequenceAttribute ofType id.8
+
+concept sequence.id.8
+	annotations
+		xmlType hasValue "sequence"
+		id hasValue "id.8"
+	endAnnotations
+	element.id.9 ofType id.9
+	element.id.10 ofType id.10
+
+concept element.id.9
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.9"
+	endAnnotations
+	refElementAttribute ofType e#productName
+
+concept element.id.10
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.10"
+	endAnnotations
+	refElementAttribute ofType e#shelf
+
+concept fullpersoninfo
+	annotations
+		xmlType hasValue "complexType"
+		id hasValue "id.11"
+	endAnnotations
+	complexContentAttribute ofType id.12
+
+concept extension.id.12
+	annotations
+		xmlType hasValue "extension"
+		id hasValue "id.12"
+		baseType hasValue "personinfo"
+	endAnnotations
+	sequenceAttribute ofType id.13
+
+concept sequence.id.13
+	annotations
+		xmlType hasValue "sequence"
+		id hasValue "id.13"
+	endAnnotations
+	address ofType id.14
+	city ofType id.15
+	country ofType id.16
+
+concept address
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.14"
+	endAnnotations
+	refAttribute ofType _string
+
+
+concept city
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.15"
+	endAnnotations
+	refAttribute ofType _string
+
+
+concept country
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.16"
+	endAnnotations
+	refAttribute ofType _string
+
+
+concept employee
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.17"
+	endAnnotations
+	fullpersoninfo ofType id.11
+concept personinfo
+	annotations
+		xmlType hasValue "complexType"
+		id hasValue "id.18"
+		final hasValue "#all"
+		annotationId hasValue "id.19"
+		dc#language hasValue "en"
+		documentation hasValue "Texto de exemplo de documentação."
+	endAnnotations
+	sequenceAttribute ofType id.20
+
+concept sequence.id.20
+	annotations
+		xmlType hasValue "sequence"
+		id hasValue "id.20"
+	endAnnotations
+	firstname ofType id.21
+	lastname ofType id.22
+
+concept firstname
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.21"
+	endAnnotations
+	refAttribute ofType _string
+
+
+concept lastname
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.22"
+	endAnnotations
+	refAttribute ofType _string
+
+

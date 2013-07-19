@@ -16,8 +16,8 @@ public class MapeadorTest {
     public void testExecutarSemConverterComSucesso() throws Exception {
         System.out.println("Teste executar()");
         System.out.println("================");
-        Mapeador mapeador = new Mapeador(".\\testes\\exemplo\\servicoExemplo20.wsdl", ".\\testes\\exemplo\\servicoExemplo20.wsml", false);
-        //Mapeador mapeador = new Mapeador(".\\testes\\outros\\warehouse.wsdl", ".\\testes\\outros\\warehouse.wsml", false);
+        //Mapeador mapeador = new Mapeador(".\\testes\\exemplo\\servicoExemplo20.wsdl", ".\\testes\\exemplo\\servicoExemplo20.wsml", false);
+        Mapeador mapeador = new Mapeador("Z:\\~Exemplos\\warehouse.wsdl", "Z:\\~Exemplos\\warehouse.wsml", false);
         boolean resultadoEsperado = true;
         boolean result = mapeador.executar();
         assertEquals(resultadoEsperado, result);

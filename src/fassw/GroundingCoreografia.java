@@ -94,13 +94,15 @@ public class GroundingCoreografia {
         //processar as operacoes do servico web para obter as precondicoes, pos condicoes e conceitos compartilhados
         Interface[] interfacesWSDL = descricao.getInterfaces();
         processarOperacoesDoServicoWSDL(interfacesWSDL);
+        
+        if (sharedVar > 0) {
         //declarar a capacidade
         docWSML.append(definirCapability(targetNamespaceWSDL, nomeDoServico, namespaceDasOntologias));
         //declarar as pre-condicoes e as pos-condicoes
-        if (sharedVar > 0) {
+        
             docWSML.append(declararPreCondition(preCondicoes));
             docWSML.append(declararPostCondition(posCondicoes));
-        }
+        
         //-- CAPACITY --//
         
         //-- INTERFACE --//
@@ -110,7 +112,7 @@ public class GroundingCoreografia {
         //declarar as regras de transicao
         docWSML.append(declararTransitionRules(nomeDoServico, conceitosInTR));
         //-- INTERFACE --//
-        
+        }
         Gravador.gravarWSML(docWSML.toString(), saida);
         return true;
     }
@@ -268,6 +270,7 @@ public class GroundingCoreografia {
         }
         saida.delete(saida.length() - 4, saida.length());
         saida.append(".\n\n");
+        
         return saida.toString();
     }
 
@@ -411,7 +414,7 @@ public class GroundingCoreografia {
     private String gerarConceitoInRegraTransicao(ElementDeclaration elementoIn) {
         int numero = sharedVar+1;
         return "forall {?request" + numero + ",?controlstate} with (?request" + numero + 
-                " memberOf onto#1" + elementoIn.getName().getLocalPart() + "\n";
+                " memberOf onto1#" + elementoIn.getName().getLocalPart() + "\n";
     }
 
     /**
@@ -472,7 +475,6 @@ public class GroundingCoreografia {
                                         elementoOut = e.getElementDeclaration();
                                     }
                                 }
-                                
                                 if (elementoIn != null && elementoOut != null) {
                                     preCondicoes.add(gerarPreCondicao(elementoIn));
                                     posCondicoes.add(gerarPosCondicao(elementoIn, elementoOut));

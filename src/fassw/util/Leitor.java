@@ -72,7 +72,7 @@ public class Leitor {
             WSDLFactory factory = WSDLFactory.newInstance();
             WSDLReader reader = factory.newWSDLReader();
             //TODO averiguar o comportamento do validador para arquivos WSDL com problemas na sintaxe
-            reader.setFeature(WSDLReader.FEATURE_VALIDATION, true);
+            //reader.setFeature(WSDLReader.FEATURE_VALIDATION, true);
             descricao = reader.readWSDL(arquivo.getAbsolutePath()); //<-- the Description component, always returned
         } 
         catch (org.apache.woden.WSDLException e) {

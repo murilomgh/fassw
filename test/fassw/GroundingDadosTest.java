@@ -297,7 +297,7 @@ public class GroundingDadosTest {
         System.out.println("================");
         //carregar arquivo de origem
         documento = db.parse(new File(".\\testes\\schema\\esquema.xsd"));
-        esperado = new File(".\\testes\\schema\\element.wsml");
+        esperado = new File(".\\testes\\schema\\esquema.wsml");
         
         GroundingDadosImpl gd = new GroundingDadosImpl(xmlns);
         gd.resetContador();

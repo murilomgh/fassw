@@ -8,12 +8,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.FactoryConfigurationError;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Classe com a responsabilidade organizar a execucao do grounding de dados para os schema
@@ -41,13 +44,13 @@ public class MapeadorDados {
     public boolean processar() {
         try {
             Document documento = Leitor.obterDocument(entrada);
-            Node types = documento.getElementsByTagName("types").item(0);
+            NodeList schema = documento.getElementsByTagNameNS("http://www.w3.org/2001/XMLSchema", "schema");
             
-            if (types == null) { //arquivo nao possui schema
-                System.err.println("Documento fornecido nao contem elemento Types. Nao ha processamento a realizar");
+            if (schema == null) { //arquivo nao possui schema
+                System.err.println("Documento fornecido nao contem um xml schema. Nao ha processamento a realizar");
                 return true;
             } 
-            percorrerSchemas(types);
+            percorrerSchema(schema);
             return true;
         } catch (ElementoNaoEsperadoException e) {
             System.err.println("Erro de logica: " + e.getMessage());
@@ -65,52 +68,65 @@ public class MapeadorDados {
      * 
      * @param types elemento types da descricao WSDL
      */
-    private void percorrerSchemas(Node types) throws ElementoNaoEsperadoException {
+    private void percorrerSchema(NodeList schemas) throws ElementoNaoEsperadoException {
         StringBuilder saida = new StringBuilder();
         PrintWriter pw;
-        Node esquema = types.getFirstChild();
         
-        while (esquema != null) {
-            String namespace = esquema.getNamespaceURI();
+        int n = schemas.getLength();
+        for (int i = 0; i < n; i++) {
+            Node esquema = schemas.item(i);
             
             pw = null;
             
-            if (namespace != null && namespace.equals("http://www.w3.org/2001/XMLSchema")) {
+                
+                List<Node> elementos = new ArrayList<>();
+                //percorrer os elementos filhos de schema
+                for (int j = 0; j < esquema.getChildNodes().getLength(); j++) {
+                    Node item = esquema.getChildNodes().item(j);
+                    if (item.getNodeType() == Node.ELEMENT_NODE) {
+                        elementos.add(item);
+                    }
+                }
                 String nomeOntologia = getNomeOntologia(esquema);
                 //gerar cabecalho
                 saida.append(declararCabecalho(esquema, nomeOntologia));
                 
-                Node elemento = esquema.getFirstChild();
-                while (elemento != null) {
-                    //percorrer apenas os elementos globais
-                    if (elemento.getNodeType() == Node.ELEMENT_NODE) {
-                        String nomeElemento = elemento.getLocalName();
-                        
-                        switch (nomeElemento) {
-                            case "element" :
-                                saida.append(mapeador.mapearElement(elemento));
-                                break;
-                            case "simpleType" :
-                                saida.append(mapeador.mapearSimpleType(elemento));
-                                break;
-                            case "complexType" :
-                                saida.append(mapeador.mapearComplexType(elemento));
-                                break;
-                            case "attribute" :
-                                saida.append(mapeador.mapearAttribute(elemento));
-                                break;
-                            case "attributeGroup" :
-                                saida.append(mapeador.mapearAttributeGroup(elemento));
-                                break;
-                            case "group" :
-                                saida.append(mapeador.mapearGroup(elemento));
-                                break;
-                            default :
-                                break;
+                
+                
+                for (Node elemento : elementos) {
+                    String nomeElemento = elemento.getLocalName();
+
+                    switch (nomeElemento) {
+                        case "element": {
+                            saida.append(mapeador.mapearElement(elemento));
+                            break;
+                        }
+                        case "simpleType": {
+                            saida.append(mapeador.mapearSimpleType(elemento));
+                            break;
+                        }
+                        case "complexType": {
+                            saida.append(mapeador.mapearComplexType(elemento));
+                            break;
+                        }
+                        case "attribute": {
+                            saida.append(mapeador.mapearAttribute(elemento));
+                            break;
+                        }
+                        case "attributeGroup": {
+                            saida.append(mapeador.mapearAttributeGroup(elemento));
+                            break;
+                        }
+                        case "group": {
+                            saida.append(mapeador.mapearGroup(elemento));
+                            break;
+                        }
+                        default: {
+                            break;
                         }
                     }
-                    elemento = elemento.getNextSibling();
                 }
+                
                 try {
                     
                     String arquivoSaida = this.caminho.concat(nomeOntologia + ".wsml");
@@ -125,8 +141,6 @@ public class MapeadorDados {
                     pw.close();
                 }
                 contador++;
-            }
-            esquema = esquema.getNextSibling();
         }
     }
 
