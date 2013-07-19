@@ -1,4 +1,4 @@
-concept note
+concept exemploElementoComplexTypeInterno
 	annotations
 		xmlType hasValue "element"
 		id hasValue "id.1"
@@ -19,129 +19,143 @@ concept sequence.id.3
 	endAnnotations
 	element.id.4 ofType id.4
 	element.id.5 ofType id.5
-	element.id.6 ofType id.6
 
 concept element.id.4
 	annotations
 		xmlType hasValue "element"
 		id hasValue "id.4"
 	endAnnotations
-	to ofType id.7
+	refElementAttribute ofType e#productName
 
 concept element.id.5
 	annotations
 		xmlType hasValue "element"
 		id hasValue "id.5"
 	endAnnotations
-	from ofType id.8
+	refElementAttribute ofType e#shelf
 
-concept element.id.6
+concept exemploElementoComplexTypeInterno2
 	annotations
 		xmlType hasValue "element"
 		id hasValue "id.6"
 	endAnnotations
-	heading ofType id.9
+	complexTypeAttribute ofType id.7
 
-concept to
+concept complexType.id.7
 	annotations
-		xmlType hasValue "element"
+		xmlType hasValue "complexType"
 		id hasValue "id.7"
 	endAnnotations
-	refAttribute ofType _string
+	sequenceAttribute ofType id.8
 
-concept from
+concept sequence.id.8
 	annotations
-		xmlType hasValue "element"
+		xmlType hasValue "sequence"
 		id hasValue "id.8"
-		block hasValue { restricao1, restricao2 }
 	endAnnotations
-	refAttribute ofType _string
+	element.id.9 ofType id.9
+	element.id.10 ofType id.10
 
-concept heading
+concept element.id.9
 	annotations
 		xmlType hasValue "element"
 		id hasValue "id.9"
-		final hasValue "#all"
 	endAnnotations
-	refAttribute ofType _string
+	refElementAttribute ofType e#productName
 
-concept age
+concept element.id.10
 	annotations
 		xmlType hasValue "element"
 		id hasValue "id.10"
 	endAnnotations
-	simpleTypeAttribute ofType id.11
+	refElementAttribute ofType e#shelf
 
-concept simpleType.id.11 subConceptOf _integer
-	annotations
-		xmlType hasValue "simpleType"
-		id hasValue "id.11"
-	endAnnotations
-
-axiom id.12
-	annotations
-		xmlType hasValue "restriction"
-		id hasValue "id.12"
-		baseType hasValue "xs:integer"
-	endAnnotations
-	definedBy
-		!- naf (
-		?X memberOf _integer
-		and ?X memberOf simpleType.id.11 ?
-		and X >= 0 ?
-		and X <= 100 ?
-		).
-
-concept shoeSize
-	annotations
-		xmlType hasValue "element"
-		id hasValue "id.13"
-	endAnnotations
-	complexTypeAttribute ofType id.14
-
-concept complexType.id.14
+concept fullpersoninfo
 	annotations
 		xmlType hasValue "complexType"
-		id hasValue "id.14"
+		id hasValue "id.11"
 	endAnnotations
-	simpleContentAttribute ofType id.15
+	complexContentAttribute ofType id.12
 
-concept extension.id.15
+concept extension.id.12
 	annotations
 		xmlType hasValue "extension"
-		id hasValue "id.15"
-		baseType hasValue "xs:decimal"
+		id hasValue "id.12"
+		baseType hasValue "personinfo"
 	endAnnotations
-	sizing ofType id.16
+	sequenceAttribute ofType id.13
 
-concept sizing
+concept sequence.id.13
 	annotations
-		xmlType hasValue "attribute"
+		xmlType hasValue "sequence"
+		id hasValue "id.13"
+	endAnnotations
+	address ofType id.14
+	city ofType id.15
+	country ofType id.16
+
+concept address
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.14"
+	endAnnotations
+	refAttribute ofType _string
+
+
+concept city
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.15"
+	endAnnotations
+	refAttribute ofType _string
+
+
+concept country
+	annotations
+		xmlType hasValue "element"
 		id hasValue "id.16"
 	endAnnotations
-	attributeSimpleType ofType id.17
+	refAttribute ofType _string
 
-concept simpleType.id.17 subConceptOf _string
+
+concept employee
 	annotations
-		xmlType hasValue "simpleType"
+		xmlType hasValue "element"
 		id hasValue "id.17"
 	endAnnotations
-
-axiom id.18
+	fullpersoninfo ofType id.11
+concept personinfo
 	annotations
-		xmlType hasValue "restriction"
+		xmlType hasValue "complexType"
 		id hasValue "id.18"
-		baseType hasValue "xs:string"
+		final hasValue "#all"
+		annotationId hasValue "id.19"
+		dc#language hasValue "en"
+		documentation hasValue "Texto de exemplo de documentação."
 	endAnnotations
-	definedBy
-		!- naf (
-		?X memberOf _string
-		and ?X memberOf simpleType.id.17 ?
-		and ( X hasValue 'US'
-		or X hasValue 'European' 
-		or X hasValue 'UK' 
-		or X hasValue 'Japan' )
-		).
+	sequenceAttribute ofType id.20
 
+concept sequence.id.20
+	annotations
+		xmlType hasValue "sequence"
+		id hasValue "id.20"
+	endAnnotations
+	firstname ofType id.21
+	lastname ofType id.22
+
+concept firstname
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.21"
+	endAnnotations
+	refAttribute ofType _string
+
+
+concept lastname
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.22"
+	endAnnotations
+	refAttribute ofType _string
 
 

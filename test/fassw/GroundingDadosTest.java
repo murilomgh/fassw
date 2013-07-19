@@ -290,4 +290,59 @@ public class GroundingDadosTest {
         
         assertEquals(FileUtils.readFileToString(esperado, "utf-8"), FileUtils.readFileToString(resultado, "utf-8"));
     }
+    
+    @Test
+    public void testMapearTudo() throws Exception {
+        System.out.println("MapearEsquema");
+        System.out.println("================");
+        //carregar arquivo de origem
+        documento = db.parse(new File(".\\testes\\schema\\esquema.xsd"));
+        esperado = new File(".\\testes\\schema\\element.wsml");
+        
+        GroundingDadosImpl gd = new GroundingDadosImpl(xmlns);
+        gd.resetContador();
+        
+        Node schema = documento.getElementsByTagNameNS(xmlns, "schema").item(0);
+        List<Node> elementos = new ArrayList<>();
+        //percorrer os elementos filhos de schema
+        for (int i = 0; i < schema.getChildNodes().getLength(); i++) {
+            Node item = schema.getChildNodes().item(i);
+            if (item.getNodeType() == Node.ELEMENT_NODE) {
+                elementos.add(item);
+            }
+        }
+        System.out.println("Numero de element testados: " + elementos.size());
+        System.out.println("--------------------");
+        String saida = "";
+        for (Node elemento : elementos) {
+            String nomeElemento = elemento.getLocalName();
+              
+            switch (nomeElemento) {
+                case "element":
+                    saida = saida + gd.mapearElement(elemento);
+                    break;
+                case "simpleType":
+                    saida = saida + gd.mapearSimpleType(elemento);
+                    break;
+                case "complexType":
+                    saida = saida + gd.mapearComplexType(elemento);
+                    break;
+                case "attribute":
+                    saida = saida + gd.mapearAttribute(elemento);
+                    break;
+                case "attributeGroup":
+                    saida = saida + gd.mapearAttributeGroup(elemento);
+                    break;
+                case "group":
+                    saida = saida + gd.mapearGroup(elemento);
+                    break;
+                default:
+                    break;
+            }
+        }
+        System.out.println(saida);
+        FileUtils.write(resultado, saida);
+        
+        assertEquals(FileUtils.readFileToString(esperado, "utf-8"), FileUtils.readFileToString(resultado, "utf-8"));
+    }
 }

@@ -1,0 +1,64 @@
+﻿<xs:schema 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.example.com/exemplosvc/types"
+	xmlns:e="http://www.example.com/exemplosvc/types"
+	xmlns:out="http://www.example.com/outroservico"
+	elementFormDefault="qualified">
+	
+	<!-- element -->
+	
+	<xs:element name="exemploElementoComplexTypeInterno">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="e:productName"/>
+				<xs:element ref="e:shelf"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="exemploElementoComplexTypeInterno2">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="e:productName"/>
+				<xs:element ref="e:shelf"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:complexType name="fullpersoninfo">
+		<xs:complexContent>
+			<xs:extension base="personinfo">
+				<xs:sequence>
+					<xs:element name="address" type="xs:string"/>
+					<xs:element name="city" type="xs:string"/>
+					<xs:element name="country" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<!-- attribute -->
+	
+	<!-- group -->
+	
+	<!-- simpleType -->
+	
+	<!-- complexType -->
+	
+	<xs:element name="employee" type="fullpersoninfo"/>
+
+	<xs:complexType name="personinfo" mixed="true" final="#all">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				Texto de exemplo de documentação.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="firstname" type="xs:string"/>
+			<xs:element name="lastname" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	
+	
+</xs:schema>

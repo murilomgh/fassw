@@ -1,0 +1,66 @@
+wsmlVariant _"http://www.wsmo.org/wsml/wsml-syntax/wsml-flight"
+namespace { _"http://www.brics.dk/ixwt/warehouse/warehouse#"
+,
+	dc _"http://purl.org/dc/elements/1.1#",
+	oasm _"http://www.wsmo.org/ontologies/choreography/oasm#",
+	wsml _"http://www.wsmo.org/wsml/wsml-syntax#",
+	onto1 _"http://www.brics.dk/ixwt/warehouse/types#" }
+
+
+webService _"http://www.brics.dk/ixwt/warehouse"
+	annotations
+		dc#title hasValue "warehouse"
+		dc#creator hasValue "FASSW"
+		wsml#endpointDescription hasValue "http://www.brics.dk/ixwt/warehouse#wsdl.service(warehouse)"
+	endAnnotations
+
+capability warehouseCapability
+
+	importsOntology
+		_"http://www.brics.dk/ixwt/warehouse/types"
+
+	sharedVariables {?request1, ?request2}
+
+	precondition
+		definedBy
+			?request1 memberOf onto1#addOneProduct or
+			?request2 memberOf onto1#removeOneProduct.
+
+	postcondition
+		defined.
+
+interface warehouseInterface
+
+	importsOntology
+		_"http://www.brics.dk/ixwt/warehouse/types"
+
+	choreography warehouseChoreography
+
+		stateSignature
+			importsOntology
+				_"http://www.brics.dk/ixwt/warehouse/types"
+
+			in
+				concept onto1#addOneProduct
+					 withGrounding _"http://warehouse.example.org/#wsdl.interfaceMessageReference(warehouseInterface/addOneProduct/In)",
+				concept onto1#removeOneProduct
+					 withGrounding _"http://warehouse.example.org/#wsdl.interfaceMessageReference(warehouseInterface/removeOneProduct/In)"
+
+			ou
+
+			controlled
+				concept oasm#ControlState
+
+		transitionRules warehouseStateSignatureRules
+			forall {?request1,?controlstate} with (?request1 memberOf onto#1addOneProduct
+		and ?controlstate[oasm#value hasValue oasm#InitialState]) do
+				delete (?controlstate [oasm#value hasValue oasm#InitialState])
+				add (?controlstate [oasm#value hasValue oasm#EndState])
+			endForall
+
+			forall {?request2,?controlstate} with (?request2 memberOf onto#1removeOneProduct
+		and ?controlstate[oasm#value hasValue oasm#InitialState]) do
+				delete (?controlstate [oasm#value hasValue oasm#InitialState])
+				add (?controlstate [oasm#value hasValue oasm#EndState])
+			endForall
+

@@ -1068,6 +1068,7 @@ public class GroundingDadosImpl implements GroundingDados {
      */
     @Override
     public String mapearComplexType(Node raiz) throws ElementoNaoEsperadoException {
+        try {
         //verificar se o elemento esta correto
         if (raiz.getLocalName().equals("complexType") == false) {
             throw new ElementoNaoEsperadoException("complexType", raiz.getLocalName());
@@ -1150,8 +1151,13 @@ public class GroundingDadosImpl implements GroundingDados {
             }
             filho = filho.getNextSibling();
         }
-        //System.out.println(saida.toString());
         return saida.toString() + "\n";
+        }
+        catch (NullPointerException e) {
+            System.out.println(e.getMessage() + e.getCause().toString());
+        }
+        //System.out.println(saida.toString());
+        return "";
     }
 
     /**

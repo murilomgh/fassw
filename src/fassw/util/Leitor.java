@@ -37,11 +37,12 @@ public class Leitor {
 
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            docFactory.setNamespaceAware(true); //ativar suporte para namespaces em XML
+            //docFactory.setValidating(true);
+            
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             File arquivo = new File(entrada);
             
-            docFactory.setNamespaceAware(true); //ativar suporte para namespaces em XML
-            docFactory.setValidating(true);
             documento = docBuilder.parse(arquivo.getAbsoluteFile());
             documento.getDocumentElement().normalize(); //usado para garantir navegacao consistente pelo arquivo
         } catch (ParserConfigurationException e) {

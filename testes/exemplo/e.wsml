@@ -1,4 +1,4 @@
-wsmlVariant _"Flight"
+wsmlVariant _"http://www.wsmo.org/wsml/wsml-syntax/wsml-flight"
 namespace {_"http://www.example.com/exemplosvc/types#",
 	dc	_"http://purl.org/dc/elements/1.1#",
 	wsml	_"http://www.wsmo.org/wsml/wsml-syntax#"
@@ -47,51 +47,46 @@ concept element.id.5
 	endAnnotations
 	refElementAttribute ofType e#shelf
 
-concept employee
+concept exemploElementoComplexTypeInterno2
 	annotations
 		xmlType hasValue "element"
-		id hasValue "_#1"
+		id hasValue "id.6"
 	endAnnotations
-	fullpersoninfo ofType id.6
-concept personinfo
+	complexTypeAttribute ofType id.7
+
+concept complexType.id.7
 	annotations
 		xmlType hasValue "complexType"
 		id hasValue "id.7"
-		final hasValue "#all"
-		annotationId hasValue "id.8"
-		dc#language hasValue "en"
-		documentation hasValue "Texto de exemplo de documentação."
 	endAnnotations
-	sequenceAttribute ofType id.9
+	sequenceAttribute ofType id.8
 
-concept sequence.id.9
+concept sequence.id.8
 	annotations
 		xmlType hasValue "sequence"
+		id hasValue "id.8"
+	endAnnotations
+	element.id.9 ofType id.9
+	element.id.10 ofType id.10
+
+concept element.id.9
+	annotations
+		xmlType hasValue "element"
 		id hasValue "id.9"
 	endAnnotations
-	firstname ofType id.10
-	lastname ofType id.11
+	refElementAttribute ofType e#productName
 
-concept firstname
+concept element.id.10
 	annotations
 		xmlType hasValue "element"
 		id hasValue "id.10"
 	endAnnotations
-	refAttribute ofType _string
-
-
-concept lastname
-	annotations
-		xmlType hasValue "element"
-		id hasValue "id.11"
-	endAnnotations
-	refAttribute ofType _string
-
+	refElementAttribute ofType e#shelf
 
 concept fullpersoninfo
 	annotations
 		xmlType hasValue "complexType"
-		id hasValue "id.6"
+		id hasValue "id.11"
 	endAnnotations
 	complexContentAttribute ofType id.12
 
@@ -132,6 +127,47 @@ concept country
 	annotations
 		xmlType hasValue "element"
 		id hasValue "id.16"
+	endAnnotations
+	refAttribute ofType _string
+
+
+concept employee
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.17"
+	endAnnotations
+	fullpersoninfo ofType id.11
+concept personinfo
+	annotations
+		xmlType hasValue "complexType"
+		id hasValue "id.18"
+		final hasValue "#all"
+		annotationId hasValue "id.19"
+		dc#language hasValue "en"
+		documentation hasValue "Texto de exemplo de documentação."
+	endAnnotations
+	sequenceAttribute ofType id.20
+
+concept sequence.id.20
+	annotations
+		xmlType hasValue "sequence"
+		id hasValue "id.20"
+	endAnnotations
+	firstname ofType id.21
+	lastname ofType id.22
+
+concept firstname
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.21"
+	endAnnotations
+	refAttribute ofType _string
+
+
+concept lastname
+	annotations
+		xmlType hasValue "element"
+		id hasValue "id.22"
 	endAnnotations
 	refAttribute ofType _string
 

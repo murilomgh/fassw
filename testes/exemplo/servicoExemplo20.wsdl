@@ -1,7 +1,8 @@
 ﻿<description 
 	xmlns="http://www.w3.org/ns/wsdl" 
 	targetNamespace="http://www.example.com/exemplosvc" 
-	xmlns:ex="http://www.example.com/exemplosvc">
+	xmlns:ex="http://www.example.com/exemplosvc"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	
 	<documentation>
 		Esse documento consiste em uma colecao de exemplos de elementos XML Schema.

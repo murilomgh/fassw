@@ -5,6 +5,7 @@ import fassw.util.Leitor;
 import fassw.util.VarianteWSML;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
@@ -29,6 +30,7 @@ public class MapeadorDados {
     public MapeadorDados(String entrada, String saida) {
         this.entrada = entrada;
         this.caminho = saida.substring(0, saida.lastIndexOf(File.separatorChar)) + File.separatorChar;
+        this.mapeador = new GroundingDadosImpl(entrada);
     }
 
     /**
@@ -163,7 +165,7 @@ public class MapeadorDados {
         String targetNamespace = esquema.getAttributes().getNamedItem("targetNamespace").getNodeValue();
         
         //declarar variante
-        saida.append("wsmlVariant _\"").append(VarianteWSML.Flight).append("\"\n");
+        saida.append("wsmlVariant _\"").append(VarianteWSML.Flight.IRI()).append("\"\n");
         
         //declarar namespaces
         saida.append("namespace {").append("_\"").append(targetNamespace).append("#\",\n");
@@ -176,7 +178,13 @@ public class MapeadorDados {
         saida.append("\t").append("annotations").append("\n");
         saida.append("\t\t").append("dc#title").append(" hasValue \"").append("ontologia ad-hoc ").append(nomeOntologia).append("\"\n");
         saida.append("\t\t").append("dc#creator").append(" hasValue \"").append("FASSW").append("\"\n");
-        saida.append("\t\t").append("dc#source").append(" hasValue \"").append(entrada).append("\"\n");
+        //TODO usar o metodo getCanonicalPath para obter o nome completo
+        File arquivo = new File(entrada);
+        try {
+            saida.append("\t\t").append("dc#source").append(" hasValue \"").append(arquivo.getCanonicalPath()).append("\"\n");
+        } catch (IOException ex) {
+            Logger.getLogger(MapeadorDados.class.getName()).log(Level.SEVERE, null, ex);
+        }
         saida.append("\t").append("endAnnotations").append("\n\n");
         
         return saida.toString();
