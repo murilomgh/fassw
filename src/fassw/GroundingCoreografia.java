@@ -189,7 +189,7 @@ public class GroundingCoreografia {
      * 
      * @param targetNamespaceWSDL
      * @param nomeDoServico
-     * @param schemas
+     * @param namespaceDasOntologias 
      * @return uma capacidade sharedVariables em WSML
      */
     protected String definirCapability(String targetNamespaceWSDL, String nomeDoServico, List<String> namespaceDasOntologias) {

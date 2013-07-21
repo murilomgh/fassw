@@ -10,6 +10,10 @@
 <project name="FASSW" default="default" basedir=".">
     <description>Builds, tests, and runs the project FASSW.</description>
     <import file="nbproject/build-impl.xml"/>
+    <target name="-pre-init">
+        <property file="version.properties"/>
+        <property name="dist.jar" value="dist/${ant.project.name}-${project.version}.jar"/>
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 

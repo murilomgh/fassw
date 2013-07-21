@@ -9,9 +9,10 @@ import static org.junit.Assert.*;
  */
 public class MapeadorTest {
     
-    public MapeadorTest() {
-    }
-
+    /**
+     * Um simples teste de conversao de arquivo no caso mais comum.
+     * @throws Exception
+     */
     @Test
     public void testExecutarSemConverterComSucesso() throws Exception {
         System.out.println("Teste executar()");

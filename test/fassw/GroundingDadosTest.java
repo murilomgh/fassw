@@ -31,29 +31,19 @@ public class GroundingDadosTest {
     private String xmlns = "http://www.w3.org/2001/XMLSchema";
     private File esperado;
     private File resultado;
+
     
-    
-    public GroundingDadosTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
+    /**
+     *
+     * @throws ParserConfigurationException
+     * @throws FileNotFoundException
+     */
     @Before
     public void setUp() throws ParserConfigurationException, FileNotFoundException {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
         db = dbf.newDocumentBuilder();
         resultado = new File(".\\testes\\schema\\resultado.temp");
-    }
-    
-    @After
-    public void tearDown() {
     }
 
     /**
@@ -291,6 +281,10 @@ public class GroundingDadosTest {
         assertEquals(FileUtils.readFileToString(esperado, "utf-8"), FileUtils.readFileToString(resultado, "utf-8"));
     }
     
+    /**
+     * Testa o mapeamento combinado de todos os elementos XML Schema.
+     * @throws Exception
+     */
     @Test
     public void testMapearTudo() throws Exception {
         System.out.println("MapearEsquema");

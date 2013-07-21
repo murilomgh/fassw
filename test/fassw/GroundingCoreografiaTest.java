@@ -33,25 +33,6 @@ public class GroundingCoreografiaTest {
         gc = new GroundingCoreografia();
     }
     
-    @After
-    public void tearDown() {
-    }
-
-    /**
-     * Teste de geracao de arquivo completo
-     */
-    //TODO escrever teste para o metodo processar()
-    @Test
-    public void testProcessar() {
-        /*
-        GroundingCoreografia instance = null;
-        boolean expResult = false;
-        boolean result = instance.processar();
-        assertEquals(expResult, result);
-        */
-        fail("The test case is a prototype.");
-    }
-    
     @Test
     public void testarDeclararWSMLVariantFlight() {
         String declaracao = gc.declararWSMLVariant(VarianteWSML.Flight.IRI());
