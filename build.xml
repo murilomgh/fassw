@@ -14,6 +14,41 @@
         <property file="version.properties"/>
         <property name="dist.jar" value="dist/${ant.project.name}-${project.version}.jar"/>
     </target>
+    
+    
+    
+    <target name="package_for_release" depends="jar,javadoc">
+        <mkdir dir="build/release"/>
+        <copy file="${dist.jar}" todir="build/release/"/>
+        <copy file="licence.txt" todir="build/release/"/>
+        <mkdir dir="build/release/doc"/>
+        <copy todir="build/release/doc">
+            <fileset dir="dist/javadoc" includes="**"/>
+        </copy>
+        <mkdir dir="build/release/src"/>
+        <copy todir="build/release/src">
+            <fileset dir="src" includes="**"/>
+        </copy>
+        <mkdir dir="build/release/test"/>
+        <copy todir="build/release/test">
+            <fileset dir="test" includes="**"/>
+        </copy>
+        <mkdir dir="build/release/sample"/>
+        <copy todir="build/release/sample">
+            <fileset dir="sample" includes="**"/>
+        </copy>
+        <zip basedir="build/release/" includes="**" destfile="dist/${ant.project.name}-${project.version}.zip"/>
+    </target>
+    
+    <target description="bundle sources in a jar" name="package-sources">
+        <jar basedir="src" destfile="dist/${ant.project.name}-sources.jar"/>
+    </target>
+    
+    <target depends="-javadoc-build" description="bundle javadoc in a jar" name="package-doc">
+        <jar basedir="dist/javadoc" destfile="dist/${ant.project.name}-javadoc.jar"/>
+    </target>
+    <target name="-post-jar" depends="package-sources, package-doc" />
+        
     <!--
 
     There exist several targets which are by default empty and which can be 

@@ -1,0 +1,52 @@
+<description xmlns="http://www.w3.org/ns/wsdl"
+             targetNamespace="http://www.cs.au.dk/schwarz/guestbook"
+             xmlns:t="http://www.cs.au.dk/schwarz/guestbook"
+             xmlns:d="http://www.cs.au.dk/schwarz/guestbook/data">
+    <types>
+        <xs:schema
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                targetNamespace="http://www.cs.au.dk/schwarz/guestbook/data"
+                xmlns:d="http://www.cs.au.dk/schwarz/guestbook/data">
+
+            <xs:complexType name="collectionType">
+                <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                    <xs:element ref="d:entry"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="entryType">
+                <xs:sequence>
+                    <xs:element ref="d:title"/>
+                    <xs:element ref="d:content"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:element name="entry" type="d:entryType"/>
+            <xs:element name="collection" type="d:collectionType"/>
+            <xs:element name="title" type="xs:string"/>
+            <xs:element name="content" type="xs:string"/>
+        </xs:schema>
+    </types>
+
+    <interface name="guestbookserverinterface"
+               styleDefault="http://www.w3.org/2006/01/wsdl/style/rpc">
+        <operation name="getEntry" pattern="http://www.w3.org/2006/01/wsdl/in-out">
+            <input element="d:title"/>
+            <output element="d:entry"/>
+        </operation>
+    </interface>
+
+    <binding name="guestbookserverbinding"
+             type="http://www.w3.org/ns/wsdl/soap"
+             xmlns:ws="http://www.w3.org/2005/05/wsdl/soap"
+             ws:protocol="http://www.w3.org/2003/05/soap/bindings/HTTP"
+             ws:mepDefault="http://www.w3.org/2003/05/soap/mep/request-response">
+        <operation ref="t:getEntry"/>
+    </binding>
+
+    <service name="guestbookserver" interface="t:guestbookserverinterface">
+        <endpoint name="guestbookEndpoint"
+                  binding="t:guestbookserverbinding"
+                  address="http://localhost:8080/axis2/services/guestbookserver/"/>
+    </service>
+</description>

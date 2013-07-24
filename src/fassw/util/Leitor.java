@@ -74,6 +74,7 @@ public class Leitor {
             //TODO averiguar o comportamento do validador para arquivos WSDL com problemas na sintaxe
             //reader.setFeature(WSDLReader.FEATURE_VALIDATION, true);
             descricao = reader.readWSDL(arquivo.getAbsolutePath()); //<-- the Description component, always returned
+            descricao.getElementDeclarations();
         } 
         catch (org.apache.woden.WSDLException e) {
             switch (e.getFaultCode()) {
