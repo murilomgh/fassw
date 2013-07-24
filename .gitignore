@@ -18,4 +18,4 @@ nb-configuration.xml
 *.jar
 *.war
 *.ear
-!/dist/*.*
+/dist/
