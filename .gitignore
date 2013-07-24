@@ -8,6 +8,7 @@ build/
 nbbuild/
 dist/
 nbdist/
+nbproject/
 nbactions.xml
 nb-configuration.xml
 
@@ -18,4 +19,6 @@ nb-configuration.xml
 *.jar
 *.war
 *.ear
-/dist/
+
+# Outros #
+sync.ffs_db
